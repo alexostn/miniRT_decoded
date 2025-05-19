@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/19 17:35:42 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:43:09 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,10 @@ int		tuples_equal(t_tuple t1, t_tuple t2);
 
 /* Adding tuples */
 t_tuple add_two_tuples(t_tuple t1, t_tuple t2);
+
+/* Substract tuples */
+t_tuple substract_tuples(t_tuple t1, t_tuple t2);
+/* Negate to change direction oposite for shadows*/
+t_tuple negate_tupil(t_tuple negatable);
 
 #endif

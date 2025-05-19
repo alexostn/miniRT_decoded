@@ -76,24 +76,80 @@ void test_ch1_add_two_tuples(void)
 	TEST_ASSERT(tuples_equal(expected, sum), "sum = tuple(1, 1, 6, 1)");
 }
 
-// --- Добавляй сюда тестовые функции для следующих глав ---
+// Scenario: Subtracting two points
+// Given p1 ← point(3, 2, 1)
+// And p2 ← point(5, 6, 7)
+// Then p1 - p2 = vector(-2, -4, -6)
+void test_ch1_substract_two_points(void)
+{
+	printf("Chapter 1: Substracting two points(p1 - p2)\n");
+	t_tuple p1 = point(3, 2, 1);
+	t_tuple p2 = point(5, 6, 7);
+	t_tuple diff = substract_tuples(p1, p2);
+	t_tuple expected_vector = vector(-2, -4, -6);
+	TEST_ASSERT(tuples_equal(expected_vector, diff), " diff = vector(-2, -4, -6)");
+}
+
+// Scenario: Subtracting a vector from a point
+// Given p ← point(3, 2, 1)
+// And v ← vector(5, 6, 7)
+// Then p - v = point(-2, -4, -6)
+
+void test_ch1_substract_v_from_p(void)
+{
+	printf("Chapter 1: Substracting a vector from a point(p1 - v2)\n");
+	t_tuple p = point(3, 2, 1);
+	t_tuple v = vector(5, 6, 7);
+	t_tuple diff = substract_tuples(p, v);
+	t_tuple expected_point = point(-2, -4, -6);
+	TEST_ASSERT(tuples_equal(expected_point, diff), " diff = point(-2, -4, -6)");
+}
+
+void test_ch1_substract_v_from_v(void)
+{
+	printf("Chapter 1: Substracting a vector from a vector(v1 - v2)\n");
+	t_tuple p = vector(3, 2, 1);
+	t_tuple v = vector(5, 6, 7);
+	t_tuple diff = substract_tuples(p, v);
+	t_tuple expected_vector = vector(-2, -4, -6);
+	TEST_ASSERT(tuples_equal(expected_vector, diff), " diff = vector(-2, -4, -6)");
+}
+
+// Scenario: Subtracting a vector from the zero vector
+// Given zero ← vector(0, 0, 0)
+// And v ← vector(1, -2, 3)
+// Then zero - v = vector(-1, 2, -3)
+
+void test_ch1_snegate_tupil(void)
+{
+	printf("Chapter 1: Substracting a vector from a vector(v1 - v2)\n");
+	// t_tuple given_zero = vector(0, 0, 0);
+	t_tuple v = vector(1, -2, 3);
+	t_tuple negated = negate_tupil(v);
+	t_tuple expected_vector = vector(-1, 2, -3);
+	TEST_ASSERT(tuples_equal(expected_vector, negated), " negated = vector(-1, 2, -3)");
+}
+// --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
 
-
-// --- Главная функция для запуска всех тестов книги ---
+// --- Main function to run all book tests ---
 int main(void)
 {
-    printf("--- Running 'The Raytracer Challenge' Book Tests ---\n\n");
+	printf("--- Running 'The Raytracer Challenge' Book Tests ---\n\n");
 
-    // Chapter 1
+	// Chapter 1
 	test_ch1_tuple_is_point();
 	test_ch1_tuple_is_vector();
 	test_ch1_point_factory();
 	test_ch1_vector_factory();
 	test_ch1_add_two_tuples();
-    printf("\n");
+	test_ch1_substract_two_points();
+	test_ch1_substract_v_from_p();
+	test_ch1_substract_v_from_v();
+	test_ch1_snegate_tupil();
+	printf("\n");
 
-    // Сюда добавляй вызовы тестов для следующих глав
+	// Add calls to tests for subsequent chapters here
     // test_ch2_some_canvas_feature();
     // printf("\n");
 
