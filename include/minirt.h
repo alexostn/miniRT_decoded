@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:36:19 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/03 00:41:12 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:44:58 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_scene {
     t_ambient ambient;
     t_camera camera;
     t_light light;
-    t_sphere *spheres;
+    t_sphere *spheres;// Pointers for future transition to the heap.
     int sphere_count;
     t_plane *planes;
     int plane_count;
