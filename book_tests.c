@@ -153,6 +153,62 @@ void test_ch1_multiplying_a_tuple_by_a_scalar(void)
 	TEST_ASSERT(tuples_equal(tproduct, expected_tuple), "product = tuple(3.5, -7, 10.5, -14)");
 }
 
+void test_ch1_multiplying_a_tuple_by_a_fraction(void)
+{
+	printf("Chapter 1: Multiplying a tuple by a fraction\n");
+	t_tuple	a = tuple(1, -2, 3, -4);
+	double	fraction = 0.5;
+	t_tuple	tproduct = multiply_tuple_scalar(a, fraction);
+	t_tuple	expected_tuple = tuple(0.5, -1, 1.5, -2);
+	TEST_ASSERT(tuples_equal(tproduct, expected_tuple), "product = tuple(0.5, -1, 1.5, -2)");
+}
+
+// Scenario: Dividing a tuple by a scalar
+// Given a ← tuple(1, -2, 3, -4)
+// Then a / 2 = tuple(0.5, -1, 1.5, -2)
+void test_ch1_dividing_a_tuple_by_a_scalar(void)
+{
+	printf("Chapter 1: Dividing a tuple by a scalar\n");
+	t_tuple	d = tuple(1, -2, 3, -4);
+	double	scalar = 2;
+	t_tuple	tquotient = divide_tuple_scalar(d, scalar);
+	t_tuple	expected_tuple = tuple(0.5, -1, 1.5, -2);
+	TEST_ASSERT(tuples_equal(tquotient, expected_tuple), "quotient = tuple(0.5, -1, 1.5, -2)");
+}
+
+/*MAGNITUDE:*/
+
+// Scenario: Computing the magnitude of vector(1, 0, 0)
+// Given v ← vector(1, 0, 0)
+// Then magnitude(v) = 1
+// report erratum • discussOperations • 9
+
+// Scenario: Computing the magnitude of vector(0, 1, 0)
+// Given v ← vector(0, 1, 0)
+// Then magnitude(v) = 1
+
+// Scenario: Computing the magnitude of vector(0, 0, 1)
+// Given v ← vector(0, 0, 1)
+// Then magnitude(v) = 1
+
+// Scenario: Computing the magnitude of vector(1, 2, 3)
+// Given v ← vector(1, 2, 3)
+// Then magnitude(v) = √14
+
+// Scenario: Computing the magnitude of vector(-1, -2, -3)
+// Given v ← vector(-1, -2, -3)
+// Then magnitude(v) = √14
+
+void test_ch1_magnitude_of_vector(void)
+{
+	printf("Chapter 1: Computing the magnitude of vector(-1, -2, -3)\n");
+	t_tuple	v = vector(-1, -2, -3);
+	double magnitude = magnitude_of_vector(v);
+	double expected_magnitude = 3.741657387;
+	//TODO COMPARE NUMBERS DOUBLE:
+	// TEST_ASSERT(tuples_equal(magnitude, expected_magnitude), "magnitude(v) = √14");
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
 
@@ -172,6 +228,7 @@ int main(void)
 	test_ch1_substract_v_from_v();
 	test_ch1_snegate_tupil();
 	test_ch1_multiplying_a_tuple_by_a_scalar();
+	test_ch1_multiplying_a_tuple_by_a_fraction();test_ch1_dividing_a_tuple_by_a_scalar();
 	printf("\n");
 
 	// Add calls to tests for subsequent chapters here

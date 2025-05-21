@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/05/19 16:09:58 by oostapen         ###   ########.fr        #
+#    Updated: 2025/05/21 20:12:51 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,10 @@ OBJ_DIR = obj
 SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/window.c \
 			$(SRC_DIR)/init.c \
-			$(SRC_DIR)/tuples/tuple_creation.c
+			$(SRC_DIR)/tuples/tuple_creation.c \
+			$(SRC_DIR)/tuples/tuple_predicates.c \
+			$(SRC_DIR)/tuples/tuple_utils.c \
+			$(SRC_DIR)/tuples/tuple_multiply_divide.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -33,7 +36,9 @@ BOOK_TEST_RUNNER_SRC = book_tests.c
 # 2. Исходные файлы из твоего проекта src/, которые нужны для тестов книги
 BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/tuple_predicates.c \
-						$(SRC_DIR)/tuples/tuple_utils.c
+						$(SRC_DIR)/tuples/tuple_utils.c \
+						$(SRC_DIR)/tuples/tuple_multiply_divide.c \
+						$(SRC_DIR)/tuples/tuple_magitude_norm.c
 
 # 3. Объектные файлы для модулей, используемых тестами
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))

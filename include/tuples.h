@@ -6,14 +6,14 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/20 13:19:47 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:11:16 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TUPLES_H
 # define TUPLES_H
 
-# include <math.h> // for fabs
+# include <math.h> // for fabs, pow, sqrt
 // If you have your own defines.h, EPSILON can be moved there
 # ifndef EPSILON
 #  define EPSILON 0.00001 // Precision for comparing float/double
@@ -62,5 +62,8 @@ t_tuple negate_tupil(t_tuple negatable);
 
 /* Multiplying a tuple by a scalar/fraction */
 t_tuple multiply_tuple_scalar(t_tuple a, double scalar);
+
+/*** Tuple divide ***/
+t_tuple divide_tuple_scalar(t_tuple d, double scalar);
 
 #endif
