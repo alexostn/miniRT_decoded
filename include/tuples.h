@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/19 19:43:09 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:19:47 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,15 @@ int		is_vector(t_tuple t);
 int		floats_equal(double a, double b);
 int		tuples_equal(t_tuple t1, t_tuple t2);
 
-/* Adding tuples */
-t_tuple add_two_tuples(t_tuple t1, t_tuple t2);
+/*** Tuple utils ***/
 
-/* Substract tuples */
+t_tuple add_two_tuples(t_tuple t1, t_tuple t2);
 t_tuple substract_tuples(t_tuple t1, t_tuple t2);
-/* Negate to change direction oposite for shadows*/
+
+/* Negate to change direction oposite for shadows */
 t_tuple negate_tupil(t_tuple negatable);
+
+/* Multiplying a tuple by a scalar/fraction */
+t_tuple multiply_tuple_scalar(t_tuple a, double scalar);
 
 #endif

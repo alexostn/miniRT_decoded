@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:41:31 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/19 19:44:12 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:15:49 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,3 +84,23 @@ t_tuple negate_tupil(t_tuple negatable)
 	
 	return (substract_tuples(zero, negatable));
 }
+
+// Scenario: Multiplying a tuple by a scalar
+// Given a ← tuple(1, -2, 3, -4)
+// Then a * 3.5 = tuple(3.5, -7, 10.5, -14)
+
+t_tuple multiply_tuple_scalar(t_tuple a, double scalar)
+{
+	t_tuple tproduct;
+	
+	tproduct.x = a.x * scalar;
+	tproduct.y = a.y * scalar;
+	tproduct.z = a.z * scalar;
+	tproduct.w = a.w * scalar;
+	
+	return (tproduct);
+}
+
+// Scenario: Multiplying a tuple by a fraction
+// Given a ← tuple(1, -2, 3, -4)
+// Then a * 0.5 = tuple(0.5, -1, 1.5, -2)

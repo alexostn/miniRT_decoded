@@ -115,10 +115,15 @@ void test_ch1_substract_v_from_v(void)
 	TEST_ASSERT(tuples_equal(expected_vector, diff), " diff = vector(-2, -4, -6)");
 }
 
+// BOTH ARE SIMILAR I DID THE SECOND ONLY:
 // Scenario: Subtracting a vector from the zero vector
 // Given zero ← vector(0, 0, 0)
 // And v ← vector(1, -2, 3)
 // Then zero - v = vector(-1, 2, -3)
+
+// Scenario: Negating a tuple
+// Given a ← tuple(1, -2, 3, -4)
+// Then -a = tuple(-1, 2, -3, 4)
 
 void test_ch1_snegate_tupil(void)
 {
@@ -129,6 +134,25 @@ void test_ch1_snegate_tupil(void)
 	t_tuple expected_vector = vector(-1, 2, -3);
 	TEST_ASSERT(tuples_equal(expected_vector, negated), " negated = vector(-1, 2, -3)");
 }
+// BOTH ARE SIMILAR I DID THE FIRST ONLY:
+// Scenario: Multiplying a tuple by a scalar
+// Given a ← tuple(1, -2, 3, -4)
+// Then a * 3.5 = tuple(3.5, -7, 10.5, -14)
+
+// Scenario: Multiplying a tuple by a fraction
+// Given a ← tuple(1, -2, 3, -4)
+// Then a * 0.5 = tuple(0.5, -1, 1.5, -2)
+
+void test_ch1_multiplying_a_tuple_by_a_scalar(void)
+{
+	printf("Chapter 1: Multiplying a tuple by a scalar\n");
+	t_tuple	a = tuple(1, -2, 3, -4);
+	double	scalar = 3.5;
+	t_tuple	tproduct = multiply_tuple_scalar(a, scalar);
+	t_tuple	expected_tuple = tuple(3.5, -7, 10.5, -14);
+	TEST_ASSERT(tuples_equal(tproduct, expected_tuple), "product = tuple(3.5, -7, 10.5, -14)");
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
 
@@ -147,6 +171,7 @@ int main(void)
 	test_ch1_substract_v_from_p();
 	test_ch1_substract_v_from_v();
 	test_ch1_snegate_tupil();
+	test_ch1_multiplying_a_tuple_by_a_scalar();
 	printf("\n");
 
 	// Add calls to tests for subsequent chapters here
