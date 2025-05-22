@@ -60,3 +60,23 @@ void point_init(t_tuple *target, double x, double y, double z) (которая �
 Операции над кортежами (сложение, вычитание и т.д., которые появятся позже) могут принимать t_tuple по значению (для стековых версий) или указатели const t_tuple * (что будет работать и для стековых, и для heap-переменных). Это обеспечивает гибкость.
 
 Сама структура t_tuple остается той же. Изменится только способ ее создания и передачи.
+
+*******
+// Creating a projectile (stack/heap)
+t_projectile  projectile_create(t_tuple position, t_tuple velocity);
+// Cleanup (relevant for heap)
+void          projectile_destroy(t_projectile *proj);
+
+#endif
+
+// Stack: Use direct t_projectile proj = {pos, vel};
+// Heap: For future transition, add factory functions and a destructor
+
+
+*******
+// Stack
+t_projectile p = projectile_create(...);
+
+// Heap (potentially)
+t_projectile *p = malloc(sizeof(t_projectile));
+*p = projectile_create(...);

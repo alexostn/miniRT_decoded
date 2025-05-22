@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:13:14 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 17:42:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:34:49 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,20 @@ t_tuple	normalize_vector(t_tuple v)
 	return (normalized);
 }
 
+//the smaller the dot product, the larger the angle between the vectors
+// dot = -1 = oposite. w-enables to find a bug
 double	dot_product(t_tuple a, t_tuple b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w);
+}
+
+t_tuple	cross_product(t_tuple a, t_tuple b)
+{
+	t_tuple	cross;
+
+	cross.x = a.y * b.z - a.z * b.y;
+	cross.y = a.z * b.x - a.x * b.z;
+	cross.z = a.x * b.y - a.y * b.x;
+	cross.w = 0.0;
+	return (cross);
 }

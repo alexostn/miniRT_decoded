@@ -288,11 +288,12 @@ void test_ch1_magnitude_of_normalized_vector(void)
 	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(norm) = 1");
 }
 
+
 // Scenario: The dot product of two tuples
 // Given a ← vector(1, 2, 3)
 // And b ← vector(2, 3, 4)
 // Then dot(a, b) = 20
-void test_ch1_dot_product_of_two_tuples(void)
+void	test_ch1_dot_product_of_two_tuples(void)
 {
 	printf("Chapter 1: The dot product of two tuples\n");
 	t_tuple	a = vector(1, 2, 3);
@@ -302,6 +303,38 @@ void test_ch1_dot_product_of_two_tuples(void)
 	TEST_ASSERT(floats_equal(dot, expected_dot), "dot(a, b) = 20");
 }
 
+// Scenario: The cross product of two vectors
+// Given a ← vector(1, 2, 3)
+// And b ← vector(2, 3, 4)
+// Then cross(a, b) = vector(-1, 2, -1)
+// And cross(b, a) = vector(1, -2, 1)
+void	test_ch1_cross_product_of_two_vectors(void)
+{
+	printf("Chapter 1: The cross product of two vectors\n");
+	t_tuple	a = vector(1, 2, 3);
+	t_tuple	b = vector(2, 3, 4);
+
+	t_tuple	cross_ab = cross_product(a, b);
+	t_tuple	cross_ba = cross_product(b, a);
+	t_tuple	expected_ab = vector(-1, 2, -1);
+	t_tuple	expected_ba = vector(1, -2, 1);
+	TEST_ASSERT(tuples_equal(cross_ab, expected_ab), "cross(a, b) = vector(-1, 2, -1)");
+	TEST_ASSERT(tuples_equal(cross_ba, expected_ba), "cross(b, a) = vector(1, -2, 1)");
+}
+
+void	test_ch1_cross_product_of_axes_vectors(void)
+{
+	printf("Chapter 1: The cross product of axes \n 	x(1, 0, 0), y(0, 1, 0)\n");
+	t_tuple	x = vector(1, 0, 0);
+	t_tuple	y = vector(0, 1, 0);
+
+	t_tuple	cross_xy = cross_product(x, y);
+	t_tuple	cross_yx = cross_product(y, x);
+	t_tuple	expected_xy = vector(0, 0, 1);
+	t_tuple	expected_yx = vector(0, 0, -1);
+	TEST_ASSERT(tuples_equal(cross_xy, expected_xy), "cross(x, y) = z_vector(0, 0, 1)");
+	TEST_ASSERT(tuples_equal(cross_yx, expected_yx), "cross(y, x) = -z_vector(0, 0, -1)");
+}
 
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
@@ -334,13 +367,16 @@ int main(void)
 	test_ch1_normalize_unit_vector();
 	test_ch1_normalize_vector();
 	test_ch1_magnitude_of_normalized_vector();
+
 	test_ch1_dot_product_of_two_tuples();
+	
+	test_ch1_cross_product_of_two_vectors();
+	test_ch1_cross_product_of_axes_vectors();
 	printf("\n");
-
 	// Add calls to tests for subsequent chapters here
-    // test_ch2_some_canvas_feature();
-    // printf("\n");
+	// test_ch2_some_canvas_feature();
+	// printf("\n");
 
-    printf("--- All book tests finished. ---\n");
-    return (0);
+	printf("--- All book tests finished. ---\n");
+	return (0);
 }

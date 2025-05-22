@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 17:42:41 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:16:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,10 @@ t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
 /*** Tuple divide ***/
 t_tuple	divide_tuple_scalar(t_tuple d, double scalar);
 
-/*** Tuple magnitude normalize dot***/
+/*** Tuple magnitude normalize dot cross***/
 double	magnitude_of_vector(t_tuple v);
 t_tuple	normalize_vector(t_tuple v);
 double	dot_product(t_tuple a, t_tuple b);
+t_tuple	cross_product(t_tuple a, t_tuple b);
 
 #endif

@@ -1,19 +1,40 @@
 # miniRT
+includes/
+  tuples.h       // Основные структуры (точки/векторы)
+  environment.h  // t_environment и функции среды
+  projectile.h   // t_projectile и функции снаряда
+srcs/
+  physics/
+    projectile.c  // Реализация tick(), projectile_create()
+    environment.c // Реализация environment_create()
+
+
+OLD TO REDACT:
 miniRT/
 ├── Makefile                 # Мы его уже детально обсудили
 │
 ├── includes/                # Заголовочные файлы
-│   ├── minirt.h             # Главный заголовочный файл, может включать другие
-│   │                        # и содержать основные структуры проекта (например, t_data)
-│   ├── tuples.h             # Определения для t_tuple и прототипы функций
-│   │                        # (point, vector, is_point, is_vector и др., как мы делали)
-│   ├── scene.h              # Структуры для сцены: t_scene, t_ambient, t_camera, t_light
-│   ├── objects.h            # Структуры для объектов: t_sphere, t_plane, t_cylinder
-│   │                        # Возможно, общая структура t_object или t_shape
-│   ├── ray.h                # Структура t_ray (origin, direction)
-│   ├── color.h              # Структура t_color (или используй t_tuple с w=0 для цвета)
-│   ├── matrices.h           # Для матриц 4x4 (следующий шаг по книге)
-│   └── defines.h            # Глобальные константы (EPSILON, MAX_SPHERES, KEY_ESC и т.д.)
+|   ├── physics/
+|	|	├── projectile.h     # Declaration of t_projectile, projectile_create(), tick()
+|	|	├── environment.h    # Declaration of t_environment, environment_create()
+|	|	└── physics_utils.h  # Объявления для physics_utils.c
+|	├── math/               # Математические структуры и операции
+│   |	├── tuples.h        # t_tuple, точки/векторы, базовые операции
+│   |	├── matrices.h      # Матрицы 4x4 и трансформации
+│   |	└── color.h         # Структура t_color (или используй t_tuple с w=0 для цвета)
+|	|
+|	├── scene/              # Управление сценой и объектами
+|	│   ├── scene.h         # Структуры для сцены: t_scene, t_ambient, t_camera, t_light
+|	│   └── objects.h            # Структуры для объектов: t_sphere, t_plane, t_cylinder
+|	│
+|	├── rays/               # Лучи и пересечения
+|	│   ├── ray.h           # Структура t_ray (origin, direction)
+|	│   └── intersections.h # Структуры для пересечений
+|	│
+|	└── defines.h           # Глобальные константы (EPSILON, KEY_ESC и т.д.)
+│   └──  minirt.h             # Главный заголовочный файл, может включать другие
+│                            # и содержать основные структуры проекта (например, t_data)
+│                            # (point, vector, is_point, is_vector и др., как мы делали)
 │
 ├── srcs/                    # Исходные файлы .c
 │   ├── main.c               # Основная функция main, инициализация mlx,
@@ -24,7 +45,10 @@ miniRT/
 │   │   ├── tuple_predicates.c # is_point(), is_vector()
 │   │   ├── tuple_compare.c    # floats_equal(), tuples_equal()
 │   │   └── tuple_ops.c        # (позже) add_tuples, sub_tuples, etc.
-│   │
+│   └── physics/
+    ├── projectile.c (tick, normalize_velocity)
+    ├── environment.c (wind, )
+    └── physics_utils.c
 │   ├── parser/              # Функции для парсинга .rt файла
 │   │   ├── parse_scene.c      # Главная функция парсинга, читает файл построчно
 │   │   ├── parse_elements.c   # parse_ambient, parse_camera, parse_light
@@ -68,4 +92,59 @@ miniRT/
 └── minilibx-linux/          # Локальная версия miniLibX (или minilibx)
     ├── Makefile
     └── ... (исходники и заголовочные файлы miniLibX)
+
+What could be in:
+physics/
+├── projectile.[h/c]       // Движение снарядов (уже реализовано)
+├── environment.[h/c]      // Параметры среды (уже реализовано)
+├── transformations.[h/c]  // Трансформации объектов
+├── normals.[h/c]          // Нормали и отражения
+└── lighting.[h/c]         // Освещение
+
+Рекомендации по интеграции модуля physics в структуру проекта:
+
+1. Расположение модуля physics
+Создайте отдельную директорию srcs/physics/ для хранения файлов, связанных с физическими расчётами. Пример структуры:
+
+includes/
+└── physics/
+    ├── projectile.h     # Declaration of t_projectile, projectile_create(), tick()
+    ├── environment.h    # Declaration of t_environment, environment_create()
+    └── physics_utils.h  # Объявления для physics_utils.c
+srcs/
+└── physics/
+    ├── projectile.c (tick, normalize_velocity)
+    ├── environment.c (wind, )
+    └── physics_utils.c
+
+text
+srcs/
+└── physics/
+    ├── projectile.c    # Функции для движения снарядов (tick, normalize_velocity)
+    ├── environment.c   # Обработка параметров среды (гравитация, ветер)
+    └── physics_utils.c # Вспомогательные функции (расчёты ускорения, времени)
+2. Интеграция с существующей архитектурой
+Для динамических сцен (бонусная часть):
+
+c
+// main.c
+while (mlx_loop_hook(data.mlx, update_scene, &data)) 
+    apply_physics(&data.scene); // Обновление позиций объектов
+    rer
+
+includes/
+├── math/               # Математические структуры и операции
+│   ├── tuples.h        # t_tuple, точки/векторы, базовые операции
+│   ├── matrices.h      # Матрицы 4x4 и трансформации
+│   └── color.h         # t_color, операции с цветами
+│
+├── scene/              # Управление сценой и объектами
+│   ├── scene.h         # t_scene, камеры, источники света
+│   └── objects.h       # Примитивы: сферы, плоскости, цилиндры
+│
+├── rays/               # Лучи и пересечения
+│   ├── ray.h           # t_ray, генерация лучей
+│   └── intersections.h # Структуры для пересечений
+│
+└── defines.h           # Глобальные константы (EPSILON, KEY_ESC и т.д.)
 
