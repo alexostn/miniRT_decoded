@@ -10,7 +10,7 @@
 
 #define TEST_ASSERT(condition, message) \
     do { \
-        printf("  - %-42s: ", message); \
+        printf("  - %-58s: ", message); \
         if (condition) { \
             printf(ANSI_COLOR_GREEN "PASS" ANSI_COLOR_RESET "\n"); \
         } else { \
@@ -182,32 +182,64 @@ void test_ch1_dividing_a_tuple_by_a_scalar(void)
 // Given v ← vector(1, 0, 0)
 // Then magnitude(v) = 1
 // report erratum • discussOperations • 9
+void test_ch1_magnitude_of_unit_vector_x(void)
+{
+	printf("Chapter 1: Computing the magnitude of X unit vector(1, 0, 0)\n");
+	t_tuple	v = vector(1, 0, 0);
+	double magnitude = magnitude_of_vector(v);
+	double expected_magnitude = 1;
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(v) = 1");
+}
 
 // Scenario: Computing the magnitude of vector(0, 1, 0)
 // Given v ← vector(0, 1, 0)
 // Then magnitude(v) = 1
+void test_ch1_magnitude_of_unit_vector_y(void)
+{
+	printf("Chapter 1: Computing the magnitude of Y unit vector(0, 1, 0)\n");
+	t_tuple	v = vector(0, 1, 0);
+	double magnitude = magnitude_of_vector(v);
+	double expected_magnitude = 1;
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(v) = 1");
+}
 
 // Scenario: Computing the magnitude of vector(0, 0, 1)
 // Given v ← vector(0, 0, 1)
 // Then magnitude(v) = 1
+void test_ch1_magnitude_of_unit_vector_z(void)
+{
+	printf("Chapter 1: Computing the magnitude of Z unit vector(0, 0, 1)\n");
+	t_tuple	v = vector(0, 0, 1);
+	double magnitude = magnitude_of_vector(v);
+	double expected_magnitude = 1;
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(v) = 1");
+}
 
 // Scenario: Computing the magnitude of vector(1, 2, 3)
 // Given v ← vector(1, 2, 3)
 // Then magnitude(v) = √14
+void test_ch1_magnitude_of_vector1(void)
+{
+	printf("Chapter 1: Computing the magnitude of vector(1, 2, 3)\n");
+	t_tuple	v = vector(1, 2, 3);
+	double magnitude = magnitude_of_vector(v);
+	double expected_magnitude = 3.741657387;
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(v) = √14");
+}
 
 // Scenario: Computing the magnitude of vector(-1, -2, -3)
 // Given v ← vector(-1, -2, -3)
 // Then magnitude(v) = √14
 
-void test_ch1_magnitude_of_vector(void)
+void test_ch1_magnitude_of_vector2(void)
 {
 	printf("Chapter 1: Computing the magnitude of vector(-1, -2, -3)\n");
 	t_tuple	v = vector(-1, -2, -3);
 	double magnitude = magnitude_of_vector(v);
 	double expected_magnitude = 3.741657387;
-	//TODO COMPARE NUMBERS DOUBLE:
-	// TEST_ASSERT(tuples_equal(magnitude, expected_magnitude), "magnitude(v) = √14");
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(v) = √14");
 }
+
 
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
@@ -228,7 +260,15 @@ int main(void)
 	test_ch1_substract_v_from_v();
 	test_ch1_snegate_tupil();
 	test_ch1_multiplying_a_tuple_by_a_scalar();
-	test_ch1_multiplying_a_tuple_by_a_fraction();test_ch1_dividing_a_tuple_by_a_scalar();
+	test_ch1_multiplying_a_tuple_by_a_fraction();
+	test_ch1_dividing_a_tuple_by_a_scalar();
+	/*today 22May:*/
+	test_ch1_magnitude_of_unit_vector_x();
+	test_ch1_magnitude_of_unit_vector_y();
+	test_ch1_magnitude_of_unit_vector_z();
+	test_ch1_magnitude_of_vector1();
+	test_ch1_magnitude_of_vector2();
+
 	printf("\n");
 
 	// Add calls to tests for subsequent chapters here

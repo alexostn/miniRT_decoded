@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:13:14 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/21 20:22:24 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:44:32 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,6 @@ double	magnitude_of_vector(t_tuple v)
 	double magnitude;
 	
 	magnitude = sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
+	
+	return (magnitude);
 }

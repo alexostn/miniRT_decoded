@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:10:37 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/21 20:14:25 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:41:49 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,3 @@ t_tuple divide_tuple_scalar(t_tuple d, double scalar)
 
 	return (tquotient);
 }
-
-
-
-
-
