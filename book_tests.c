@@ -94,7 +94,6 @@ void test_ch1_substract_two_points(void)
 // Given p ← point(3, 2, 1)
 // And v ← vector(5, 6, 7)
 // Then p - v = point(-2, -4, -6)
-
 void test_ch1_substract_v_from_p(void)
 {
 	printf("Chapter 1: Substracting a vector from a point(p1 - v2)\n");
@@ -105,6 +104,11 @@ void test_ch1_substract_v_from_p(void)
 	TEST_ASSERT(tuples_equal(expected_point, diff), " diff = point(-2, -4, -6)");
 }
 
+// TO CHANGE DIRECTION BTW 2 VECTORS:
+// Scenario: Subtracting two vectors
+// Given v1 ← vector(3, 2, 1)
+// And v2 ← vector(5, 6, 7)
+// Then v1 - v2 = vector(-2, -4, -6)
 void test_ch1_substract_v_from_v(void)
 {
 	printf("Chapter 1: Substracting a vector from a vector(v1 - v2)\n");
@@ -230,7 +234,6 @@ void test_ch1_magnitude_of_vector1(void)
 // Scenario: Computing the magnitude of vector(-1, -2, -3)
 // Given v ← vector(-1, -2, -3)
 // Then magnitude(v) = √14
-
 void test_ch1_magnitude_of_vector2(void)
 {
 	printf("Chapter 1: Computing the magnitude of vector(-1, -2, -3)\n");
@@ -238,6 +241,65 @@ void test_ch1_magnitude_of_vector2(void)
 	double magnitude = magnitude_of_vector(v);
 	double expected_magnitude = 3.741657387;
 	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(v) = √14");
+}
+
+// Scenario: Normalizing vector(4, 0, 0) gives (1, 0, 0)
+// Given v ← vector(4, 0, 0)
+// Then normalize(v) = vector(1, 0, 0)
+void	test_ch1_normalize_unit_vector(void)
+{
+	printf("Chapter 1: Normalizing vector(4, 0, 0) gives (1, 0, 0)\n");
+	t_tuple	v = vector(4, 0, 0);
+	t_tuple	normalized = normalize_vector(v);
+	t_tuple	expected_vector = vector(1, 0, 0);
+	TEST_ASSERT(tuples_equal(normalized, expected_vector), "normalize(v) = vector(1, 0, 0)");
+}
+
+// Scenario: Normalizing vector(1, 2, 3)
+// Given v ← vector(1, 2, 3)
+// # vector(1/√14, 2/√14, 3/√14)
+// Then normalize(v) = approximately vector(0.26726, 0.53452, 0.80178)
+void	test_ch1_normalize_vector(void)
+{
+	printf("Chapter 1: Normalizing vector(1, 2, 3)\n");
+	t_tuple	v = vector(1, 2, 3);
+	t_tuple	normalized = normalize_vector(v);
+	t_tuple	expected_vector = vector(0.26726, 0.53452, 0.80178);
+	TEST_ASSERT(tuples_equal(normalized, expected_vector), "approximately vector(0.26726, 0.53452, 0.80178)");
+}
+
+// Scenario: The magnitude of a normalized vector
+// Given v ← vector(1, 2, 3)
+// When norm ← normalize(v)
+// Then magnitude(norm) = 1
+void test_ch1_magnitude_of_normalized_vector(void)
+{
+	printf("Chapter 1: The magnitude of a normalized vector(1, 2, 3)\n");
+	t_tuple	v = vector(1, 2, 3);
+	t_tuple	norm = normalize_vector(v);
+	// NOT THE SAME "v", BUT SAME "norm":
+	// WILL WORK FOR ANY "v", EXCEPT "v(0,0,0)":
+	// printf("v = %f %f %f\n", v.x, v.y, v.z);
+	// printf("norm = %f %f %f\n", norm.x, norm.y, norm.z);
+	double magnitude = magnitude_of_vector(norm);
+	double expected_magnitude = 1;
+	t_tuple	expected_vector = vector(0.26726, 0.53452, 0.80178);
+	TEST_ASSERT(tuples_equal(norm, expected_vector), "approximately vector(0.26726, 0.53452, 0.80178)");
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(norm) = 1");
+}
+
+// Scenario: The dot product of two tuples
+// Given a ← vector(1, 2, 3)
+// And b ← vector(2, 3, 4)
+// Then dot(a, b) = 20
+void test_ch1_dot_product_of_two_tuples(void)
+{
+	printf("Chapter 1: The dot product of two tuples\n");
+	t_tuple	a = vector(1, 2, 3);
+	t_tuple	b= vector(2, 3, 4);
+	double	dot = dot_product(a, b);
+	double	expected_dot = 20;
+	TEST_ASSERT(floats_equal(dot, expected_dot), "dot(a, b) = 20");
 }
 
 
@@ -269,6 +331,10 @@ int main(void)
 	test_ch1_magnitude_of_vector1();
 	test_ch1_magnitude_of_vector2();
 
+	test_ch1_normalize_unit_vector();
+	test_ch1_normalize_vector();
+	test_ch1_magnitude_of_normalized_vector();
+	test_ch1_dot_product_of_two_tuples();
 	printf("\n");
 
 	// Add calls to tests for subsequent chapters here

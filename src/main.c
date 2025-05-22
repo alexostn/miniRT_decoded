@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 22:57:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/03 00:16:37 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:25:34 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(void)
 	t_vars	vars;
 	t_scene	scene;
 
-	init_scene(&scene);  // Initializing the scene structure
+	init_scene(&scene); // Initializing the scene structure
 	vars.scene = &scene; // Linking the scene to the window
 	
 	if (init_window(&vars))

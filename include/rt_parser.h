@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 23:11:18 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/03 00:43:44 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:44:55 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,45 @@
 #define MAX_CAMERA     1
 #define MAX_LIGHT      1
 
-typedef struct s_ambient {
-	double ratio;
-	t_color color;
-	int initialized;
-} t_ambient;
+typedef struct s_ambient
+{
+	double	ratio;
+	t_color	color;
+	int		initialized;
+}	t_ambient;
 
-typedef struct s_camera {
-	t_point3 pos;
-	t_vec3 orient;
-	double fov;
-	int initialized;
-} t_camera;
+typedef struct s_camera
+{
+	t_point3	pos;
+	t_vec3		orient;
+	double		fov;
+	int			initialized;
+}	t_camera;
 
-typedef struct s_light {
-	t_point3 pos;
-	double brightness;
-	t_color color;
-	int initialized;
-} t_light;
+typedef struct s_light
+{
+	t_point3	pos;
+	double		brightness;
+	t_color		color;
+	int			initialized;
+}	t_light;
 
-typedef struct s_scene {
-	t_ambient ambient;
-	t_camera camera;
-	t_light light;
+typedef struct s_scene
+{
+	t_ambient	ambient;
+	t_camera	camera;
+	t_light		light;
 
 	// Динамические массивы
-	t_sphere *spheres;
-	int sphere_cap;  // Текущая ёмкость
-	int sphere_count;
+	t_sphere	*spheres;
+	int			sphere_cap; // Текущая ёмкость
+	int			sphere_count;
 
-	t_plane *planes;
-	int plane_cap;
-	int plane_count;
+	t_plane		*planes;
+	int			plane_cap;
+	int			plane_count;
 
-	t_cylinder *cylinders;
-	int cylinder_cap;
-	int cylinder_count;
-} t_scene;
-
+	t_cylinder	*cylinders;
+	int			cylinder_cap;
+	int			cylinder_count;
+}	t_scene;

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 12:47:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:42:41 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_tuple
 ** a pointer (t_tuple *tuple_create_heap(...))
 */
 t_tuple	tuple(double x, double y, double z, double w);
-t_tuple	point(double x, double y, double z);  // Constructor for a point
+t_tuple	point(double x, double y, double z); // Constructor for a point
 t_tuple	vector(double x, double y, double z); // Constructor for a vector
 
 /*
@@ -54,19 +54,21 @@ int		tuples_equal(t_tuple t1, t_tuple t2);
 
 /*** Tuple utils ***/
 
-t_tuple add_two_tuples(t_tuple t1, t_tuple t2);
-t_tuple substract_tuples(t_tuple t1, t_tuple t2);
+t_tuple	add_two_tuples(t_tuple t1, t_tuple t2);
+t_tuple	substract_tuples(t_tuple t1, t_tuple t2);
 
 /* Negate to change direction oposite for shadows */
-t_tuple negate_tupil(t_tuple negatable);
+t_tuple	negate_tupil(t_tuple negatable);
 
 /* Multiplying a tuple by a scalar/fraction */
-t_tuple multiply_tuple_scalar(t_tuple a, double scalar);
+t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
 
 /*** Tuple divide ***/
-t_tuple divide_tuple_scalar(t_tuple d, double scalar);
+t_tuple	divide_tuple_scalar(t_tuple d, double scalar);
 
-/*** Tuple magnitude normalize ***/
+/*** Tuple magnitude normalize dot***/
 double	magnitude_of_vector(t_tuple v);
+t_tuple	normalize_vector(t_tuple v);
+double	dot_product(t_tuple a, t_tuple b);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   window.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/22 15:28:06 by oostapen          #+#    #+#             */
+/*   Updated: 2025/05/22 15:28:07 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "window.h"
 
 int	init_window(t_vars *vars)
@@ -18,7 +30,6 @@ int	init_window(t_vars *vars)
 	// Register event handlers
 	mlx_key_hook(vars->win, key_hook, vars);
 	mlx_hook(vars->win, 17, 0, close_window, vars);
-
 	return (0);
 }
 
