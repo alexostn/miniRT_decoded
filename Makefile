@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/05/22 21:38:13 by oostapen         ###   ########.fr        #
+#    Updated: 2025/05/26 17:58:26 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/tuple_utils.c \
 			$(SRC_DIR)/tuples/tuple_multiply_divide.c \
 			$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
-			# $(SRC_DIR)/tuples/ticks.c
+			$(SRC_DIR)/phisics/projectile.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -41,7 +41,7 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/tuple_utils.c \
 						$(SRC_DIR)/tuples/tuple_multiply_divide.c \
 						$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
-						# $(SRC_DIR)/tuples/ticks.c
+						$(SRC_DIR)/phisics/projectile.c
 
 # 3. Объектные файлы для модулей, используемых тестами
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
@@ -73,7 +73,7 @@ $(BOOK_TEST_RUNNER_OBJ): $(BOOK_TEST_RUNNER_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Цель для сборки и запуска тестов книги
-booktest: $(BOOK_TEST_EXECUTABLE)
+btest: $(BOOK_TEST_EXECUTABLE)
 	@echo "Running Raytracer Challenge book tests..."
 	./$(BOOK_TEST_EXECUTABLE)
 	@echo "Book tests finished."
@@ -93,4 +93,4 @@ fclean: clean
 	rm -rf $(OBJ_DIR)
 
 re: fclean all
-.PHONY: all clean fclean re booktest
+.PHONY: all clean fclean re btest

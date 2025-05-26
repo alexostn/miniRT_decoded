@@ -1,4 +1,6 @@
 #include "include/tuples.h" // Указывай путь к твоим заголовочным файлам из src/
+#include "include/projectile.h" // projectile.h includes environment.h
+
 // #include "include/canvas.h" // For future chapters
 // #include "include/matrices.h" // For future chapters
 #include <stdio.h> // for printf
@@ -9,14 +11,22 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 #define TEST_ASSERT(condition, message) \
-    do { \
-        printf("  - %-58s: ", message); \
-        if (condition) { \
-            printf(ANSI_COLOR_GREEN "PASS" ANSI_COLOR_RESET "\n"); \
-        } else { \
-            printf(ANSI_COLOR_RED "FAIL" ANSI_COLOR_RESET "\n"); \
-        } \
-    } while (0)
+	do { \
+		printf("%-61s: ", message); \
+		if (condition) { \
+			printf(ANSI_COLOR_GREEN "PASS" ANSI_COLOR_RESET "\n"); \
+		} else { \
+			printf(ANSI_COLOR_RED "FAIL" ANSI_COLOR_RESET "\n"); \
+		} \
+	} while (0)
+
+///TO HELP PRINTING:
+
+void	print_tuple(t_tuple	pt)
+{
+	printf("x=%.5f, y=%.5f, z=%.5f, w=%.5f\n",
+		pt.x, pt.y, pt.z, pt.w);
+}
 
 // --- Test functions from Chapter 1: Tuples, Points, and Vectors ---
 void test_ch1_tuple_is_point(void)
@@ -71,7 +81,7 @@ void test_ch1_add_two_tuples(void)
 	printf("Chapter 1: Adding two tuples\n");
 	t_tuple a1 = tuple(3, -2, 5, 1.0);
 	t_tuple a2 = tuple(-2, 3, 1, 0.0);
-	t_tuple sum = add_two_tuples(a1, a2);
+	t_tuple sum = add(a1, a2);
 	t_tuple expected = tuple(1, 1, 6, 1.0);
 	TEST_ASSERT(tuples_equal(expected, sum), "sum = tuple(1, 1, 6, 1)");
 }
@@ -336,6 +346,125 @@ void	test_ch1_cross_product_of_axes_vectors(void)
 	TEST_ASSERT(tuples_equal(cross_yx, expected_yx), "cross(y, x) = -z_vector(0, 0, -1)");
 }
 
+/// test_projectile.c my tests for "Putting it together" and tick() function:
+void	test_ch1_test_normalize_velocity(void)
+{
+	printf("Chapter 1: My own test: Normalize_velocity\n");
+	printf("vector(1, 3, 0)");
+	t_tuple	v = vector(1, 3, 0);
+	t_tuple	norm = normalize_vector(v);
+	double	magnitude = magnitude_of_vector(norm);
+	double expected_magnitude = 1.0;
+	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), " = 1.0");
+	printf("will be given as 2nd parameter to projectile_create\n");
+}
+
+void test_ch1_test_tick_updates_position_and_velocity(void) 
+{
+	// Инициализация снаряда с НОРМАЛИЗОВАННОЙ скоростью
+	t_projectile p = projectile_create(point(0, 1, 0), vector(1, 1, 0));
+	t_environment env = {vector(0, -0.1, 0), vector(-0.01, 0, 0)};
+
+	p = tick(env, p);
+
+	// Ожидаемые значения после первого тика:
+	// Позиция: (0 + 0.707, 1 + 0.707, 0) ≈ (0.707, 1.707, 0)
+	// Скорость: (0.707 - 0.01, 0.707 - 0.1, 0) ≈ (0.697, 0.607, 0)
+
+	TEST_ASSERT(tuples_equal(p.position, point(0.70711, 1.70711, 0)), 
+				"Position after 1st tick should be (0.707, 1.707, 0)");
+
+	TEST_ASSERT(tuples_equal(p.velocity, vector(0.69711, 0.60711, 0)), 
+				"Velocity after 1st tick should be (0.697, 0.607, 0)");
+	printf("p.position :");
+	print_tuple(p.position);
+	printf("p.velocity :");
+	print_tuple(p.velocity);
+	printf("\n");
+}
+
+void	test_ch1_multiple_ticks(void) 
+{
+	t_projectile	p = projectile_create(point(0, 1, 0), vector(1, 1, 0));
+	t_environment	env = {vector(0, -0.1, 0), vector(-0.01, 0, 0)};
+
+	// Array of expected values for the first 4 ticks (0-3)
+	t_tuple expected_pos[] = {
+		point(0.00000, 1.00000, 0),    // Tick 0 (initial state)
+		point(0.70711, 1.70711, 0),    // Tick 1
+		point(1.40422, 2.31422, 0),    // Tick 2
+		point(2.09133, 2.82133, 0)     // Tick 3
+	};
+
+	t_tuple expected_vel[] = {
+		vector(0.70711, 0.70711, 0),   // Tick 0 (initial velocity)
+		vector(0.69711, 0.60711, 0),   // Tick 1
+		vector(0.68711, 0.50711, 0),   // Tick 2
+		vector(0.67711, 0.40711, 0)    // Tick 3
+	};
+
+	// Check initial state (tick 0)
+	printf("=== Initial state (tick 0) ===\n");
+	printf("Given position:		"); print_tuple(p.position);
+	printf("Given velocity:		"); print_tuple(vector(1, 1, 0));
+	printf("Normalized velocity:	"); print_tuple(p.velocity);
+	TEST_ASSERT(tuples_equal(p.position, expected_pos[0]), "Initial position");
+	TEST_ASSERT(tuples_equal(p.velocity, expected_vel[0]), "Initial velocity");
+
+	// Apply tick() sequentially and verify results
+	for (int i = 1; i <= 3; i++) 
+	{
+		p = tick(env, p);
+		
+		printf("\n=== After tick %d ===\n", i);
+		printf("Expected position: "); print_tuple(expected_pos[i]);
+		// printf("Actual position:   "); print_tuple(p.position);
+		printf("Expected velocity: "); print_tuple(expected_vel[i]);
+		// printf("Actual velocity:   "); print_tuple(p.velocity);
+		
+		TEST_ASSERT(tuples_equal(p.position, expected_pos[i]), 
+					"Position after tick");
+		TEST_ASSERT(tuples_equal(p.velocity, expected_vel[i]), 
+					"Velocity after tick");
+	}
+}
+
+
+void test_ch1_projectile_impact(void) 
+{
+	t_projectile p = projectile_create(point(0, 1, 0), vector(1, 1, 0));
+	t_environment env = {vector(0, -0.1, 0), vector(-0.01, 0, 0)};
+	int ticks = 0;
+	int max_ticks = 50;
+
+	printf("Launching projectile...\n");
+	while (p.position.y > 0 && ticks < max_ticks) 
+	{
+		p = tick(env, p);
+		ticks++;
+		printf("Tick %2d:	X = %.5f,	Y = %.5f,	Z = %.5f\n", ticks, p.position.x, p.position.y, p.position.z);
+	}
+
+	// Check Y ≤ 0
+	TEST_ASSERT(p.position.y <= 0.0 + EPSILON, 
+				"Projectile Y > 0 (actual Y)");
+
+	// Check number of ticks (≈17)
+	int expected_ticks = 17;
+	TEST_ASSERT(floats_equal(ticks, expected_ticks), "Expected ticks:	");
+	TEST_ASSERT(floats_equal(ticks, expected_ticks), "are equal");
+	printf("= %d", expected_ticks);
+
+	// Additional info on error
+	if (!floats_equal(ticks, expected_ticks))
+	{
+		printf("Final position: ");
+		print_tuple(p.position);
+		printf("Velocity at impact: ");
+		print_tuple(p.velocity);
+	}
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
 
@@ -357,7 +486,7 @@ int main(void)
 	test_ch1_multiplying_a_tuple_by_a_scalar();
 	test_ch1_multiplying_a_tuple_by_a_fraction();
 	test_ch1_dividing_a_tuple_by_a_scalar();
-	/*today 22May:*/
+	/*22May:*/
 	test_ch1_magnitude_of_unit_vector_x();
 	test_ch1_magnitude_of_unit_vector_y();
 	test_ch1_magnitude_of_unit_vector_z();
@@ -372,6 +501,13 @@ int main(void)
 	
 	test_ch1_cross_product_of_two_vectors();
 	test_ch1_cross_product_of_axes_vectors();
+	/*26May :*/
+	test_ch1_test_normalize_velocity();
+	test_ch1_test_tick_updates_position_and_velocity();
+	test_ch1_multiple_ticks();
+	test_ch1_projectile_impact();
+
+
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();

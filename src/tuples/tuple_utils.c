@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:41:31 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 15:21:35 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:33:25 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	tuples_equal(t_tuple t1, t_tuple t2)
 }
 
 // tsum.w = t1.w + t2.w;//TODO: can not 2 points
-t_tuple	add_two_tuples(t_tuple t1, t_tuple t2)
+t_tuple	add(t_tuple t1, t_tuple t2)
 {
 	t_tuple	tsum;
 
