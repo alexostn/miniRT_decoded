@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/26 14:32:05 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:11:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_tuple
 t_tuple	tuple(double x, double y, double z, double w);
 t_tuple	point(double x, double y, double z); // Constructor for a point
 t_tuple	vector(double x, double y, double z); // Constructor for a vector
+t_tuple	color(double x, double y, double z); //Constructor for a color
 
 /*
 ** Predicate functions (checks)

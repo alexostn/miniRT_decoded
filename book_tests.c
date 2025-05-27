@@ -29,7 +29,7 @@ void	print_tuple(t_tuple	pt)
 }
 
 // --- Test functions from Chapter 1: Tuples, Points, and Vectors ---
-void test_ch1_tuple_is_point(void)
+void	test_ch1_tuple_is_point(void)
 {
 	printf("Chapter 1: A tuple with w=1.0 is a point\n");
 	t_tuple a = tuple(4.3, -4.2, 3.1, 1.0); // It is assumed that tuple() is implemented
@@ -429,7 +429,6 @@ void	test_ch1_multiple_ticks(void)
 	}
 }
 
-
 void test_ch1_projectile_impact(void) 
 {
 	t_projectile p = projectile_create(point(0, 1, 0), vector(1, 1, 0));
@@ -453,7 +452,7 @@ void test_ch1_projectile_impact(void)
 	int expected_ticks = 17;
 	TEST_ASSERT(floats_equal(ticks, expected_ticks), "Expected ticks:	");
 	TEST_ASSERT(floats_equal(ticks, expected_ticks), "are equal");
-	printf("= %d", expected_ticks);
+	printf("= %d\n\n", expected_ticks);
 
 	// Additional info on error
 	if (!floats_equal(ticks, expected_ticks))
@@ -463,6 +462,36 @@ void test_ch1_projectile_impact(void)
 		printf("Velocity at impact: ");
 		print_tuple(p.velocity);
 	}
+}
+
+//TODO ON CANVAS:
+// " Then, run tick repeatedly until the projectile’s y position is less than or equal
+// to 0. Report the projectile’s position after each tick, and the number of ticks
+// it takes for the projectile to hit the ground. Try multiplying the projectile’s
+// initial velocity by larger and larger numbers to see how much farther the
+// projectile goes! "
+
+// --- Test functions from Chapter 2: colors, canvas ---
+
+// Scenario: Colors are (red, green, blue) tuples
+// Given c ← color(-0.5, 0.4, 1.7)
+// Then c.red = -0.5
+// And c.green = 0.4
+// And c.blue = 1.7
+void	test_ch2_rgb_tuple_direct(void)
+{
+	printf("Chapter 2: color(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
+	t_tuple color = vector(-0.5, 0.4, 1.7);//color = vector
+	TEST_ASSERT(floats_equal(color.x, -0.5), "RED color.x = -0.5");
+	TEST_ASSERT(floats_equal(color.y, 0.4), "GREEN color.y = 0.4");
+	TEST_ASSERT(floats_equal(color.z, 1.7), "BLUE color.z = 1.7");
+	printf("\n");
+	TEST_ASSERT(floats_equal(color.w, 0.0), "color.w = 0.0");
+	TEST_ASSERT(is_point(color) == 0, "color is not a point");
+	TEST_ASSERT(is_vector(color) == 1, "color a is a vector");
+	printf("\n");
+	print_tuple(color);
+	printf("\n");
 }
 
 // --- Add test functions for subsequent chapters here ---
@@ -506,7 +535,8 @@ int main(void)
 	test_ch1_test_tick_updates_position_and_velocity();
 	test_ch1_multiple_ticks();
 	test_ch1_projectile_impact();
-
+	/*27May :*/
+	test_ch2_rgb_tuple_direct();
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
