@@ -494,6 +494,63 @@ void	test_ch2_rgb_tuple_direct(void)
 	printf("\n");
 }
 
+// Scenario: Adding colors
+// Given c1 ← color(0.9, 0.6, 0.75)
+// And c2 ← color(0.7, 0.1, 0.25)
+// Then c1 + c2 = color(1.6, 0.7, 1.0)
+// test_ch1_add_two_tuples is the same
+void test_ch2_add_colors(void)
+{
+	printf("Chapter 2: Adding two 'colors' (I was not renaming from 'vectors')\n");
+	t_tuple c1 = vector(0.9, 0.6, 0.75);
+	t_tuple c2 = vector(0.7, 0.1, 0.25);
+	t_tuple sum = add(c1, c2);
+	t_tuple expected = vector(1.6, 0.7, 1.0);
+	TEST_ASSERT(tuples_equal(expected, sum), "sum = color(1.6, 0.7, 1.0)");
+}
+
+// Scenario: Subtracting colors
+// Given c1 ← color(0.9, 0.6, 0.75)
+// And c2 ← color(0.7, 0.1, 0.25)
+// Then c1 - c2 = color(0.2, 0.5, 0.5)
+// same as test_ch1_substract_v_from_v()
+void test_ch2_substract_colors(void)
+{
+	printf("Chapter 2: Substracting two colors(c1 - c2) 'colors' (I was not renaming from 'vectors')\n");
+	t_tuple c1 = vector(0.9, 0.6, 0.75);
+	t_tuple c2 = vector(0.7, 0.1, 0.25);
+	t_tuple diff = substract_tuples(c1, c2);
+	t_tuple expected_color = vector(0.2, 0.5, 0.5);
+	TEST_ASSERT(tuples_equal(expected_color, diff), "diff = color(0.2, 0.5, 0.5)");
+}
+
+// Scenario: Multiplying a color by a scalar
+// Given c ← color(0.2, 0.3, 0.4)
+// Then c * 2 = color(0.4, 0.6, 0.8)
+void test_ch2_multiplying_a_color_by_a_scalar(void)
+{
+	printf("Chapter 2: Multiplying a color by a scalar 'colors' (I was not renaming from 'vectors')\n");
+	t_tuple	c = vector(0.2, 0.3, 0.4);
+	double	scalar = 2;
+	t_tuple	tproduct = multiply_tuple_scalar(c, scalar);
+	t_tuple	expected_color = vector(0.4, 0.6, 0.8);
+	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = color(0.4, 0.6, 0.8)");
+}
+// Hadamard product (or Schur product)
+// Scenario: Multiplying colors
+// Given c1 ← color(1, 0.2, 0.4)
+// And c2 ← color(0.9, 1, 0.1)
+// Then c1 * c2 = color(0.9, 0.2, 0.04)
+void test_ch2_multiplying_two_colors(void)
+{
+	printf("Chapter 2: Multiplying two 'colors' (I was not renaming from 'vectors')\n");
+	t_tuple	c1 = vector(1, 0.2, 0.4);
+	t_tuple	c2 = vector(0.9, 1, 0.1);
+	t_tuple	tproduct = multiply_tuples(c1, c2);
+	t_tuple	expected_color = vector(0.9, 0.2, 0.04);
+	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = color(0.9, 0.2, 0.04)");
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
 
@@ -537,6 +594,11 @@ int main(void)
 	test_ch1_projectile_impact();
 	/*27May :*/
 	test_ch2_rgb_tuple_direct();
+	/*28May :*/
+	test_ch2_add_colors();
+	test_ch2_substract_colors();
+	test_ch2_multiplying_a_color_by_a_scalar();
+	test_ch2_multiplying_two_colors();
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here

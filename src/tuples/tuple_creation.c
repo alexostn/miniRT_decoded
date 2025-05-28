@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 17:11:14 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/27 16:26:11 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:14:06 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ t_tuple	vector(double x, double y, double z)
 
 // Colors are vectors (w = 0.0)
 // In code: color.x is r, color.y is g, color.z is b
-t_tuple	color(double x, double y, double z)
-{
-	return (tuple(x, y, z, 0.0));
-}
+
+// in colors.c is the same:
+// t_tuple	color(double x, double y, double z)
+// {
+// 	return (tuple(x, y, z, 0.0));
+// }

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:22:57 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/27 15:55:52 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:21:34 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,7 @@
 // for book tests where we receive data in range: 0 - 1
 t_tuple	color_d(double r, double g, double b)
 {
-	t_tuple	direct_color_val;
-
-	direct_color_val.x = r;
-	direct_color_val.y = g;
-	direct_color_val.z = b;
-	direct_color_val.w = 0.0;
-	return (direct_color_val);
+	return (tuple(r, g, b, 0.0));
 }
 
 // TODO:

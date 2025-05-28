@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:36:19 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 15:37:34 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:39:09 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_vec3
 // -----------------------
 // Forward declarations
 // -----------------------
+// NB!: do one general structure for all objects 
+// empty fields will stay 0 f.ex.:
 typedef struct s_sphere		t_sphere;
 typedef struct s_plane		t_plane;
 typedef struct s_cylinder	t_cylinder;

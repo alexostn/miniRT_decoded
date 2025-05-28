@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:35:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 15:38:43 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:53:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define WINDOW_H
 
 # include "mlx.h"
-# include "minirt.h"  // Main definitions
-# include <stdlib.h> // Added for free() and exit()
+# include "minirt.h"  // Main definitions includes:
+// # include <stdlib.h> // Added for free() and exit()
+# include "image.h"
 
 typedef struct s_vars
 {

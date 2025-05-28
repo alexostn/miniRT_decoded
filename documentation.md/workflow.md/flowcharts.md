@@ -1,12 +1,26 @@
-# miniRT
-includes/
-  tuples.h       // Основные структуры (точки/векторы)
-  environment.h  // t_environment и функции среды
-  projectile.h   // t_projectile и функции снаряда
-srcs/
-  physics/
-    projectile.c  // Реализация tick(), projectile_create()
-    environment.c // Реализация environment_create()
+miniRT/
+├── documentation.md/
+├── Makefile
+├── includes/
+│	├── colors.h
+│	├── environment.h
+│	├── minirt.h 	 *?
+│	├── objects.h	 *?
+│	├── projectile.h
+│	├── rt_parser.h	 *?
+│	├── tuples.h
+│	└── window.h
+├── mls-linux/ (*system_library)
+├── src/
+│	├── main.c
+│	├── phisics/
+│	├── tuples/
+│	├── init.c
+│	└──  main.c
+├── obj/
+├── book_tests.c (*to delete after tests, NB!: there might be usefull f()'s to transfer)
+├── miniRT (*to delete after: compiled by "make" or "re make")
+└──  run_book_tests(*to delete after tests: compiled by "make btest" or "make re btest")
 
 
 OLD TO REDACT:
