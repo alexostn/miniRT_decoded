@@ -5,3 +5,4 @@ t_color	color_d(double r, double g, double b)
 {
 	return (tuple(r, g, b, 0.0));
 }
+

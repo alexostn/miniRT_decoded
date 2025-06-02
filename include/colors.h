@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:49:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/28 20:17:18 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/02 19:03:22 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define COLORS_H
 
 # include "tuples.h"
+// Means t_color = t_tuple
+typedef t_tuple t_color;
 
 // Creates a color in the range 0.0–1.0 (for book tests)
 t_tuple	color_d(double r, double g, double b);

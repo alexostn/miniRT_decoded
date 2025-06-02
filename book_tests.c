@@ -1,5 +1,6 @@
 #include "include/tuples.h" // Указывай путь к твоим заголовочным файлам из src/
 #include "include/projectile.h" // projectile.h includes environment.h
+#include "include/colors.h"
 
 // #include "include/canvas.h" // For future chapters
 // #include "include/matrices.h" // For future chapters
@@ -26,6 +27,12 @@ void	print_tuple(t_tuple	pt)
 {
 	printf("x=%.5f, y=%.5f, z=%.5f, w=%.5f\n",
 		pt.x, pt.y, pt.z, pt.w);
+}
+
+void	print_color(t_color	pc)
+{
+	printf("r=%.5f, g=%.5f, b=%.5f, w=%.5f\n",
+		pc.x, pc.y, pc.z, pc.w);
 }
 
 // --- Test functions from Chapter 1: Tuples, Points, and Vectors ---
@@ -478,21 +485,38 @@ void test_ch1_projectile_impact(void)
 // Then c.red = -0.5
 // And c.green = 0.4
 // And c.blue = 1.7
+// void	test_ch2_rgb_tuple_direct(void)
+// {
+// 	printf("Chapter 2: color(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
+// 	t_tuple color = color(-0.5, 0.4, 1.7);//color = vector
+// 	TEST_ASSERT(floats_equal(color.x, -0.5), "RED color.x = -0.5");
+// 	TEST_ASSERT(floats_equal(color.y, 0.4), "GREEN color.y = 0.4");
+// 	TEST_ASSERT(floats_equal(color.z, 1.7), "BLUE color.z = 1.7");
+// 	printf("\n");
+// 	TEST_ASSERT(floats_equal(color.w, 0.0), "color.w = 0.0");
+// 	TEST_ASSERT(is_point(color) == 0, "color is not a point");
+// 	TEST_ASSERT(is_vector(color) == 1, "color a is a vector");
+// 	printf("\n");
+// 	print_tuple(color);
+// 	printf("\n");
+// }
+
 void	test_ch2_rgb_tuple_direct(void)
 {
 	printf("Chapter 2: color(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
-	t_tuple color = vector(-0.5, 0.4, 1.7);//color = vector
-	TEST_ASSERT(floats_equal(color.x, -0.5), "RED color.x = -0.5");
-	TEST_ASSERT(floats_equal(color.y, 0.4), "GREEN color.y = 0.4");
-	TEST_ASSERT(floats_equal(color.z, 1.7), "BLUE color.z = 1.7");
+	t_tuple my_color_value = color(-0.5, 0.4, 1.7); // <--- ИЗМЕНЕНИЕ ЗДЕСЬ
+	TEST_ASSERT(floats_equal(my_color_value.x, -0.5), "RED color.x = -0.5");
+	TEST_ASSERT(floats_equal(my_color_value.y, 0.4), "GREEN color.y = 0.4");
+	TEST_ASSERT(floats_equal(my_color_value.z, 1.7), "BLUE color.z = 1.7");
 	printf("\n");
-	TEST_ASSERT(floats_equal(color.w, 0.0), "color.w = 0.0");
-	TEST_ASSERT(is_point(color) == 0, "color is not a point");
-	TEST_ASSERT(is_vector(color) == 1, "color a is a vector");
+	TEST_ASSERT(floats_equal(my_color_value.w, 0.0), "color.w = 0.0");
+	TEST_ASSERT(is_point(my_color_value) == 0, "color is not a point");
+	TEST_ASSERT(is_vector(my_color_value) == 1, "color a is a vector");
 	printf("\n");
-	print_tuple(color);
+	print_tuple(my_color_value);
 	printf("\n");
 }
+
 
 // Scenario: Adding colors
 // Given c1 ← color(0.9, 0.6, 0.75)
@@ -502,8 +526,8 @@ void	test_ch2_rgb_tuple_direct(void)
 void test_ch2_add_colors(void)
 {
 	printf("Chapter 2: Adding two 'colors' (I was not renaming from 'vectors')\n");
-	t_tuple c1 = vector(0.9, 0.6, 0.75);
-	t_tuple c2 = vector(0.7, 0.1, 0.25);
+	t_tuple c1 = color(0.9, 0.6, 0.75);
+	t_tuple c2 = color(0.7, 0.1, 0.25);
 	t_tuple sum = add(c1, c2);
 	t_tuple expected = vector(1.6, 0.7, 1.0);
 	TEST_ASSERT(tuples_equal(expected, sum), "sum = color(1.6, 0.7, 1.0)");
@@ -599,6 +623,7 @@ int main(void)
 	test_ch2_substract_colors();
 	test_ch2_multiplying_a_color_by_a_scalar();
 	test_ch2_multiplying_two_colors();
+	
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
