@@ -6,22 +6,23 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:36:19 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/28 17:39:09 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:45:01 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 # include <stdlib.h> // For NULL macro
+# include "colors.h"
 // ----------------------
 // Basic type definitions
 // ----------------------
-typedef struct s_color
-{
-	double	r;
-	double	g;
-	double	b;
-}	t_color;
+// typedef struct s_color
+// {
+// 	double	r;
+// 	double	g;
+// 	double	b;
+// }	t_color;
 
 typedef struct s_point3
 {

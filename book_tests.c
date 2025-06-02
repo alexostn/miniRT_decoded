@@ -1,7 +1,8 @@
 #include "include/tuples.h" // Указывай путь к твоим заголовочным файлам из src/
 #include "include/projectile.h" // projectile.h includes environment.h
 #include "include/colors.h"
-
+#include "include/window.h"
+#include "include/image.h"
 // #include "include/canvas.h" // For future chapters
 // #include "include/matrices.h" // For future chapters
 #include <stdio.h> // for printf
@@ -504,7 +505,7 @@ void test_ch1_projectile_impact(void)
 void	test_ch2_rgb_tuple_direct(void)
 {
 	printf("Chapter 2: color(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
-	t_tuple my_color_value = color(-0.5, 0.4, 1.7); // <--- ИЗМЕНЕНИЕ ЗДЕСЬ
+	t_tuple my_color_value = color(-0.5, 0.4, 1.7);
 	TEST_ASSERT(floats_equal(my_color_value.x, -0.5), "RED color.x = -0.5");
 	TEST_ASSERT(floats_equal(my_color_value.y, 0.4), "GREEN color.y = 0.4");
 	TEST_ASSERT(floats_equal(my_color_value.z, 1.7), "BLUE color.z = 1.7");
@@ -525,11 +526,11 @@ void	test_ch2_rgb_tuple_direct(void)
 // test_ch1_add_two_tuples is the same
 void test_ch2_add_colors(void)
 {
-	printf("Chapter 2: Adding two 'colors' (I was not renaming from 'vectors')\n");
-	t_tuple c1 = color(0.9, 0.6, 0.75);
-	t_tuple c2 = color(0.7, 0.1, 0.25);
+	printf("Chapter 2: Adding two 'colors' = 'vectors'\n");
+	t_tuple c1 = color(0.9, 0.6, 0.75);// = vector
+	t_tuple c2 = color(0.7, 0.1, 0.25);// = vector
 	t_tuple sum = add(c1, c2);
-	t_tuple expected = vector(1.6, 0.7, 1.0);
+	t_tuple expected = vector(1.6, 0.7, 1.0);// = vector
 	TEST_ASSERT(tuples_equal(expected, sum), "sum = color(1.6, 0.7, 1.0)");
 }
 
@@ -540,11 +541,11 @@ void test_ch2_add_colors(void)
 // same as test_ch1_substract_v_from_v()
 void test_ch2_substract_colors(void)
 {
-	printf("Chapter 2: Substracting two colors(c1 - c2) 'colors' (I was not renaming from 'vectors')\n");
-	t_tuple c1 = vector(0.9, 0.6, 0.75);
-	t_tuple c2 = vector(0.7, 0.1, 0.25);
+	printf("Chapter 2: Substracting two colors(c1 - c2) 'colors' = 'vectors'\n");
+	t_tuple c1 = vector(0.9, 0.6, 0.75);//left to emphasize 
+	t_tuple c2 = color(0.7, 0.1, 0.25);
 	t_tuple diff = substract_tuples(c1, c2);
-	t_tuple expected_color = vector(0.2, 0.5, 0.5);
+	t_tuple expected_color = color(0.2, 0.5, 0.5);// = vector
 	TEST_ASSERT(tuples_equal(expected_color, diff), "diff = color(0.2, 0.5, 0.5)");
 }
 
@@ -553,11 +554,11 @@ void test_ch2_substract_colors(void)
 // Then c * 2 = color(0.4, 0.6, 0.8)
 void test_ch2_multiplying_a_color_by_a_scalar(void)
 {
-	printf("Chapter 2: Multiplying a color by a scalar 'colors' (I was not renaming from 'vectors')\n");
-	t_tuple	c = vector(0.2, 0.3, 0.4);
+	printf("Chapter 2: Multiplying a color by a scalar 'colors' = 'vectors'\n");
+	t_tuple	c = vector(0.2, 0.3, 0.4);//left to emphasize 
 	double	scalar = 2;
 	t_tuple	tproduct = multiply_tuple_scalar(c, scalar);
-	t_tuple	expected_color = vector(0.4, 0.6, 0.8);
+	t_tuple	expected_color = color(0.4, 0.6, 0.8);// = vector
 	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = color(0.4, 0.6, 0.8)");
 }
 // Hadamard product (or Schur product)
@@ -567,12 +568,52 @@ void test_ch2_multiplying_a_color_by_a_scalar(void)
 // Then c1 * c2 = color(0.9, 0.2, 0.04)
 void test_ch2_multiplying_two_colors(void)
 {
-	printf("Chapter 2: Multiplying two 'colors' (I was not renaming from 'vectors')\n");
-	t_tuple	c1 = vector(1, 0.2, 0.4);
-	t_tuple	c2 = vector(0.9, 1, 0.1);
+	printf("Chapter 2: Multiplying two 'colors' = 'vectors')\n");
+	t_tuple	c1 = color(1, 0.2, 0.4); //color = vector
+	t_tuple	c2 = vector(0.9, 1, 0.1); //left to emphasize 
 	t_tuple	tproduct = multiply_tuples(c1, c2);
-	t_tuple	expected_color = vector(0.9, 0.2, 0.04);
+	t_tuple	expected_color = color(0.9, 0.2, 0.04);
 	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = color(0.9, 0.2, 0.04)");
+}
+
+// --- Chapter 2: canvas: ---
+
+// Scenario: Creating a canvas ("image" for mlx compatibility)
+// Given c ← canvas(10, 20)
+// Then c.width = 10
+// And c.height = 20
+// And every pixel of c is color(0, 0, 0)
+void test_ch2_creating_an_image(void)
+{
+	printf("Chapter 2: creating a 'canvas' = 'image')\n");
+	void	*mlx = mlx_init();
+	if (!mlx)
+	{
+		printf("mlx_init() failed!\n");
+		return ;
+	}
+	t_image	*canvas = image_create(mlx, 10, 20);
+
+		TEST_ASSERT(canvas, "canvas created");
+		TEST_ASSERT(canvas->width == 10, "width = 10");
+		TEST_ASSERT(canvas->height == 20, "height = 20");
+	int x, y;
+	int all_black = 1;
+	for (y = 0; y < canvas->height && all_black; ++y)
+	{
+		for (x = 0; x < canvas->width; ++x)
+		{
+			unsigned int *pixel = (unsigned int *)(canvas->addr
+				+ y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
+			if (*pixel != 0x000000)
+			{
+				all_black = 0;
+				break;
+			}
+		}
+	}
+	TEST_ASSERT(all_black, "all pixels are black (0x000000)");
+	image_destroy(canvas);
 }
 
 // --- Add test functions for subsequent chapters here ---
@@ -623,7 +664,8 @@ int main(void)
 	test_ch2_substract_colors();
 	test_ch2_multiplying_a_color_by_a_scalar();
 	test_ch2_multiplying_two_colors();
-	
+	/*2June :*/
+	test_ch2_creating_an_image();
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here

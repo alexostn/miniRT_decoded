@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/02 18:53:56 by oostapen         ###   ########.fr        #
+#    Updated: 2025/06/02 22:02:50 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ OBJ_DIR = obj
 
 SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/window.c \
+			$(SRC_DIR)/image.c \
 			$(SRC_DIR)/init.c \
 			$(SRC_DIR)/tuples/tuple_creation.c \
 			$(SRC_DIR)/tuples/tuple_predicates.c \
@@ -38,6 +39,8 @@ BOOK_TEST_RUNNER_SRC = book_tests.c
 
 # 2. Исходные файлы из твоего проекта src/, которые нужны для тестов книги
 BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
+						$(SRC_DIR)/window.c \
+						$(SRC_DIR)/image.c \
 						$(SRC_DIR)/tuples/tuple_predicates.c \
 						$(SRC_DIR)/tuples/tuple_utils.c \
 						$(SRC_DIR)/tuples/tuple_multiply_divide.c \
@@ -68,6 +71,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+
+
 # >>> BOOK TESTS SECTION START (RULES) >>>
 # Правило для компиляции book_tests.c в obj/book_tests.o
 $(BOOK_TEST_RUNNER_OBJ): $(BOOK_TEST_RUNNER_SRC)
@@ -81,8 +86,13 @@ btest: $(BOOK_TEST_EXECUTABLE)
 	@echo "Book tests finished."
 
 # Сборка исполняемого файла для тестов книги
-$(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ -lm # $^ включает все зависимости
+# $(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS)
+# 	$(CC) $(CFLAGS) $^ -o $@ -lm # $^ включает все зависимости
+
+$(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(MLX_DIR)/libmlx.a
+	$(CC) $(CFLAGS) $^ $(MLX_LIB) -lm -o $@
+#  -lm включает все зависимости продублирован уже здесь есть:
+# MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 clean:
 	rm -f $(OBJS)
