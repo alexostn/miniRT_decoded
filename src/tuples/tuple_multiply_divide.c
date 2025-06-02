@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:10:37 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/28 17:14:11 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:10:35 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ t_tuple	divide_tuple_scalar(t_tuple d, double scalar)
 	return (tquotient);
 }
 
-/*for colors it called: Hadamard product (or Schur product)*/
+/*for colors it called: Hadamard product (or Schur product)
+!NB: Take care of w = 0 for colors*/
 t_tuple	multiply_tuples(t_tuple a, t_tuple b)
 {
 	t_tuple	tproduct;

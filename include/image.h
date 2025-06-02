@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:40:08 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/28 20:50:30 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:25:56 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,25 @@
 # include "tuples.h"
 
 /*image is canvas, coherent with mlx:*/
-typedef struct	s_image
+typedef struct s_image
 {
-	void	*mlx_ptr;       // Pointer to the mlx instance (does not own it) pointer duplicates t_vars ptr
-	void	*img_ptr;       // Pointer to the mlx image
-	char	*addr;          // Address of the pixel buffer
-	int		width;          // Image width in pixels
-	int		height;         // Image height in pixels
-	int		bits_per_pixel; // Color depth
-	int		line_length;    // Line length in bytes
-	int		endian;         // Byte order
+// Pointer to the mlx instance (does not own it) pointer duplicates t_vars ptr:
+	void	*mlx_ptr;		// Pointer to the mlx instance
+	void	*img_ptr;		// Pointer to the mlx image
+	char	*addr;			// Address of the pixel buffer
+	int		width;			// Image width in pixels
+	int		height;			// Image height in pixels
+	int		bits_per_pixel;	// Color depth
+	int		line_length;	// Line length in bytes
+	int		endian;			// Byte order
 }	t_image;
 
 // Functions for working with an image
 // NB! : hight might be not needed, t_image *ptr = HEAP(FREE IT)
 // mlx_ptr = t_vars.mlx
 t_image	*image_create(void *mlx_ptr, int width, int height);
-void	image_destroy(t_image *image); // mlx_ptr is needed for mlx_destroy_image
+// mlx_ptr is needed for mlx_destroy_image:
+void	image_destroy(t_image *image);
 void	image_put_pixel(t_image *image, int x, int y, int color);
 
 #endif

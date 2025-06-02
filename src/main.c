@@ -6,17 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 22:57:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 15:25:34 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:32:19 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "window.h"
-
-int	main(void)
-{
-	t_vars	vars;
-	t_scene	scene;
-
+/*
 	init_scene(&scene); // Initializing the scene structure
 	vars.scene = &scene; // Linking the scene to the window
 	
@@ -30,5 +25,17 @@ int	main(void)
 
 	// This code will never execute under normal circumstances,
 	// as program exits via exit() in handlers
+	return (0);
+*/
+int	main(void)
+{
+	t_vars	vars;
+	t_scene	scene;
+
+	init_scene(&scene);
+	vars.scene = &scene;
+	if (init_window(&vars))
+		return (1);
+	mlx_loop(vars.mlx);
 	return (0);
 }

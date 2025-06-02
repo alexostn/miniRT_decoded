@@ -22,3 +22,36 @@ can make parts of your scene too bright or dark in the final image "
 //TODO: think about linked list for multiple:
 t_tuple blend_colors(t_tuple c1, t_tuple c2); // Смешивание цветов
 t_tuple color_from_hex(const char *hex);      // Цвет из HEX-строки
+
+***************************************************
+обавьте функцию для поэлементного умножения (Hadamard product), если её ещё нет, потому что она часто используется именно для цвета и не совпадает с обычным dot/cross product:
+
+c
+t_tuple	hadamard(t_tuple a, t_tuple b)
+{
+    return (vector(a.x * b.x, a.y * b.y, a.z * b.z));
+}
+
+<!-- То же что и : -->
+t_tuple	hadamard_product(t_tuple a, t_tuple b)
+{
+    t_tuple tproduct;
+
+    tproduct.x = a.x * b.x;
+    tproduct.y = a.y * b.y;
+    tproduct.z = a.z * b.z;
+    tproduct.w = 0.0;
+    return (tproduct);
+}
+<!-- 
+Для финального вывода в MLX — функция, переводящая tuple (color) в int RGB: -->
+
+c
+int	tuple_to_rgb_int(t_tuple c)
+{
+    int	r = clamp(c.x * 255.0, 0, 255);
+    int	g = clamp(c.y * 255.0, 0, 255);
+    int	b = clamp(c.z * 255.0, 0, 255);
+    return ((r << 16) | (g << 8) | b);
+}
+<!-- Где clamp — простая функция ограничения значения -->
