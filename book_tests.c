@@ -613,8 +613,14 @@ void test_ch2_creating_an_image(void)
 		}
 	}
 	TEST_ASSERT(all_black, "all pixels are black (0x000000)");
-	image_destroy(canvas);
+	image_destroy(canvas);		// image_destroy only releases the image resources (img_ptr) and the t_image structure
+	// MLX cleanup for Linux
+	#ifdef __linux__
+	mlx_destroy_display(mlx);  // Destroys X11 structures
+	free(mlx);                 // Frees the mlx pointer
+	#endif
 }
+
 
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
@@ -666,6 +672,8 @@ int main(void)
 	test_ch2_multiplying_two_colors();
 	/*2June :*/
 	test_ch2_creating_an_image();
+	/*4June :*/
+	
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here

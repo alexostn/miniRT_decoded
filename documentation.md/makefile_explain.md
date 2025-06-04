@@ -1,3 +1,9 @@
+make btest    # Build tests
+make re btest # Full rebuild of tests (clean and build)
+
+make vbtest    # Build tests + run under Valgrind
+make re vbtest # Full rebuild of tests + Valgrind check
+
 Makefile
 Переменные:
 
@@ -75,3 +81,32 @@ $(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS): Ли�
 Из правил clean и fclean удалить команды, которые чистят объектные файлы тестов и исполняемый файл тестов (например, rm -f $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) и rm -f $(BOOK_TEST_EXECUTABLE)).
 
 Важно: Исходные файлы, которые были перечислены в BOOK_TEST_MODULE_SRCS (например, tuple_creation.c, tuple_predicates.c и т.д.), но также остались в SRCS, удалять не нужно, так как они являются частью вашего основного проекта miniRT. После удаления тестовой инфраструктуры они просто перестанут линковаться с тестовым исполняемым файлом (которого больше не будет), но продолжат корректно собираться и линковаться с miniRT.
+
+1. Удаление valgrind.log
+Добавлено удаление лога Valgrind в цели clean или fclean:
+fclean: clean
+	rm -f $(NAME)
+	rm -f $(BOOK_TEST_EXECUTABLE)
+	rm -f valgrind.log  # <-- удаление лога Valgrind
+	rm -rf $(OBJ_DIR)
+
+
+Запуск тестов с Valgrind и подавлением ложных срабатываний через suppression-файл (mlx.supp),
+цель в Makefile:
+...
+--suppressions=mlx.supp ./$(BOOK_TEST_EXECUTABLE)
+
+vbtest: $(BOOK_TEST_EXECUTABLE)
+ 	@echo "Running Raytracer Challenge book tests with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=mlx.supp --log-file=valgrind.log ./$(BOOK_TEST_EXECUTABLE)
+	@echo "Valgrind tests finished. See valgrind.log for details."
+
+Подавление ложных срабатываний (--suppressions=mlx.supp)
+Детальную проверку утечек (--leak-check=full)
+Вывод всех видов утечек (--show-leak-kinds=all)
+Отслеживание неинициализированных значений (--track-origins=yes)
+Сохранение отчёта в файл (--log-file=valgrind.log)
+Логирование начала и окончания тестов (@echo ...)
+
+
+

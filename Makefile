@@ -6,14 +6,14 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/02 22:02:50 by oostapen         ###   ########.fr        #
+#    Updated: 2025/06/04 15:24:58 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Makefile for miniRT (C, miniLibX, no malloc)
 NAME    = miniRT
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror -Iinclude -Imlx-linux
+CFLAGS  = -Wall -Wextra -Werror -g -Iinclude -Imlx-linux #-g is for debugger DELETE IT LATER
 MLX_DIR = mlx-linux
 MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
@@ -85,6 +85,14 @@ btest: $(BOOK_TEST_EXECUTABLE)
 	./$(BOOK_TEST_EXECUTABLE)
 	@echo "Book tests finished."
 
+# Добавляем цель для запуска тестов с Valgrind
+vbtest: $(BOOK_TEST_EXECUTABLE)
+	@echo "Running Raytracer Challenge book tests with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all \
+	--track-origins=yes --suppressions=mlx.supp \
+	--log-file=valgrind.log ./$(BOOK_TEST_EXECUTABLE)
+	@echo "Valgrind tests finished. See valgrind.log for details."
+
 # Сборка исполняемого файла для тестов книги
 # $(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS)
 # 	$(CC) $(CFLAGS) $^ -o $@ -lm # $^ включает все зависимости
@@ -102,7 +110,12 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(BOOK_TEST_EXECUTABLE)
+	rm -f valgrind.log  # <-- to delete later
 	rm -rf $(OBJ_DIR)
 
 re: fclean all
-.PHONY: all clean fclean re btest
+.PHONY: all clean fclean re btest vbtest # vbtest is compilation for valgrind TO DELETE LATER
+
+#!!!DELETE valgrind.log as well
+# rm -f valgrind.log  # <-- to delete later
+#!!!DELETE mlx.supp with valgrind mlx suppression rules
