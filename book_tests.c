@@ -33,7 +33,7 @@ void	print_tuple(t_tuple	pt)
 void	print_color(t_color	pc)
 {
 	printf("r=%.5f, g=%.5f, b=%.5f, w=%.5f\n",
-		pc.x, pc.y, pc.z, pc.w);
+		pc.r, pc.g, pc.b, pc.a);
 }
 
 // --- Test functions from Chapter 1: Tuples, Points, and Vectors ---
@@ -488,8 +488,8 @@ void test_ch1_projectile_impact(void)
 // And c.blue = 1.7
 // void	test_ch2_rgb_tuple_direct(void)
 // {
-// 	printf("Chapter 2: color(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
-// 	t_tuple color = color(-0.5, 0.4, 1.7);//color = vector
+// 	printf("Chapter 2: rgb(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
+// 	t_tuple color = rgb(-0.5, 0.4, 1.7);//color = vector
 // 	TEST_ASSERT(floats_equal(color.x, -0.5), "RED color.x = -0.5");
 // 	TEST_ASSERT(floats_equal(color.y, 0.4), "GREEN color.y = 0.4");
 // 	TEST_ASSERT(floats_equal(color.z, 1.7), "BLUE color.z = 1.7");
@@ -504,8 +504,8 @@ void test_ch1_projectile_impact(void)
 
 void	test_ch2_rgb_tuple_direct(void)
 {
-	printf("Chapter 2: color(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
-	t_tuple my_color_value = color(-0.5, 0.4, 1.7);
+	printf("Chapter 2: rgb(-0.5, 0.4, 1.7) direct values: 0 - 1\n\n");
+	t_tuple my_color_value = rgb(-0.5, 0.4, 1.7);
 	TEST_ASSERT(floats_equal(my_color_value.x, -0.5), "RED color.x = -0.5");
 	TEST_ASSERT(floats_equal(my_color_value.y, 0.4), "GREEN color.y = 0.4");
 	TEST_ASSERT(floats_equal(my_color_value.z, 1.7), "BLUE color.z = 1.7");
@@ -527,11 +527,11 @@ void	test_ch2_rgb_tuple_direct(void)
 void test_ch2_add_colors(void)
 {
 	printf("Chapter 2: Adding two 'colors' = 'vectors'\n");
-	t_tuple c1 = color(0.9, 0.6, 0.75);// = vector
-	t_tuple c2 = color(0.7, 0.1, 0.25);// = vector
+	t_tuple c1 = rgb(0.9, 0.6, 0.75);// = vector
+	t_tuple c2 = rgb(0.7, 0.1, 0.25);// = vector
 	t_tuple sum = add(c1, c2);
 	t_tuple expected = vector(1.6, 0.7, 1.0);// = vector
-	TEST_ASSERT(tuples_equal(expected, sum), "sum = color(1.6, 0.7, 1.0)");
+	TEST_ASSERT(tuples_equal(expected, sum), "sum = rgb(1.6, 0.7, 1.0)");
 }
 
 // Scenario: Subtracting colors
@@ -543,10 +543,10 @@ void test_ch2_substract_colors(void)
 {
 	printf("Chapter 2: Substracting two colors(c1 - c2) 'colors' = 'vectors'\n");
 	t_tuple c1 = vector(0.9, 0.6, 0.75);//left to emphasize 
-	t_tuple c2 = color(0.7, 0.1, 0.25);
+	t_tuple c2 = rgb(0.7, 0.1, 0.25);
 	t_tuple diff = substract_tuples(c1, c2);
-	t_tuple expected_color = color(0.2, 0.5, 0.5);// = vector
-	TEST_ASSERT(tuples_equal(expected_color, diff), "diff = color(0.2, 0.5, 0.5)");
+	t_tuple expected_color = rgb(0.2, 0.5, 0.5);// = vector
+	TEST_ASSERT(tuples_equal(expected_color, diff), "diff = rgb(0.2, 0.5, 0.5)");
 }
 
 // Scenario: Multiplying a color by a scalar
@@ -558,8 +558,8 @@ void test_ch2_multiplying_a_color_by_a_scalar(void)
 	t_tuple	c = vector(0.2, 0.3, 0.4);//left to emphasize 
 	double	scalar = 2;
 	t_tuple	tproduct = multiply_tuple_scalar(c, scalar);
-	t_tuple	expected_color = color(0.4, 0.6, 0.8);// = vector
-	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = color(0.4, 0.6, 0.8)");
+	t_tuple	expected_color = rgb(0.4, 0.6, 0.8);// = vector
+	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = rgb(0.4, 0.6, 0.8)");
 }
 // Hadamard product (or Schur product)
 // Scenario: Multiplying colors
@@ -569,11 +569,11 @@ void test_ch2_multiplying_a_color_by_a_scalar(void)
 void test_ch2_multiplying_two_colors(void)
 {
 	printf("Chapter 2: Multiplying two 'colors' = 'vectors')\n");
-	t_tuple	c1 = color(1, 0.2, 0.4); //color = vector
+	t_tuple	c1 = rgb(1, 0.2, 0.4); //color = vector
 	t_tuple	c2 = vector(0.9, 1, 0.1); //left to emphasize 
 	t_tuple	tproduct = multiply_tuples(c1, c2);
-	t_tuple	expected_color = color(0.9, 0.2, 0.04);
-	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = color(0.9, 0.2, 0.04)");
+	t_tuple	expected_color = rgb(0.9, 0.2, 0.04);
+	TEST_ASSERT(tuples_equal(tproduct, expected_color), "product = 'color' - rgb(0.9, 0.2, 0.04)");
 }
 
 // --- Chapter 2: canvas: ---
@@ -620,6 +620,41 @@ void test_ch2_creating_an_image(void)
 	free(mlx);                 // Frees the mlx pointer
 	#endif
 }
+
+// Scenario: Writing pixels to a canvas
+// Given c ← canvas(10, 20)
+// And red ← color(1, 0, 0)
+// When write_pixel(c, 2, 3, red)
+// Then pixel_at(c, 2, 3) = red
+// void test_ch2_writing_pixels(void) 
+// {
+// 	printf("Chapter 2: writing pixels to 'canvas' = 'image'\n");
+
+// 	// Initiate MLX and create canvas
+// 	void *mlx = mlx_init();
+// 	TEST_ASSERT(mlx, "mlx_init() success");
+// 	t_image *canvas = image_create(mlx, 10, 20);
+// 	TEST_ASSERT(canvas, "canvas created");
+
+// 	// Create red 'color'='tuple' (RGBA: 0xFF0000FF)
+// 	t_color red = {1.0f, 0.0f, 0.0f, 1.0f}; 
+
+// 	// Write pixel
+// 	image_write_pixel(canvas, 2, 3, color_to_int(&red));
+// 	// TODO							TODO
+
+// 	// Check pixel					TODO
+// 	unsigned int pixel = image_read_pixel(canvas, 2, 3);
+// 	TEST_ASSERT(pixel == 0xFF0000FF, "Pixel (2,3) is red");
+
+// 	// Clean up
+// 	image_destroy(canvas);
+// 	#ifdef __linux__
+// 	mlx_destroy_display(mlx);
+// 	free(mlx);
+// 	#endif
+// }
+
 
 
 // --- Add test functions for subsequent chapters here ---
@@ -673,8 +708,8 @@ int main(void)
 	/*2June :*/
 	test_ch2_creating_an_image();
 	/*4June :*/
+	// test_ch2_writing_pixels();
 	
-
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();

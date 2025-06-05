@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:36:19 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/02 21:45:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:56:06 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@
 // ----------------------
 // Basic type definitions
 // ----------------------
-// typedef struct s_color
-// {
-// 	double	r;
-// 	double	g;
-// 	double	b;
-// }	t_color;
 
 typedef struct s_point3
 {

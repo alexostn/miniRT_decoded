@@ -6,9 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 23:11:18 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 15:44:55 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:54:32 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "colors.h"
+#include "tuples.h"
 
 #define MAX_SPHERES    7
 #define MAX_PLANES     7

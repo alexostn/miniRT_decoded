@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:49:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/02 20:21:26 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:01:43 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,16 @@
 
 # include "tuples.h"
 // Means t_color = t_tuple
-typedef t_tuple	t_color;
+// typedef t_tuple	t_color;
+// reserved for colors(vectors are separated):
+typedef struct s_color
+{
+	double	r; // [0.0, 1.0]
+	double	g;
+	double	b;
+	double	a; // alpha-channel (1.0 = solid)
+	// for future use (transparency/reflection)
+}	t_color;
 
 // Creates a color in the range 0.0–1.0 (for book tests)
 t_tuple	color_d(double r, double g, double b);
@@ -25,5 +34,9 @@ t_tuple	color_d(double r, double g, double b);
 // // TODO:
 // // Scales color from 0.0–1.0 to 0–255 with clamping
 // t_tuple	color_to_rgb255_scaled(double r_norm, double g_norm, double b_norm);
+
+/****tuple converters() easy to scale after to heap:*/
+t_color	tuple_to_color(t_tuple tuple);
+t_tuple	color_to_tuple(t_color color);
 
 #endif

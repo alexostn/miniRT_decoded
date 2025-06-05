@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 20:36:57 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/02 20:18:32 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:37:33 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ void	image_destroy(t_image *image)
 	free(image);
 }
 
+/*PIXELS:*/
 /*
  * @brief Puts a pixel of a given color at (x, y) coordinates on the image.
  *
  * Performs bounds checking to ensure the pixel is within the image.
- *
  * @param image Pointer to the t_image structure.
  * @param x X-coordinate of the pixel.
  * @param y Y-coordinate of the pixel.
@@ -102,3 +102,14 @@ void	image_put_pixel(t_image *image, int x, int y, int color)
 		+ (y * image->line_length + x * (image->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
+
+// TODO 5 JUNE:
+// I
+// Use rgb() for internal calculations (vectors)
+// color_to_int() for output to miniLibX (ARGB)
+
+// II
+// void	image_write_pixel()
+/*Color transformation for Minilibx:*/
+// void	color_to_int(&red) colors.c
+// void	image_read_pixel(canvas, 2, 3)

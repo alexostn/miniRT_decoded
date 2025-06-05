@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:22:57 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/02 20:10:18 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:43:33 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ t_tuple	color_d(double r, double g, double b)
 	return (tuple(r, g, b, 0.0));
 }
 
-/*** TYPEDEF T_TUPLE T_COLOR; ***/
 // r -> x, g -> y, b -> z
-t_tuple	color(double r, double g, double b)
+t_tuple	rgb(double r, double g, double b)
 {
 	return (tuple(r, g, b, 0.0));
 }
-/*** TYPEDEF T_TUPLE T_COLOR; ***/
 
 // TODO:
 // Creates a color tuple:converted_color.x = r / 255.0;

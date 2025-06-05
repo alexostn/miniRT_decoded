@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/04 15:24:58 by oostapen         ###   ########.fr        #
+#    Updated: 2025/06/05 15:57:29 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/tuple_multiply_divide.c \
 			$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
 			$(SRC_DIR)/phisics/projectile.c \
-			$(SRC_DIR)/tuples/colors.c
+			$(SRC_DIR)/tuples/colors.c \
+			$(SRC_DIR)/tuples/color_converters.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -46,7 +47,8 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/tuple_multiply_divide.c \
 						$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
 						$(SRC_DIR)/phisics/projectile.c \
-						$(SRC_DIR)/tuples/colors.c
+						$(SRC_DIR)/tuples/colors.c \
+						$(SRC_DIR)/tuples/color_converters.c
 
 # 3. Объектные файлы для модулей, используемых тестами
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
