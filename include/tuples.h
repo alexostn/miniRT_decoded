@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/05 15:47:59 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/06 00:09:10 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ t_tuple	tuple(double x, double y, double z, double w);
 t_tuple	point(double x, double y, double z); // Constructor for a point
 t_tuple	vector(double x, double y, double z); // Constructor for a vector
 t_tuple	rgb(double x, double y, double z); //Constructor for a color
+/*** Color creation and conversion: ***/
+// Returns tuple in [0.0, 1.0]
+t_tuple	color_d(double x, double y, double z); // alias for rgb
 
 /*
 ** Predicate functions (checks)

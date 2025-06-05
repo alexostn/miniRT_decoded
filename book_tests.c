@@ -626,37 +626,46 @@ void test_ch2_creating_an_image(void)
 // And red ← color(1, 0, 0)
 // When write_pixel(c, 2, 3, red)
 // Then pixel_at(c, 2, 3) = red
-// void test_ch2_writing_pixels(void) 
-// {
-// 	printf("Chapter 2: writing pixels to 'canvas' = 'image'\n");
+// Initiate MLX and create canvas
+void test_ch2_writing_pixels(void) 
+{
+	printf("Chapter 2: writing pixels to 'canvas' = 'image'\n");
+	// Initiate MLX and create canvas
+	void *mlx = mlx_init();
+	TEST_ASSERT(mlx, "mlx_init() success");
+	t_image *canvas = image_create(mlx, 10, 20);
+	TEST_ASSERT(canvas, "canvas created");
 
-// 	// Initiate MLX and create canvas
-// 	void *mlx = mlx_init();
-// 	TEST_ASSERT(mlx, "mlx_init() success");
-// 	t_image *canvas = image_create(mlx, 10, 20);
-// 	TEST_ASSERT(canvas, "canvas created");
+	// Create red 'color' = 'tuple' (RGBA)
+	t_color red = {1.0, 0.0, 0.0, 1.0}; // Red = 255, G = 0, B = 0, A = 255
+	t_color_format cf = { red, FORMAT_RGBA };
+	// Write pixel
+	write_pixel(canvas, 2, 3, cf);
 
-// 	// Create red 'color'='tuple' (RGBA: 0xFF0000FF)
-// 	t_color red = {1.0f, 0.0f, 0.0f, 1.0f}; 
+	// Check pixel
+	t_color pixel_color = read_pixel(canvas, 2, 3);
+	print_color(pixel_color);
+	printf("\n");
 
-// 	// Write pixel
-// 	image_write_pixel(canvas, 2, 3, color_to_int(&red));
-// 	// TODO							TODO
+	unsigned int pixel = color_to_mlx(&pixel_color, FORMAT_RGBA);
+	printf("red pixel : 0x%08X\n", pixel);
+	TEST_ASSERT(pixel == 0xFF0000FF, "Pixel (2,3) is red");
 
-// 	// Check pixel					TODO
-// 	unsigned int pixel = image_read_pixel(canvas, 2, 3);
-// 	TEST_ASSERT(pixel == 0xFF0000FF, "Pixel (2,3) is red");
-
-// 	// Clean up
-// 	image_destroy(canvas);
-// 	#ifdef __linux__
-// 	mlx_destroy_display(mlx);
-// 	free(mlx);
-// 	#endif
-// }
-
-
-
+	// Clean up
+	image_destroy(canvas);
+	#ifdef __linux__
+	mlx_destroy_display(mlx);
+	free(mlx);
+	#endif
+}
+/*
+| Format | Hex Value   | Explanation                          |
+|--------|-------------|--------------------------------------|
+| RGBA   | 0xFF0000FF  | Red, Green, Blue, Alpha			  |
+| ARGB   | 0xFFFF0000  | Alpha, Red, Green, Blue			  |
+| BGRA   | 0x0000FFFF  | Blue, Green, Red, Alpha			  |
+| ABGR   | 0xFF0000FF  | Alpha, Blue, Green, Red			  |
+*/
 // --- Add test functions for subsequent chapters here ---
 // void test_ch2_some_canvas_feature(void) { ... }
 
@@ -708,7 +717,7 @@ int main(void)
 	/*2June :*/
 	test_ch2_creating_an_image();
 	/*4June :*/
-	// test_ch2_writing_pixels();
+	test_ch2_writing_pixels();
 	
 	printf("\n");
 	// Add calls to tests for subsequent chapters here

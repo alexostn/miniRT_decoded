@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 20:36:57 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/05 14:37:33 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:16:27 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
  *
  * 	if (!img->addr)
  * // Additional check, although mlx_new_image is usually more important
+ * mlx_new_image() from mlxlib 
+ * initializes pixels with 0 = black
  */
 t_image	*image_create(void *mlx_ptr, int width, int height)
 {
@@ -102,14 +104,3 @@ void	image_put_pixel(t_image *image, int x, int y, int color)
 		+ (y * image->line_length + x * (image->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
-
-// TODO 5 JUNE:
-// I
-// Use rgb() for internal calculations (vectors)
-// color_to_int() for output to miniLibX (ARGB)
-
-// II
-// void	image_write_pixel()
-/*Color transformation for Minilibx:*/
-// void	color_to_int(&red) colors.c
-// void	image_read_pixel(canvas, 2, 3)
