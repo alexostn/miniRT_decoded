@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:40:08 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/06 00:09:43 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:09:32 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ typedef struct s_image
 // mlx_ptr = t_vars.mlx
 t_image	*image_create(void *mlx_ptr, int width, int height);
 // mlx_ptr is needed for mlx_destroy_image:
-void	image_destroy(t_image *image);
 void	image_put_pixel(t_image *image, int x, int y, int color);
+void	image_to_ppm(t_image *image, int fd);
+
+void	image_destroy(t_image *image);
 
 #endif

@@ -666,8 +666,54 @@ void test_ch2_writing_pixels(void)
 | BGRA   | 0x0000FFFF  | Blue, Green, Red, Alpha			  |
 | ABGR   | 0xFF0000FF  | Alpha, Blue, Green, Red			  |
 */
+
+// TO BE DONE:
+// Scenario: Constructing the PPM header
+// Given c ← canvas(5, 3)
+// When ppm ← canvas_to_ppm(c)
+void test_ch2_constructing_ppm_header(void)
+{
+	printf("Chapter 2: Constructing the PPM header)\n");
+	void	*mlx = mlx_init();
+	if (!mlx)
+	{
+		printf("mlx_init() failed!\n");
+		return ;
+	}
+	t_image	*canvas = image_create(mlx, 5, 3);
+
+		TEST_ASSERT(canvas, "canvas created");
+		TEST_ASSERT(canvas->width == 5, "width = 5");
+		TEST_ASSERT(canvas->height == 3, "height = 3");
+	int x, y;
+	int all_black = 1;
+	for (y = 0; y < canvas->height && all_black; ++y)
+	{
+		for (x = 0; x < canvas->width; ++x)
+		{
+			unsigned int *pixel = (unsigned int *)(canvas->addr
+				+ y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
+			if (*pixel != 0x000000)
+			{
+				all_black = 0;
+				break;
+			}
+		}
+	}
+	TEST_ASSERT(all_black, "all pixels are black (0x000000)");
+	image_to_ppm(canvas, 1);//TODO
+
+	// NECCESSARY DESTROY PART:
+	image_destroy(canvas);		// image_destroy only releases the image resources (img_ptr) and the t_image structure
+	// MLX cleanup for Linux
+	#ifdef __linux__
+	mlx_destroy_display(mlx);  // Destroys X11 structures
+	free(mlx);                 // Frees the mlx pointer
+	#endif
+}
+
 // --- Add test functions for subsequent chapters here ---
-// void test_ch2_some_canvas_feature(void) { ... }
+// void test_ch.._.._.._..(void) { ... }
 
 // --- Main function to run all book tests ---
 int main(void)
@@ -714,11 +760,16 @@ int main(void)
 	test_ch2_substract_colors();
 	test_ch2_multiplying_a_color_by_a_scalar();
 	test_ch2_multiplying_two_colors();
+	printf("\n");
 	/*2June :*/
 	test_ch2_creating_an_image();
+	printf("\n");
 	/*4June :*/
 	test_ch2_writing_pixels();
-	
+	printf("\n");
+	/*10June*/
+	test_ch2_constructing_ppm_header();
+
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();

@@ -6,12 +6,13 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 20:36:57 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/05 19:16:27 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:06:06 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "image.h"
 #include <stdlib.h> // For malloc/free
+#include "libft.h"
 
 /**
  * @brief Creates a new image (canvas) for drawing.
@@ -103,4 +104,22 @@ void	image_put_pixel(t_image *image, int x, int y, int color)
 	dst = image->addr
 		+ (y * image->line_length + x * (image->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
+}
+
+/////////////////// PPM SET /////////////////////////
+
+// use libft: ft_putstr_fd, ft_putendl_fd, ft_putnbr_fd
+// 1. Writing the "magic number" P3
+// 2. Writing width and height on one line
+// 3. Writing the maximum color value
+// Next will follow the code for writing pixel data...
+
+void	image_to_ppm(t_image *image, int fd)
+{
+	ft_putendl_fd("P3", fd);
+	ft_putnbr_fd(image->width, fd);
+	ft_putchar_fd(' ', fd);
+	ft_putnbr_fd(image->height, fd);
+	ft_putchar_fd('\n', fd);
+	ft_putendl_fd("255", fd);
 }

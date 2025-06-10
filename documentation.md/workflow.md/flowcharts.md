@@ -1,6 +1,14 @@
 miniRT/
 ├── documentation.md/
 ├── Makefile
+├── libft/
+│	├──  Makefile
+│	├── inc/
+│	│	├── ft_printf.h
+│	│	├── get_next_line.h
+│	│	├── libft.h
+│	├── src/
+│	└── *.c
 ├── includes/
 │	├── colors.h
 │	├── environment.h
