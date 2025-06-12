@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/12 22:10:51 by oostapen         ###   ########.fr        #
+#    Updated: 2025/06/12 23:53:14 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ BOOK_TEST_RUNNER_OBJ = $(OBJ_DIR)/$(BOOK_TEST_RUNNER_SRC:.c=.o)
 # 5. Имя исполняемого файла для тестов книги
 BOOK_TEST_EXECUTABLE = run_book_tests
 
-# basic rules:
+# bASic rules:
 all: $(NAME)
 # all: $(MLX_DIR)/libmlx.a $(NAME)			OLD
 

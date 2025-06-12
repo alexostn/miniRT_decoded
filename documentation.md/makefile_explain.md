@@ -108,5 +108,19 @@ vbtest: $(BOOK_TEST_EXECUTABLE)
 Сохранение отчёта в файл (--log-file=valgrind.log)
 Логирование начала и окончания тестов (@echo ...)
 
+<!-- TO CLEAN .ppm-FILES IN FOLDER test_files/,
+EXCEPT expected.ppm: -->
+clean_test_ppm:
+	@find test_files -maxdepth 1 -type f -name "*.ppm" ! -name "expected.ppm" -exec rm -f {} +
+
+clean: ... clean_test_ppm
+fclean: clean
+
+<!-- find ... -exec rm -f {} + — удаляет все .ppm-файлы, кроме expected.ppm, в папке test_files/.
+
+@ в начале строки подавляет вывод самой команды в терминал (делает вывод чище).
+
+Просто добавь clean_test_ppm к целям clean и/или fclean, чтобы удаление происходило автоматически при очистке проекта. -->
+
 
 

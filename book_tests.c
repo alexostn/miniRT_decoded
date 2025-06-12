@@ -6,6 +6,7 @@
 // #include "include/canvas.h" // For future chapters
 // #include "include/matrices.h" // For future chapters
 #include <stdio.h> // for printf
+#include <fcntl.h> // for test files ppm and comparisson
 
 // --- Macro for displaying test results (optional, for clarity) ---
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -713,6 +714,33 @@ void test_ch2_constructing_ppm_header(void)
 	#endif
 }
 
+int	compare_files(const char *f1, const char *f2)
+{
+	FILE	*file1 = fopen(f1, "r");
+	FILE	*file2 = fopen(f2, "r");
+	int		c1, c2;
+
+	if (!file1 || !file2)
+		return (0);
+	while (1)
+	{
+		c1 = fgetc(file1);
+		c2 = fgetc(file2);
+		if (c1 != c2)
+		{
+			fclose(file1);
+			fclose(file2);
+			return (0);
+		}
+		if (c1 == EOF)
+			break;
+	}
+	fclose(file1);
+	fclose(file2);
+	return (1);
+}
+
+
 // Scenario: Constructing the PPM pixel data
 // Given c ← canvas(5, 3)
 // And c1 ← color(1.5, 0, 0)
@@ -728,57 +756,8 @@ void test_ch2_constructing_ppm_header(void)
 // 0 0 0 0 0 0 0 128 0 0 0 0 0 0 0
 // 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255
 // """
-// void	test_ch2_constructing_the_ppm_pixel_data(void)
-// {
-// 	printf("Chapter 2: Constructing the PPM pixel data)\n");
-// 	void	*mlx = mlx_init();
-// 	if (!mlx)
-// 	{
-// 		printf("mlx_init() failed!\n");
-// 		return ;
-// 	}
-// 	t_image	*canvas = image_create(mlx, 5, 3);
 
-// 	TEST_ASSERT(canvas, "canvas created");
-// 	TEST_ASSERT(canvas->width == 5, "width = 5");
-// 	TEST_ASSERT(canvas->height == 3, "height = 3");
-// 	int x, y;
-// 	int all_black = 1;
-// 	for (y = 0; y < canvas->height && all_black; ++y)
-// 	{
-// 		for (x = 0; x < canvas->width; ++x)
-// 		{
-// 			unsigned int *pixel = (unsigned int *)(canvas->addr
-// 				+ y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
-// 			if (*pixel != 0x000000)
-// 			{
-// 				all_black = 0;
-// 				break;
-// 			}
-// 		}
-// 	}
-// 	TEST_ASSERT(all_black, "all pixels are black (0x000000)");
-// 	printf("\n");
-// 	t_color c1 = {1.5, 0.0, 0.0, 1.0};
-// 	t_color c2 = {0.0, 0.5, 0.0, 1.0};
-// 	t_color c3 = {-0.5, 0.0, 1.0, 1.0};
-// 	t_color_format cf1 = { c1, FORMAT_RGBA };
-// 	t_color_format cf2 = { c2, FORMAT_RGBA };
-// 	t_color_format cf3 = { c3, FORMAT_RGBA };
-// 	write_pixel(canvas, 0, 0, cf1);
-// 	write_pixel(canvas, 2, 1, cf2);
-// 	write_pixel(canvas, 4, 2, cf3);
-// 	image_to_ppm(canvas, 1); // 1 is fd stdout , but can be file
-// 		/*DESTROY PART:*/
-// 	image_destroy(canvas);		// image_destroy only releases the image resources (img_ptr) and the t_image structure
-// 	// MLX cleanup for Linux
-// 	#ifdef __linux__
-// 	mlx_destroy_display(mlx);  // Destroys X11 structures
-// 	free(mlx);                 // Frees the mlx pointer
-// 	#endif
-// }
-
-// SAME AUTOMISED is_canvas_black() ADDED:
+//AUTOMISED is_canvas_black() ADDED:
 
 
 static int	is_canvas_black(t_image *canvas)
@@ -803,43 +782,99 @@ static int	is_canvas_black(t_image *canvas)
 		}
 		return (1);
 	}
-	
-	void	test_ch2_constructing_the_ppm_pixel_data(void)
+
+void	test_ch2_constructing_the_ppm_pixel_data(void)
+{
+	void	*mlx;
+	t_image	*canvas;
+	t_color	c1, c2, c3;
+	t_color_format cf1, cf2, cf3;
+	int		fd;
+
+	printf("Chapter 2: Constructing the PPM pixel data)\n");
+	mlx = mlx_init();
+	if (!mlx)
 	{
-		void	*mlx;
-		t_image	*canvas;
-		t_color	c1, c2, c3;
-		t_color_format cf1, cf2, cf3;
-		
-		printf("Chapter 2: Constructing the PPM pixel data)\n");
-		mlx = mlx_init();
-		if (!mlx)
-		{
-			printf("mlx_init() failed!\n");
-			return ;
-		}
-		canvas = image_create(mlx, 5, 3);
-		TEST_ASSERT(canvas, "canvas created");
-		TEST_ASSERT(canvas->width == 5, "width = 5");
-		TEST_ASSERT(canvas->height == 3, "height = 3");
-		TEST_ASSERT(is_canvas_black(canvas), "all pixels are black (0x000000)");
-		printf("\n");
-		c1 = (t_color){1.5, 0.0, 0.0, 1.0};
-		c2 = (t_color){0.0, 0.5, 0.0, 1.0};
-		c3 = (t_color){-0.5, 0.0, 1.0, 1.0};
-		cf1 = (t_color_format){c1, FORMAT_RGBA};
-		cf2 = (t_color_format){c2, FORMAT_RGBA};
-		cf3 = (t_color_format){c3, FORMAT_RGBA};
-		write_pixel(canvas, 0, 0, cf1);
-		write_pixel(canvas, 2, 1, cf2);
-		write_pixel(canvas, 4, 2, cf3);
-		image_to_ppm(canvas, 1); // stdout
+		printf("mlx_init() failed!\n");
+		return ;
+	}
+	canvas = image_create(mlx, 5, 3);
+	TEST_ASSERT(canvas, "canvas created");
+	TEST_ASSERT(canvas->width == 5, "width = 5");
+	TEST_ASSERT(canvas->height == 3, "height = 3");
+	TEST_ASSERT(is_canvas_black(canvas), "all pixels are black (0x000000)");
+	printf("\n");
+	c1 = (t_color){1.5, 0.0, 0.0, 1.0};
+	c2 = (t_color){0.0, 0.5, 0.0, 1.0};
+	c3 = (t_color){-0.5, 0.0, 1.0, 1.0};
+	cf1 = (t_color_format){c1, FORMAT_RGBA};
+	cf2 = (t_color_format){c2, FORMAT_RGBA};
+	cf3 = (t_color_format){c3, FORMAT_RGBA};
+	write_pixel(canvas, 0, 0, cf1);
+	write_pixel(canvas, 2, 1, cf2);
+	write_pixel(canvas, 4, 2, cf3);
+
+	// --- automization of comparisson ---
+	fd = open("test_files/test_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror("open");
 		image_destroy(canvas);
 		#ifdef __linux__
 		mlx_destroy_display(mlx);
 		free(mlx);
 		#endif
+		return;
 	}
+	image_to_ppm(canvas, fd);
+	close(fd);
+	
+	TEST_ASSERT(compare_files("test_files/test_output.ppm", "test_files/expected.ppm"), "PPM output matches reference");
+	// --- end of automization ---
+	image_destroy(canvas);
+	#ifdef __linux__
+	mlx_destroy_display(mlx);
+	free(mlx);
+	#endif
+}
+
+// PREVIOUS VERSION WITHOUT AUTOMIZATION STDOUT INSTEAD OF FILE:
+// void	test_ch2_constructing_the_ppm_pixel_data(void)
+// {
+// 	void	*mlx;
+// 	t_image	*canvas;
+// 	t_color	c1, c2, c3;
+// 	t_color_format cf1, cf2, cf3;
+	
+// 	printf("Chapter 2: Constructing the PPM pixel data)\n");
+// 	mlx = mlx_init();
+// 	if (!mlx)
+// 	{
+// 		printf("mlx_init() failed!\n");
+// 		return ;
+// 	}
+// 	canvas = image_create(mlx, 5, 3);
+// 	TEST_ASSERT(canvas, "canvas created");
+// 	TEST_ASSERT(canvas->width == 5, "width = 5");
+// 	TEST_ASSERT(canvas->height == 3, "height = 3");
+// 	TEST_ASSERT(is_canvas_black(canvas), "all pixels are black (0x000000)");
+// 	printf("\n");
+// 	c1 = (t_color){1.5, 0.0, 0.0, 1.0};
+// 	c2 = (t_color){0.0, 0.5, 0.0, 1.0};
+// 	c3 = (t_color){-0.5, 0.0, 1.0, 1.0};
+// 	cf1 = (t_color_format){c1, FORMAT_RGBA};
+// 	cf2 = (t_color_format){c2, FORMAT_RGBA};
+// 	cf3 = (t_color_format){c3, FORMAT_RGBA};
+// 	write_pixel(canvas, 0, 0, cf1);
+// 	write_pixel(canvas, 2, 1, cf2);
+// 	write_pixel(canvas, 4, 2, cf3);
+// 	image_to_ppm(canvas, 1); // stdout
+// 	image_destroy(canvas);
+// 	#ifdef __linux__
+// 	mlx_destroy_display(mlx);
+// 	free(mlx);
+// 	#endif
+// }
 	
 	//TODO TOAUTOMIZE MAY BE:
 	// Coulbe used in each test and automized:
