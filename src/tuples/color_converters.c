@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:44:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/06 00:21:21 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:11:58 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_tuple	color_to_tuple(t_color color)
 	return (tuple(color.r, color.g, color.b, color.a));
 }
 
-static uint8_t	clamp_channel(double value)
+uint8_t	clamp_channel(double value)
 {
 	if (value < 0.0)
 		value = 0.0;

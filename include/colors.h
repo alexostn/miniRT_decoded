@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:49:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/06 00:31:11 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:19:40 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "tuples.h"
 # include "image.h"
 # include <stdint.h>
+# include "libft.h"
 
 /*** Color type (separate from vector): ***/
 typedef struct s_color
@@ -49,6 +50,7 @@ t_color		tuple_to_color(t_tuple tuple);
 t_tuple		color_to_tuple(t_color color);
 
 /*** Convert color to uint32_t in the required format: ***/
+uint8_t		clamp_channel(double value);
 uint32_t	color_to_mlx(t_color *c, t_format fmt);
 
 /*** Pixel write and read: ***/
