@@ -758,7 +758,7 @@ int	compare_files(const char *f1, const char *f2)
 // """
 
 //AUTOMISED is_canvas_black() ADDED:
-/*
+
 static int	is_canvas_black(t_image *canvas)
 {
 	int	x;
@@ -836,7 +836,7 @@ void	test_ch2_constructing_the_ppm_pixel_data(void)
 	free(mlx);
 	#endif
 }
-*/
+
 //TODO TOAUTOMIZE MAY BE:
 // Could be used in each test and automized:
 // void	test_canvas(void)
@@ -906,7 +906,7 @@ int main(void)
 	/*12June*/
 	test_ch2_constructing_ppm_header();
 	printf("\n");
-	// test_ch2_constructing_the_ppm_pixel_data();
+	test_ch2_constructing_the_ppm_pixel_data();
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
