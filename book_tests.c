@@ -904,9 +904,9 @@ int main(void)
 	printf("\n");
 	/*10June*/
 	/*12June*/
-	test_ch2_constructing_ppm_header();
+	// test_ch2_constructing_ppm_header();
 	printf("\n");
-	test_ch2_constructing_the_ppm_pixel_data();
+	// test_ch2_constructing_the_ppm_pixel_data();
 
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
