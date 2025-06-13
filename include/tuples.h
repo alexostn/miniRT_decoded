@@ -65,7 +65,7 @@ t_tuple	substract_tuples(t_tuple t1, t_tuple t2);
 t_tuple	negate_tupil(t_tuple negatable);
 
 /* Multiplying a tuple by a scalar/fraction */
-t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
+extern t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
 
 /*** Tuple divide ***/
 t_tuple	divide_tuple_scalar(t_tuple d, double scalar);
