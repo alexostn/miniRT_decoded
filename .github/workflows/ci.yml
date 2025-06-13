@@ -12,5 +12,5 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Run btest
-        run: make btest
+      - name: Run vbtest
+        run: make vbtest
