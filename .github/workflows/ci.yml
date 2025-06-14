@@ -1,3 +1,11 @@
+name: CI/CD for MinilibX
+
+on:  # Добавьте эту секцию
+  push:
+    branches: [ main ]  # Запускать при push в ветку main
+  pull_request:         # Или при создании pull request
+    branches: [ main ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
