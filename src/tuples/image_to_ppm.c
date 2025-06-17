@@ -13,33 +13,107 @@
 #include "colors.h"
 #include <math.h>
 
-/////////////////// PPM SET /////////////////////////
-static void	write_ppm_pixels(t_image *image, int fd)
+static void	ft_itoa_buf(int n, char *buf)
 {
-	int		y;
-	int		x;
-	t_color	color;
+	if (n > 99)
+		ft_strlcpy(buf, (char[]){n / 100 + '0', (n / 10 % 10) + '0', n % 10 + '0', 0}, 4);
+	else if (n > 9)
+		ft_strlcpy(buf, (char[]){n / 10 + '0', n % 10 + '0', 0}, 4);
+	else
+		ft_strlcpy(buf, (char[]){n + '0', 0}, 2);
+}
 
-	y = 0;
-	while (y < image->height)
+static void	append_color_string(char *line, int *line_len, int channel, int fd)
+{
+	char	num[4];
+	int		num_len;
+
+	ft_itoa_buf(channel, num);
+	num_len = ft_strlen(num);
+	if (*line_len + num_len + 1 > 70 && *line_len > 0)
 	{
-		x = 0;
-		while (x < image->width)
+		ft_putendl_fd(line, fd);
+		ft_bzero(line, 71);
+		*line_len = 0;
+	}
+	if (*line_len > 0)
+	{
+		ft_strlcat(line, " ", 71);
+		(*line_len)++;
+	}
+	ft_strlcat(line, num, 71);
+	*line_len += num_len;
+}
+
+// static void	append_to_line(char **line, int *line_len, const char *str, int fd)
+// {
+// 	int	str_len;
+
+// 	str_len = ft_strlen(str);
+// 	if (*line_len + str_len > 70)
+// 	{
+// 		ft_putendl_fd(*line, fd);
+// 		ft_bzero(*line, 71);
+// 		*line_len = 0;
+// 	}
+// 	ft_strlcat(*line, str, 71);
+// 	*line_len += str_len;
+// }
+
+static void	write_pixel_data(t_image *img, int fd)
+{
+	char	line[71];
+	int		line_len;
+	t_color	c;
+	int		x;
+	int		y;
+
+	ft_bzero(line, 71);
+	line_len = 0;
+	y = -1;
+	while (++y < img->height)
+	{
+		x = -1;
+		while (++x < img->width)
 		{
-			color = read_pixel(image, x, y);
-			ft_putnbr_fd(clamp_channel(color.r), fd);
-			ft_putchar_fd(' ', fd);
-			ft_putnbr_fd(clamp_channel(color.g), fd);
-			ft_putchar_fd(' ', fd);
-			ft_putnbr_fd(clamp_channel(color.b), fd);
-			if (x < image->width - 1)
-				ft_putchar_fd(' ', fd);
-			x++;
+			c = read_pixel(img, x, y);
+			append_color_string(line, &line_len, clamp_channel(c.r), fd);
+			append_color_string(line, &line_len, clamp_channel(c.g), fd);
+			append_color_string(line, &line_len, clamp_channel(c.b), fd);
 		}
-		ft_putchar_fd('\n', fd);
-		y++;
+		if (line_len > 0)
+			ft_putendl_fd(line, fd);
+		ft_bzero(line, 71);
+		line_len = 0;
 	}
 }
+/////////////////// OLD PPM SET /////////////////////////
+// static void	write_ppm_pixels(t_image *image, int fd)
+// {
+// 	int		y;
+// 	int		x;
+// 	t_color	color;
+
+// 	y = 0;
+// 	while (y < image->height)
+// 	{
+// 		x = 0;
+// 		while (x < image->width)
+// 		{
+// 			color = read_pixel(image, x, y);
+// 			ft_putnbr_fd(clamp_channel(color.r), fd);
+// 			ft_putchar_fd(' ', fd);
+// 			ft_putnbr_fd(clamp_channel(color.g), fd);
+// 			ft_putchar_fd(' ', fd);
+// 			ft_putnbr_fd(clamp_channel(color.b), fd);
+// 			if (x < image->width - 1)
+// 				ft_putchar_fd(' ', fd);
+// 			x++;
+// 		}
+// 		ft_putchar_fd('\n', fd);
+// 		y++;
+// 	}
+// }
 
 // use libft: ft_putstr_fd, ft_putendl_fd, ft_putnbr_fd
 // 1. Writing the "magic number" P3
@@ -55,5 +129,7 @@ void	image_to_ppm(t_image *image, int fd)
 	ft_putnbr_fd(image->height, fd);
 	ft_putchar_fd('\n', fd);
 	ft_putendl_fd("255", fd);
-	write_ppm_pixels(image, fd);
+	write_pixel_data(image, fd);
+//	ft_putendl_fd("255", fd);
+//	write_ppm_pixels(image, fd);
 }

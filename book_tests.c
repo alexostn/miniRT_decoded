@@ -827,8 +827,8 @@ void	test_ch2_constructing_the_ppm_pixel_data(void)
 	}
 	image_to_ppm(canvas, fd);
 	close(fd);
-	
-	TEST_ASSERT(compare_files("test_files/test_output.ppm", "test_files/expected.ppm"), "PPM output matches reference");
+
+	TEST_ASSERT(compare_files("test_files/test_output.ppm", "test_files/expected.ppm"), "PPM matches reference look at test_files/");
 	// --- end of automization ---
 	image_destroy(canvas);
 	#ifdef __linux__
@@ -837,15 +837,77 @@ void	test_ch2_constructing_the_ppm_pixel_data(void)
 	#endif
 }
 
-//TODO TOAUTOMIZE MAY BE:
-// Could be used in each test and automized:
-// void	test_canvas(void)
-// {
-// 	t_image	*canvas = image_create(mlx, 5, 3);
-// 	// ... тестовые действия ...
-// 	image_destroy(canvas);
-// }
+// Scenario: Splitting long lines in PPM files
+// Given c ← canvas(10, 2)
+// When every pixel of c is set to color(1, 0.8, 0.6)
+// And ppm ← canvas_to_ppm(c)
+// Then lines 4-7 of ppm are
+// """
+// 255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
+// 153 255 204 153 255 204 153 255 204 153 255 204 153
+// 255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
+// 153 255 204 153 255 204 153 255 204 153 255 204 153
+// """
+void	test_ch2_splitting_long_lines(void)
+{
+	void	*mlx;
+	t_image	*canvas;
+	t_color	c;
+	t_color_format cf;
+	int		fd;
 
+	printf("Chapter 2: Splitting long lines in PPM files)\n");
+	mlx = mlx_init();
+	if (!mlx)
+	{
+		printf("mlx_init() failed!\n");
+		return ;
+	}
+	canvas = image_create(mlx, 10, 2);
+	TEST_ASSERT(canvas, "canvas created");
+	TEST_ASSERT(canvas->width == 10, "width = 10");
+	TEST_ASSERT(canvas->height == 2, "height = 2");
+	TEST_ASSERT(is_canvas_black(canvas), "all pixels are black (0x000000)");
+	printf("\n");
+	c = (t_color){1.0, 0.8, 0.6, 1.0};
+	cf = (t_color_format){c, FORMAT_RGBA};
+	int x, y;
+
+	y = 0;
+	while (y < canvas->height)
+	{
+		x = 0;
+		while (x < canvas->width)
+		{
+			write_pixel(canvas, x, y, cf);
+			x++;
+		}
+		y++;
+	}
+
+	// --- automization of comparisson ---
+	fd = open("test_files/splitting_long_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror("open");
+		image_destroy(canvas);
+		#ifdef __linux__
+		mlx_destroy_display(mlx);
+		free(mlx);
+		#endif
+		return;
+	}
+	image_to_ppm(canvas, fd);
+	close(fd);
+
+	TEST_ASSERT(compare_files("test_files/splitting_long_output.ppm", "test_files/splitting_long.ppm"), "PPM matches reference look at test_files/");
+	// --- end of automization ---
+	image_destroy(canvas);
+	#ifdef __linux__
+	mlx_destroy_display(mlx);
+	free(mlx);
+	#endif
+}
 
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
@@ -907,7 +969,8 @@ int main(void)
 	test_ch2_constructing_ppm_header();
 	printf("\n");
 	test_ch2_constructing_the_ppm_pixel_data();
-
+	/*17June*/
+	test_ch2_splitting_long_lines();
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();
