@@ -23,7 +23,8 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
 # MiniLibX variables:
 MLX_DIR = mlx-linux
-MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
+MLX_LIB = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+# MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # Project variables:
 SRC_DIR = src
