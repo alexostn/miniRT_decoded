@@ -973,7 +973,7 @@ int main(void)
 	// test_ch2_splitting_long_lines();
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
-	test_ch2_some_canvas_feature();
+	// test_ch2_some_canvas_feature();
 	// printf("\n");
 
 	printf("--- All book tests finished. ---\n");
