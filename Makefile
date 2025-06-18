@@ -24,9 +24,10 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 # MiniLibX variables:
 MLX_DIR = mlx-linux
 MLX_LIB = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+# previous:
 # MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
-# Project variables:
+# Project variables:2
 SRC_DIR = src
 OBJ_DIR = obj
 
@@ -83,10 +84,14 @@ all: $(NAME)
 $(LIBFT_LIB):
 	@make -s -C $(LIBFT_DIR)
 	
+# to avoid mistakes with Makefile.gen we compile it in advance:
+$(MLX_DIR)/Makefile.gen:
+	cd $(MLX_DIR) && ./configure
+
 # MLX compilation rule:
-$(MLX_DIR)/libmlx.a:
+$(MLX_DIR)/libmlx.a: $(MLX_DIR)/Makefile.gen
 	@make -s -C $(MLX_DIR)
-	
+
 # miniRT compilation rule:
 $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	$(CC) $(OBJS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
@@ -94,14 +99,10 @@ $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 # $(NAME): $(OBJS)							OLD
 # 	$(CC) $(OBJS) $(CFLAGS) $(MLX_LIB) -o $(NAME)
 
-
-
 # Правило для компиляции .c из src/ в obj/ (для основного проекта и модулей тестов)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-
 
 # >>> BOOK TESTS SECTION START (RULES) >>>
 # Правило для компиляции book_tests.c в obj/book_tests.o
