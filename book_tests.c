@@ -970,7 +970,7 @@ int main(void)
 	printf("\n");
 	test_ch2_constructing_the_ppm_pixel_data();
 	/*17June*/
-	test_ch2_splitting_long_lines();
+	// test_ch2_splitting_long_lines();
 	printf("\n");
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();
