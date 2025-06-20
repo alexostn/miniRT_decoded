@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   image_to_ppm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:08:59 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/12 22:19:12 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/06/20 00:46:16 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "colors.h"
 #include <math.h>
 
-static void	ft_itoa_buf(int n, char *buf)
-{
-	if (n > 99)
-		ft_strlcpy(buf, (char[]){n / 100 + '0', (n / 10 % 10) + '0', n % 10 + '0', 0}, 4);
-	else if (n > 9)
-		ft_strlcpy(buf, (char[]){n / 10 + '0', n % 10 + '0', 0}, 4);
-	else
-		ft_strlcpy(buf, (char[]){n + '0', 0}, 2);
-}
+// place it to ft_libft prototype :
+// static void	ft_itoa_buf(int n, char *buf)
+// {
+// 	if (n > 99)
+// 		ft_strlcpy(buf, (char[]){n / 100 + '0', (n / 10 % 10) + '0', n % 10 + '0', 0}, 4);
+// 	else if (n > 9)
+// 		ft_strlcpy(buf, (char[]){n / 10 + '0', n % 10 + '0', 0}, 4);
+// 	else
+// 		ft_strlcpy(buf, (char[]){n + '0', 0}, 2);
+// }
 
 static void	append_color_string(char *line, int *line_len, int channel, int fd)
 {
@@ -87,33 +88,6 @@ static void	write_pixel_data(t_image *img, int fd)
 		line_len = 0;
 	}
 }
-/////////////////// OLD PPM SET /////////////////////////
-// static void	write_ppm_pixels(t_image *image, int fd)
-// {
-// 	int		y;
-// 	int		x;
-// 	t_color	color;
-
-// 	y = 0;
-// 	while (y < image->height)
-// 	{
-// 		x = 0;
-// 		while (x < image->width)
-// 		{
-// 			color = read_pixel(image, x, y);
-// 			ft_putnbr_fd(clamp_channel(color.r), fd);
-// 			ft_putchar_fd(' ', fd);
-// 			ft_putnbr_fd(clamp_channel(color.g), fd);
-// 			ft_putchar_fd(' ', fd);
-// 			ft_putnbr_fd(clamp_channel(color.b), fd);
-// 			if (x < image->width - 1)
-// 				ft_putchar_fd(' ', fd);
-// 			x++;
-// 		}
-// 		ft_putchar_fd('\n', fd);
-// 		y++;
-// 	}
-// }
 
 // use libft: ft_putstr_fd, ft_putendl_fd, ft_putnbr_fd
 // 1. Writing the "magic number" P3
@@ -130,6 +104,4 @@ void	image_to_ppm(t_image *image, int fd)
 	ft_putchar_fd('\n', fd);
 	ft_putendl_fd("255", fd);
 	write_pixel_data(image, fd);
-//	ft_putendl_fd("255", fd);
-//	write_ppm_pixels(image, fd);
 }

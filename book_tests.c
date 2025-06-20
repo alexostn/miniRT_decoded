@@ -7,6 +7,7 @@
 // #include "include/matrices.h" // For future chapters
 #include <stdio.h> // for printf
 #include <fcntl.h> // for test files ppm and comparisson
+#include <stdbool.h> // for file_ends_with_newline
 
 // --- Macro for displaying test results (optional, for clarity) ---
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -446,7 +447,7 @@ void test_ch1_projectile_impact(void)
 	int max_ticks = 50;
 
 	printf("Launching projectile...\n");
-	while (p.position.y > 0 && ticks < max_ticks) 
+	while (p.position.y > 0 && ticks < max_ticks)
 	{
 		p = tick(env, p);
 		ticks++;
@@ -909,6 +910,185 @@ void	test_ch2_splitting_long_lines(void)
 	#endif
 }
 
+static bool	file_ends_with_newline(const char *filename)
+{
+	FILE *fp = fopen(filename, "rb");
+	int last_char = 0;
+	if (!fp)
+		return false;
+	if (fseek(fp, -1, SEEK_END) != 0) {
+		fclose(fp);
+		return false; // файл пустой или ошибка
+	}
+	last_char = fgetc(fp);
+	fclose(fp);
+	return last_char == '\n';
+}
+
+// Scenario: PPM files are terminated by a newline character
+// Given c ← canvas(5, 3)
+// When ppm ← canvas_to_ppm(c)
+// Then ppm ends with a newline character
+// That’s really all there is to PPM files. The next step 
+void	test_ch2_newline_character_at_the_end(void)
+{
+	void	*mlx;
+	t_image	*canvas;
+	int		fd;
+
+	printf("Chapter 2: PPM files are terminated by a newline character)\n");
+	mlx = mlx_init();
+	if (!mlx)
+	{
+		printf("mlx_init() failed!\n");
+		return ;
+	}
+	canvas = image_create(mlx, 5, 3);
+	fd = open("test_files/new_line_end_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+	{
+		perror("open");
+		image_destroy(canvas);
+		#ifdef __linux__
+		mlx_destroy_display(mlx);
+		free(mlx);
+		#endif
+		return;
+	}
+	image_to_ppm(canvas, fd);
+	close(fd);
+	TEST_ASSERT(file_ends_with_newline("test_files/new_line_end_output.ppm"), "PPM ends with a newline character");
+	image_destroy(canvas);
+	#ifdef __linux__
+	mlx_destroy_display(mlx);
+	free(mlx);
+	#endif
+}
+
+// HELPING FUNCTION:
+// Scenario: Drawing a 3x3 pixel block around a point
+// Given canvas ← canvas(5, 5)
+// When draw_3x3_pixel_block(canvas, 2, 2, color(1, 0, 0))
+// Then pixels at (1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3) are red
+
+// Рисуем область 3x3 вокруг точки (canvas_x, canvas_y) без for
+void draw_3x3_pixel_block(t_image *canvas, int canvas_x, int canvas_y, int color)
+{
+    int px, py;
+
+    // Центральный пиксель
+    if (canvas_x >= 0 && canvas_x < canvas->width && canvas_y >= 0 && canvas_y < canvas->height)
+        image_put_pixel(canvas, canvas_x, canvas_y, color);
+
+    // Вверх
+    py = canvas_y - 1;
+    if (py >= 0 && py < canvas->height)
+    {
+        if (canvas_x >= 0 && canvas_x < canvas->width)
+            image_put_pixel(canvas, canvas_x, py, color);
+        px = canvas_x - 1;
+        if (px >= 0 && px < canvas->width)
+            image_put_pixel(canvas, px, py, color);
+        px = canvas_x + 1;
+        if (px >= 0 && px < canvas->width)
+            image_put_pixel(canvas, px, py, color);
+    }
+
+    // Вниз
+    py = canvas_y + 1;
+    if (py >= 0 && py < canvas->height)
+    {
+        if (canvas_x >= 0 && canvas_x < canvas->width)
+            image_put_pixel(canvas, canvas_x, py, color);
+        px = canvas_x - 1;
+        if (px >= 0 && px < canvas->width)
+            image_put_pixel(canvas, px, py, color);
+        px = canvas_x + 1;
+        if (px >= 0 && px < canvas->width)
+            image_put_pixel(canvas, px, py, color);
+    }
+
+    // Слева и справа от центра
+    px = canvas_x - 1;
+    if (px >= 0 && px < canvas->width && canvas_y >= 0 && canvas_y < canvas->height)
+        image_put_pixel(canvas, px, canvas_y, color);
+    px = canvas_x + 1;
+    if (px >= 0 && px < canvas->width && canvas_y >= 0 && canvas_y < canvas->height)
+        image_put_pixel(canvas, px, canvas_y, color);
+}
+
+void	test_ch2_test_projectile_trajectory(void)
+{
+	// Инициализация MLX и холста
+	void *mlx = mlx_init();
+	t_image *canvas = image_create(mlx, 300, 200);
+	if (!canvas)
+	{
+		perror("Failed to create canvas");
+		exit(1);
+	}
+	t_color red = {1.0, 0.0, 0.0, 1.0};
+	int mlx_color = color_to_mlx(&red, FORMAT_RGBA);
+
+	printf("Chapter 2: Projectile trajectory test\n");
+	// FROM: test_ch1_projectile_impact
+	t_projectile	p = projectile_create(point(0, 1, 0), vector(68, 120, 0));
+	t_environment	env = {vector(0, -0.1, 0), vector(-0.01, 0, 0)};
+	int ticks = 0;
+	int max_ticks = 50;
+
+	printf("Launching projectile...\n");
+	float scale = 34.0; // Масштабирование для отображения на холсте
+	while (p.position.y > 0 && ticks < max_ticks)
+	{
+		// Преобразование координат (мир -> холст) с масштабированием
+		int canvas_x = (int)round(p.position.x * scale);
+		int canvas_y = canvas->height - (int)round(p.position.y * scale);
+
+		// Проверка границ FROM image_put_pixel
+		if (canvas_x >= 0 && canvas_x < canvas->width && 
+			canvas_y >= 0 && canvas_y < canvas->height) 
+		{
+			// Используем функцию отрисовки пикселя
+			image_put_pixel(canvas, canvas_x, canvas_y, mlx_color);
+			draw_3x3_pixel_block(canvas, canvas_x, canvas_y, mlx_color);
+		}
+		// USING: tick() функция обновления снаряда
+		p = tick(env, p);
+		ticks++;
+		// Логирование FROM: test_ch1_projectile_impact
+		printf("Tick %2d: X = %.5f, Y = %.5f\n", ticks, p.position.x, p.position.y);
+
+	}
+	// Сохранение в PPM (используем вашу функцию)
+	int fd = open("test_files/trajectory14.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0) {
+		perror("Error opening PPM file");
+	} else {
+		image_to_ppm(canvas, fd);
+		close(fd);
+	}
+	printf("Projectile trajectory saved to test_files/trajectory14.ppm\n");
+
+	// Очистка ресурсов
+	image_destroy(canvas);
+	#ifdef __linux__
+	mlx_destroy_display(mlx);
+	#endif
+	free(mlx);
+}
+
+// Используемые функции:
+// projectile_create() - ваша функция создания снаряда
+// tick() - ваша функция обновления положения
+// image_put_pixel() - ваша функция отрисовки пикселя
+// image_to_ppm() - ваша функция сохранения PPM
+
+// Особенности реализации:
+// Инверсия Y: canvas_y = height - world_y (преобразование координат)
+// Область 3x3: Для видимости точек рисуем не один пиксель, а блок 3x3
+// Логирование: Сохраняем ваш вывод координат в консоль
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
 
@@ -970,8 +1150,13 @@ int main(void)
 	printf("\n");
 	test_ch2_constructing_the_ppm_pixel_data();
 	/*17June*/
-	// test_ch2_splitting_long_lines();
+	test_ch2_splitting_long_lines();
+	/*18June*/
 	printf("\n");
+	test_ch2_newline_character_at_the_end();
+	printf("\n");
+	/*19June*/
+	test_ch2_test_projectile_trajectory();
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();
 	// printf("\n");
