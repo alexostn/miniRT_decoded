@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alex <alex@student.42.fr>                  +#+  +:+       +#+         #
+#    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/22 04:05:22 by alex             ###   ########.fr        #
+#    Updated: 2025/06/12 23:53:14 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,7 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/colors.c \
 			$(SRC_DIR)/tuples/color_converters.c \
 			$(SRC_DIR)/tuples/pixel.c \
-			$(SRC_DIR)/tuples/image_to_ppm.c \
-			$(SRC_DIR)/matrices.c
+			$(SRC_DIR)/tuples/image_to_ppm.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -65,8 +64,7 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/colors.c \
 						$(SRC_DIR)/tuples/color_converters.c \
 						$(SRC_DIR)/tuples/pixel.c \
-						$(SRC_DIR)/tuples/image_to_ppm.c \
-						$(SRC_DIR)/matrices.c
+						$(SRC_DIR)/tuples/image_to_ppm.c
 
 # 3. Объектные файлы для модулей, используемых тестами
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
@@ -77,32 +75,6 @@ BOOK_TEST_RUNNER_OBJ = $(OBJ_DIR)/$(BOOK_TEST_RUNNER_SRC:.c=.o)
 
 # 5. Имя исполняемого файла для тестов книги
 BOOK_TEST_EXECUTABLE = run_book_tests
-
-# >>> MODULE TESTING SECTION BEGINNING
-# Новые тесты (автоматический поиск)
-TESTS_DIR = tests
-TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
-TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
-
-# Правило для компиляции ОДНОГО теста
-$(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
-
-# Правило для запуска ОДНОГО теста
-test_%: $(TESTS_DIR)/test_%
-	@echo "Running $@..."
-	./$<
-	@echo "Test finished"
-
-# Правило для запуска ВСЕХ новых тестов
-newtests: $(TEST_BINS)
-	@for t in $(notdir $(TEST_BINS)); do \
-		echo "Running $$t..."; \
-		./$(TESTS_DIR)/$$t; \
-	done
-# >>> MODULE TESTING SECTION END
-
 
 # bASic rules:
 all: $(NAME)
@@ -191,8 +163,3 @@ re: fclean all
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later
 #!!!DELETE mlx.supp with valgrind mlx suppression rules
-
-# Create test_file:	tests/test_matrices.c
-# Compile:					make test_matrices
-# Compile all tests:		make newtests
-# Compile till 'Matrices':	make vbtest
