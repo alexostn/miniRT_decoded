@@ -1,3 +1,4 @@
+#include "matrices.h" // for matrices tests
 #include "test_utils.h" // for TEST_ASSERT
 #include "tuples.h" // mention it for files from src/
 #include "projectile.h" // projectile.h includes environment.h
@@ -8,7 +9,7 @@
 #include <stdio.h> // for printf
 #include <fcntl.h> // for test files ppm and comparisson
 #include <stdbool.h> // for file_ends_with_newline
-
+#include <assert.h> // for alternative ASSERT 
 ///TO HELP PRINTING:
 
 void	print_tuple(t_tuple	pt)
@@ -1074,6 +1075,50 @@ void	test_ch2_test_projectile_trajectory(void)
 // Область 3x3: Для видимости точек рисуем не один пиксель, а блок 3x3
 // Логирование: Сохраняем ваш вывод координат в консоль
 
+
+// Scenario: Constructing and inspecting a 4x4 matrix
+// Given the following 4x4 matrix M:
+// | 1 | 2 | 3 | 4 |
+// | 5.5 | 6.5 | 7.5 | 8.5 |
+// | 9 | 10 | 11 | 12 |
+// | 13.5 | 14.5 | 15.5 | 16.5 |
+// Then M[0,0] = 1
+// And M[0,3] = 4
+// And M[1,0] = 5.5
+// And M[1,2] = 7.5
+// And M[2,2] = 11
+// And M[3,0] = 13.5
+// And M[3,2] = 15.5
+
+void test_ch3_matrix_construction()
+{
+	printf("Chapter 3: Constructing and inspecting a 4x4 matrix)\n");
+	double values[4][4] = {
+		{1, 2, 3, 4},
+		{5.5, 6.5, 7.5, 8.5},
+		{9, 10, 11, 12},
+		{13.5, 14.5, 15.5, 16.5}
+	};
+
+	t_matrix M = create_matrix(values);
+
+	// Проверки согласно тесту
+	TEST_ASSERT((get_matrix_element(&M, 0, 0) == 1), "M[0,0] = 1");
+	// assert(get_matrix_element(&M, 0, 0) == 1);
+	TEST_ASSERT((get_matrix_element(&M, 0, 3) == 4), "M[0,3] = 4");
+	// assert(get_matrix_element(&M, 0, 3) == 4);
+	TEST_ASSERT((get_matrix_element(&M, 1, 0) == 5.5), "M[1,0] = 5.5");
+	// assert(get_matrix_element(&M, 1, 0) == 5.5);
+	TEST_ASSERT((get_matrix_element(&M, 1, 2) == 7.5), "M[1,2] = 7.5");
+	// assert(get_matrix_element(&M, 1, 2) == 7.5);
+	TEST_ASSERT((get_matrix_element(&M, 2, 2) == 11), "M[2,2] = 11");
+	// assert(get_matrix_element(&M, 2, 2) == 11);
+	TEST_ASSERT((get_matrix_element(&M, 3, 0) == 13.5), "M[3,0] = 13.5");
+	// assert(get_matrix_element(&M, 3, 0) == 13.5);
+	TEST_ASSERT((get_matrix_element(&M, 3, 2) == 15.5), "M[3,2] = 15.5");
+	// assert(get_matrix_element(&M, 3, 2) == 15.5);
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
 
@@ -1142,6 +1187,9 @@ int main(void)
 	printf("\n");
 	/*19June*/
 	test_ch2_test_projectile_trajectory();
+	printf("\n");
+	/*23June*/
+	test_ch3_matrix_construction();
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();
 	// printf("\n");
