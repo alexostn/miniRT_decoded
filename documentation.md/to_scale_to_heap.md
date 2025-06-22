@@ -80,7 +80,3 @@ t_projectile p = projectile_create(...);
 // Heap (potentially)
 t_projectile *p = malloc(sizeof(t_projectile));
 *p = projectile_create(...);
-*******
-look to colors_structures_conversions.md
-separate structs and convertors() will help scale to heap
-*******

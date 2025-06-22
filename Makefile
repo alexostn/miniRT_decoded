@@ -13,8 +13,7 @@
 # Makefile for miniRT (C, miniLibX, no malloc)
 NAME    = miniRT
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror -g -Iinclude -I$(LIBFT_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)
-# CFLAGS  = -Wall -Wextra -Werror -g -Iinclude -Imlx-linux #-g is for debugger DELETE IT LATER
+CFLAGS  = -Wall -Wextra -Werror -g -Iinclude -Itests/ -I$(LIBFT_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)
 
 # Libft variables:
 LIBFT_DIR   = libft
@@ -24,8 +23,6 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 # MiniLibX variables:
 MLX_DIR = mlx-linux
 MLX_LIB = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
-# previous:
-# MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # Project variables:2
 SRC_DIR = src
@@ -50,10 +47,10 @@ SRCS    = $(SRC_DIR)/main.c \
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Variables for booktests:
-# 1. Исходный файл с тестами книги (лежит в корне проекта)
+# 1. Source file with book tests (located in the project root)
 BOOK_TEST_RUNNER_SRC = book_tests.c
 
-# 2. Исходные файлы из твоего проекта src/, которые нужны для тестов книги
+# 2. Source files from your src/ project needed for the book tests
 BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/window.c \
 						$(SRC_DIR)/image.c \
@@ -68,34 +65,34 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/image_to_ppm.c \
 						$(SRC_DIR)/matrices.c
 
-# 3. Объектные файлы для модулей, используемых тестами
+# 3. Object files for modules used by the tests
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
 
-# 4. Объектный файл для самого test runner'а
-#    Он будет создан в $(OBJ_DIR)/book_tests.o
+# 4. Object file for the test runner itself
+#    It will be created in $(OBJ_DIR)/book_tests.o
 BOOK_TEST_RUNNER_OBJ = $(OBJ_DIR)/$(BOOK_TEST_RUNNER_SRC:.c=.o)
 
-# 5. Имя исполняемого файла для тестов книги
+# 5. Name of the executable file for the book tests
 BOOK_TEST_EXECUTABLE = run_book_tests
 
 # >>> MODULE TESTING SECTION BEGINNING
-# Новые тесты (автоматический поиск)
+# New tests (automatic discovery)
 TESTS_DIR = tests
 TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
 TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
 
-# Правило для компиляции ОДНОГО теста
+# Rule for compiling ONE test
 $(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
-# Правило для запуска ОДНОГО теста
+# Rule for running ONE test
 test_%: $(TESTS_DIR)/test_%
 	@echo "Running $@..."
 	./$<
 	@echo "Test finished"
 
-# Правило для запуска ВСЕХ новых тестов
+# Rule for running ALL new tests
 newtests: $(TEST_BINS)
 	@for t in $(notdir $(TEST_BINS)); do \
 		echo "Running $$t..."; \
@@ -104,9 +101,8 @@ newtests: $(TEST_BINS)
 # >>> MODULE TESTING SECTION END
 
 
-# bASic rules:
+# basic rules:
 all: $(NAME)
-# all: $(MLX_DIR)/libmlx.a $(NAME)			OLD
 
 # libft compilation rule:
 $(LIBFT_LIB):
@@ -124,27 +120,24 @@ $(MLX_DIR)/libmlx.a: $(MLX_DIR)/Makefile.gen
 $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	$(CC) $(OBJS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
 
-# $(NAME): $(OBJS)							OLD
-# 	$(CC) $(OBJS) $(CFLAGS) $(MLX_LIB) -o $(NAME)
-
-# Правило для компиляции .c из src/ в obj/ (для основного проекта и модулей тестов)
+# Rule for compiling .c from src/ to obj/ (for the main project and test modules)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # >>> BOOK TESTS SECTION START (RULES) >>>
-# Правило для компиляции book_tests.c в obj/book_tests.o
+# Rule for compiling book_tests.c into obj/book_tests.o
 $(BOOK_TEST_RUNNER_OBJ): $(BOOK_TEST_RUNNER_SRC)
 	@mkdir -p $(OBJ_DIR) # Убедимся, что obj/ существует
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Цель для сборки и запуска тестов книги
+# Target for building and running the book tests
 btest: $(BOOK_TEST_EXECUTABLE)
 	@echo "Running Raytracer Challenge book tests..."
 	./$(BOOK_TEST_EXECUTABLE)
 	@echo "Book tests finished."
 
-# Добавляем цель для запуска тестов с Valgrind
+# Adding a target to run tests with Valgrind
 vbtest: $(BOOK_TEST_EXECUTABLE)
 	@echo "Running Raytracer Challenge book tests with Valgrind..."
 	valgrind --leak-check=full --show-leak-kinds=all \
@@ -156,34 +149,20 @@ vbtest: $(BOOK_TEST_EXECUTABLE)
 $(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
-# OLD:
-# $(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(MLX_DIR)/libmlx.a
-# 	$(CC) $(CFLAGS) $^ $(MLX_LIB) -lm -o $@
-#  -lm включает все зависимости продублирован уже здесь есть:
-# MLX_LIB = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
-
 # clean rules:
 clean:
-	@make -s -C $(LIBFT_DIR) clean # <<< ИЗМЕНЕНИЕ
+	@make -s -C $(LIBFT_DIR) clean
 	@make -s -C $(MLX_DIR) clean
 	rm -f $(OBJS)
 	rm -f $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS)
 	rm -rf $(OBJ_DIR)
-# clean:
-# 	rm -f $(OBJS)
-# 	rm -f $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS)
-# 	@make -s -C $(MLX_DIR) clean
 
 fclean: clean
 	@make -s -C $(LIBFT_DIR) fclean # <<< ИЗМЕНЕНИЕ
 	rm -f $(NAME)
 	rm -f $(BOOK_TEST_EXECUTABLE)
+	rm -f $(TEST_BINS)
 	rm -f valgrind.log
-# fclean: clean
-# 	rm -f $(NAME)
-# 	rm -f $(BOOK_TEST_EXECUTABLE)
-# 	rm -f valgrind.log  # <-- to delete later
-# 	rm -rf $(OBJ_DIR)
 
 re: fclean all
 .PHONY: all clean fclean re btest vbtest # vbtest is compilation for valgrind TO DELETE LATER
@@ -192,7 +171,7 @@ re: fclean all
 # rm -f valgrind.log  # <-- to delete later
 #!!!DELETE mlx.supp with valgrind mlx suppression rules
 
-# Create test_file:	tests/test_matrices.c
-# Compile:					make test_matrices
-# Compile all tests:		make newtests
-# Compile till 'Matrices':	make vbtest
+# Create test_file:						tests/test_matrices.c
+# Compile:								make test_matrices
+# Compile till 'Matrices' + valgrind:	make vbtest
+# Compile all tests from 'Matrices:		make newtests

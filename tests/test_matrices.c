@@ -27,7 +27,7 @@ void test_ch3_matrix_construction()
 	t_matrix M = create_matrix(values);
 
 	// Проверки согласно тесту
-	// TEST_ASSERT((get_matrix_element(&M, 0, 0) == 1), "M[0,0] = 1");
+	// TEST_ASSERT((get_matrix_element(&M, 0, 0) == 1), "M[0,0] = 1"); //don't link *.h's
 	assert(get_matrix_element(&M, 0, 0) == 1);
 	assert(get_matrix_element(&M, 0, 3) == 4);
 	assert(get_matrix_element(&M, 1, 0) == 5.5);
