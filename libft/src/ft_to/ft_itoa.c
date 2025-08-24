@@ -85,9 +85,7 @@ char	*ft_itoa(int n)
 	char				*result;
 	unsigned int		nbr;
 	long int			len;
-	int					sign;
 
-	sign = 1;
 	len = ft_int_len(n);
 	result = (char *)malloc(sizeof(char) * (len + 1));
 	if (result == NULL)
@@ -97,7 +95,6 @@ char	*ft_itoa(int n)
 		result[0] = '0';
 	if (n < 0)
 	{
-		sign *= -1;
 		nbr = n * -1;
 		result[0] = '-';
 	}

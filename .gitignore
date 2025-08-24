@@ -1,0 +1,92 @@
+# macOS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build artifacts and object files
+obj/
+*.o
+*.a
+*.dylib
+*.so
+*.dll
+*.exe
+
+# Project specific build files
+miniRT
+run_book_tests
+libmlx.dylib
+*.ppm
+
+# Library build artifacts
+libft/libft.a
+libft/obj/
+minilibx-mms/*.o
+minilibx-mms/*.swiftmodule
+minilibx-mms/*.swiftdoc
+minilibx-mms/*.abi.json
+minilibx-mms/*.swiftsourceinfo
+minilibx-mms/module-cache/
+minilibx-mms/libmlx.dylib
+mlx-linux/*.o
+mlx-linux/libmlx.a
+mlx-linux/Makefile.gen
+
+# Test files and outputs
+test_files/*.ppm
+tests/test_*
+valgrind.log
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.#*
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Compiler generated files
+*.gch
+*.pch
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Coverage files
+*.gcov
+*.gcda
+*.gcno
+
+# Package manager files
+node_modules/
+vendor/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*~
+*.orig
+*.rej
+
+# OS generated files
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db

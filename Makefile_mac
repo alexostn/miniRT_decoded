@@ -1,0 +1,179 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile_mac                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: alex <alex@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
+#    Updated: 2025/06/22 04:05:22 by alex             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Makefile for miniRT (C, miniLibX-mms, macOS)
+NAME    = miniRT
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror -g -Iinclude -Itests/ -I$(LIBFT_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)
+
+# Libft variables:
+LIBFT_DIR   = libft
+LIBFT_LIB   = $(LIBFT_DIR)/libft.a
+LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
+
+# MiniLibX-mms variables (macOS):
+MLX_DIR = minilibx-mms
+MLX_LIB = -L. -lmlx -framework Cocoa -framework OpenGL -framework IOKit
+
+# Project variables:
+SRC_DIR = src
+OBJ_DIR = obj
+
+SRCS    = $(SRC_DIR)/main.c \
+			$(SRC_DIR)/window.c \
+			$(SRC_DIR)/image.c \
+			$(SRC_DIR)/init.c \
+			$(SRC_DIR)/tuples/tuple_creation.c \
+			$(SRC_DIR)/tuples/tuple_predicates.c \
+			$(SRC_DIR)/tuples/tuple_utils.c \
+			$(SRC_DIR)/tuples/tuple_multiply_divide.c \
+			$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
+			$(SRC_DIR)/phisics/projectile.c \
+			$(SRC_DIR)/tuples/colors.c \
+			$(SRC_DIR)/tuples/color_converters.c \
+			$(SRC_DIR)/tuples/pixel.c \
+			$(SRC_DIR)/tuples/image_to_ppm.c \
+			$(SRC_DIR)/matrices.c
+
+OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+
+# Variables for booktests:
+# 1. Source file with book tests (located in the project root)
+BOOK_TEST_RUNNER_SRC = book_tests.c
+
+# 2. Source files from your src/ project needed for the book tests
+BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
+						$(SRC_DIR)/window.c \
+						$(SRC_DIR)/image.c \
+						$(SRC_DIR)/tuples/tuple_predicates.c \
+						$(SRC_DIR)/tuples/tuple_utils.c \
+						$(SRC_DIR)/tuples/tuple_multiply_divide.c \
+						$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
+						$(SRC_DIR)/phisics/projectile.c \
+						$(SRC_DIR)/tuples/colors.c \
+						$(SRC_DIR)/tuples/color_converters.c \
+						$(SRC_DIR)/tuples/pixel.c \
+						$(SRC_DIR)/tuples/image_to_ppm.c \
+						$(SRC_DIR)/matrices.c
+
+# 3. Object files for modules used by the tests
+BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
+
+# 4. Object file for the test runner itself
+#    It will be created in $(OBJ_DIR)/book_tests.o
+BOOK_TEST_RUNNER_OBJ = $(OBJ_DIR)/$(BOOK_TEST_RUNNER_SRC:.c=.o)
+
+# 5. Name of the executable file for the book tests
+BOOK_TEST_EXECUTABLE = run_book_tests
+
+# >>> MODULE TESTING SECTION BEGINNING
+# New tests (automatic discovery)
+TESTS_DIR = tests
+TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
+TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
+
+# Rule for compiling ONE test
+$(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) ./libmlx.dylib
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
+
+# Rule for running ONE test
+test_%: $(TESTS_DIR)/test_%
+	@echo "Running $@..."
+	./$<
+	@echo "Test finished"
+
+# Rule for running ALL new tests
+newtests: $(TEST_BINS)
+	@for t in $(notdir $(TEST_BINS)); do \
+		echo "Running $$t..."; \
+		./$(TESTS_DIR)/$$t; \
+	done
+# >>> MODULE TESTING SECTION END
+
+# basic rules:
+all: $(NAME)
+
+# Dependencies for the main project
+$(NAME): $(OBJS) $(LIBFT_LIB) ./libmlx.dylib
+	$(CC) $(OBJS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
+	@echo "✅ miniRT compiled successfully!"
+
+# libft compilation rule:
+$(LIBFT_LIB):
+	@echo "📚 Compiling libft..."
+	@make -s -C $(LIBFT_DIR)
+	@echo "✅ libft compiled successfully!"
+	
+# MLX-mms compilation rule:
+./libmlx.dylib:
+	@echo "🖼️  Compiling minilibx-mms..."
+	@make -s -C $(MLX_DIR)
+	@cp $(MLX_DIR)/libmlx.dylib .
+	@echo "✅ libmlx.dylib copied to project root"
+
+# Rule for compiling .c from src/ to obj/ (for the main project and test modules)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# >>> BOOK TESTS SECTION START (RULES) >>>
+# Rule for compiling book_tests.c into obj/book_tests.o
+$(BOOK_TEST_RUNNER_OBJ): $(BOOK_TEST_RUNNER_SRC)
+	@mkdir -p $(OBJ_DIR) # Убедимся, что obj/ существует
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Target for building and running the book tests
+btest: $(BOOK_TEST_EXECUTABLE)
+	@echo "Running Raytracer Challenge book tests..."
+	./$(BOOK_TEST_EXECUTABLE)
+	@echo "Book tests finished."
+
+# Adding a target to run tests with Valgrind
+vbtest: $(BOOK_TEST_EXECUTABLE)
+	@echo "Running Raytracer Challenge book tests with Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all \
+	--track-origins=yes --suppressions=mlx.supp \
+	--log-file=valgrind.log ./$(BOOK_TEST_EXECUTABLE)
+	@echo "Valgrind tests finished. See valgrind.log for details."
+
+# tests compilation rules:
+$(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) ./libmlx.dylib
+	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
+
+# clean rules:
+clean:
+	@make -s -C $(LIBFT_DIR) clean
+	@make -s -C $(MLX_DIR) clean
+	rm -f $(OBJS)
+	rm -f $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS)
+	rm -rf $(OBJ_DIR)
+
+fclean: clean
+	@make -s -C $(LIBFT_DIR) fclean
+	rm -f $(NAME)
+	rm -f $(BOOK_TEST_EXECUTABLE)
+	rm -f $(TEST_BINS)
+	rm -f valgrind.log
+	rm -f libmlx.dylib
+
+re: fclean all
+.PHONY: all clean fclean re btest vbtest newtests test_%
+
+#!!!DELETE valgrind.log as well
+# rm -f valgrind.log  # <-- to delete later
+#!!!DELETE mlx.supp with valgrind mlx suppression rules
+
+# Create test_file:						tests/test_matrices.c
+# Compile:								make test_matrices
+# Compile till 'Matrices' + valgrind:	make vbtest
+# Compile all tests from 'Matrices:		make newtests
