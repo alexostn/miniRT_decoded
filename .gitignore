@@ -25,6 +25,7 @@ libmlx.dylib
 # Library build artifacts
 libft/libft.a
 libft/obj/
+minilibx-mms/
 minilibx-mms/*.o
 minilibx-mms/*.swiftmodule
 minilibx-mms/*.swiftdoc
