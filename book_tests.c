@@ -270,8 +270,12 @@ void	test_ch1_normalize_vector(void)
 	printf("Chapter 1: Normalizing vector(1, 2, 3)\n");
 	t_tuple	v = vector(1, 2, 3);
 	t_tuple	normalized = normalize_vector(v);
-	t_tuple	expected_vector = vector(0.26726, 0.53452, 0.80178);
-	TEST_ASSERT(tuples_equal(normalized, expected_vector), "approximately vector(0.26726, 0.53452, 0.80178)");
+	double inv = 1.0 / sqrt(14.0);
+	t_tuple expected_vector = vector(1.0*inv, 2.0*inv, 3.0*inv);
+	// t_tuple	expected_vector = vector(0.26726, 0.53452, 0.80178);
+	TEST_ASSERT(tuples_equal(normalized, expected_vector),
+"approximately vector(1/sqrt14, 2/sqrt14, 3/sqrt14)");
+	// TEST_ASSERT(tuples_equal(normalized, expected_vector), "approximately vector(0.26726, 0.53452, 0.80178)");
 }
 
 // Scenario: The magnitude of a normalized vector
@@ -289,8 +293,10 @@ void test_ch1_magnitude_of_normalized_vector(void)
 	// printf("norm = %f %f %f\n", norm.x, norm.y, norm.z);
 	double magnitude = magnitude_of_vector(norm);
 	double expected_magnitude = 1;
-	t_tuple	expected_vector = vector(0.26726, 0.53452, 0.80178);
-	TEST_ASSERT(tuples_equal(norm, expected_vector), "approximately vector(0.26726, 0.53452, 0.80178)");
+	double inv = 1.0 / sqrt(14.0);
+	t_tuple expected_vector = vector(1.0*inv, 2.0*inv, 3.0*inv);
+	// t_tuple	expected_vector = vector(0.26726, 0.53452, 0.80178);
+	TEST_ASSERT(tuples_equal(norm, expected_vector), "approximately vector(1/sqrt14, 2/sqrt14, 3/sqrt14)");
 	TEST_ASSERT(floats_equal(magnitude, expected_magnitude), "magnitude(norm) = 1");
 }
 
@@ -363,15 +369,19 @@ void test_ch1_test_tick_updates_position_and_velocity(void)
 
 	p = tick(env, p);
 
-	// Ожидаемые значения после первого тика:
-	// Позиция: (0 + 0.707, 1 + 0.707, 0) ≈ (0.707, 1.707, 0)
-	// Скорость: (0.707 - 0.01, 0.707 - 0.1, 0) ≈ (0.697, 0.607, 0)
+/* Compute expected using exact math (no rounding literals) */
+	double	inv = 1.0 / sqrt(2.0); /* normalized(1,1,0) */
+	t_tuple	expected_pos = point(inv, 1.0 + inv, 0.0);
+	t_tuple	expected_vel = vector(inv - 0.01, inv - 0.1, 0.0);
+	TEST_ASSERT(tuples_equal(p.position, expected_pos),
+			"Position after 1st tick should be (~inv, 1+inv, 0)");
+	TEST_ASSERT(tuples_equal(p.velocity, expected_vel),
+			"Velocity after 1st tick should be (~inv-0.01, ~inv-0.1, 0)");
+	// TEST_ASSERT(tuples_equal(p.position, point(0.70711, 1.70711, 0)), 
+	// 			"Position after 1st tick should be (0.707, 1.707, 0)");
 
-	TEST_ASSERT(tuples_equal(p.position, point(0.70711, 1.70711, 0)), 
-				"Position after 1st tick should be (0.707, 1.707, 0)");
-
-	TEST_ASSERT(tuples_equal(p.velocity, vector(0.69711, 0.60711, 0)), 
-				"Velocity after 1st tick should be (0.697, 0.607, 0)");
+	// TEST_ASSERT(tuples_equal(p.velocity, vector(0.69711, 0.60711, 0)), 
+	// 			"Velocity after 1st tick should be (0.697, 0.607, 0)");
 	printf("p.position :");
 	print_tuple(p.position);
 	printf("p.velocity :");
@@ -385,19 +395,33 @@ void	test_ch1_multiple_ticks(void)
 	t_environment	env = {vector(0, -0.1, 0), vector(-0.01, 0, 0)};
 
 	// Array of expected values for the first 4 ticks (0-3)
+	double inv = 1.0 / sqrt(2.0);
 	t_tuple expected_pos[] = {
-		point(0.00000, 1.00000, 0),    // Tick 0 (initial state)
-		point(0.70711, 1.70711, 0),    // Tick 1
-		point(1.40422, 2.31422, 0),    // Tick 2
-		point(2.09133, 2.82133, 0)     // Tick 3
+		point(0.0, 1.0, 0.0),
+		point(inv, 1.0 + inv, 0.0),
+		point(inv + (inv - 0.01), 1.0 + inv + (inv - 0.1), 0.0),
+		point(inv + (inv - 0.01) + (inv - 0.02),
+		1.0 + inv + (inv - 0.1) + (inv - 0.2), 0.0)
 	};
-
 	t_tuple expected_vel[] = {
-		vector(0.70711, 0.70711, 0),   // Tick 0 (initial velocity)
-		vector(0.69711, 0.60711, 0),   // Tick 1
-		vector(0.68711, 0.50711, 0),   // Tick 2
-		vector(0.67711, 0.40711, 0)    // Tick 3
+		vector(inv, inv, 0.0),
+		vector(inv - 0.01, inv - 0.1, 0.0),
+		vector(inv - 0.02, inv - 0.2, 0.0),
+		vector(inv - 0.03, inv - 0.3, 0.0)
 	};
+	// t_tuple expected_pos[] = {
+	// 	point(0.00000, 1.00000, 0),    // Tick 0 (initial state)
+	// 	point(0.70711, 1.70711, 0),    // Tick 1
+	// 	point(1.40422, 2.31422, 0),    // Tick 2
+	// 	point(2.09133, 2.82133, 0)     // Tick 3
+	// };
+
+	// t_tuple expected_vel[] = {
+	// 	vector(0.70711, 0.70711, 0),   // Tick 0 (initial velocity)
+	// 	vector(0.69711, 0.60711, 0),   // Tick 1
+	// 	vector(0.68711, 0.50711, 0),   // Tick 2
+	// 	vector(0.67711, 0.40711, 0)    // Tick 3
+	// };
 
 	// Check initial state (tick 0)
 	printf("=== Initial state (tick 0) ===\n");
@@ -441,7 +465,7 @@ void test_ch1_projectile_impact(void)
 	}
 
 	// Check Y ≤ 0
-	TEST_ASSERT(p.position.y <= 0.0 + EPSILON, 
+	TEST_ASSERT(p.position.y <= 0.0 + EPS, 
 				"Projectile Y > 0 (actual Y)");
 
 	// Check number of ticks (≈17)

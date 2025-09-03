@@ -6,20 +6,18 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/06 00:09:10 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/03 22:31:52 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TUPLES_H
 # define TUPLES_H
 
-# include <math.h> // for fabs, pow, sqrt
-// If you have your own defines.h, EPSILON can be moved there
-# ifndef EPSILON
-#  define EPSILON 0.00001 // Precision for comparing float/double
-# endif
+# include "defines.h"
 
-// Structure for a tuple (can be a point or a vector)
+# include <math.h> // for fabs, pow, sqrt
+
+// Homogeneous 4D tuple (can be a point or a vector)
 // w = 1.0 for a point, w = 0.0 for a vector
 typedef struct s_tuple // tuples.h (vector operations)
 {
@@ -76,5 +74,9 @@ double	magnitude_of_vector(t_tuple v);
 t_tuple	normalize_vector(t_tuple v);
 double	dot_product(t_tuple a, t_tuple b);
 t_tuple	cross_product(t_tuple a, t_tuple b);
+
+// Floating-point helpers
+int floats_equal(double a, double b); /* absolute EPS compare /
+int floats_close(double a, double b, double absTol, double relTol); / abs/rel */
 
 #endif

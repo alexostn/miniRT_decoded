@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alex <alex@student.42.fr>                  +#+  +:+       +#+         #
+#    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/22 04:05:22 by alex             ###   ########.fr        #
+#    Updated: 2025/09/03 16:34:14 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -158,7 +158,7 @@ clean:
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@make -s -C $(LIBFT_DIR) fclean # <<< ИЗМЕНЕНИЕ
+	@make -s -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 	rm -f $(BOOK_TEST_EXECUTABLE)
 	rm -f $(TEST_BINS)

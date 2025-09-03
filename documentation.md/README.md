@@ -31,7 +31,7 @@ miniRT/
 |	│   ├── ray.h           # Структура t_ray (origin, direction)
 |	│   └── intersections.h # Структуры для пересечений
 |	│
-|	└── defines.h           # Глобальные константы (EPSILON, KEY_ESC и т.д.)
+|	└── defines.h           # Глобальные константы (EPS, KEY_ESC и т.д.)
 │   └──  minirt.h             # Главный заголовочный файл, может включать другие
 │                            # и содержать основные структуры проекта (например, t_data)
 │                            # (point, vector, is_point, is_vector и др., как мы делали)
@@ -146,5 +146,5 @@ includes/
 │   ├── ray.h           # t_ray, генерация лучей
 │   └── intersections.h # Структуры для пересечений
 │
-└── defines.h           # Глобальные константы (EPSILON, KEY_ESC и т.д.)
+└── defines.h           # Глобальные константы (EPS, KEY_ESC и т.д.)
 

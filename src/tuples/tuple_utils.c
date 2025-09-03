@@ -6,11 +6,31 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:41:31 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/06 00:02:44 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/03 22:30:13 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tuples.h"
+# include "tuples.h" // t_tuple, prototypes, EPS via defines.h
+# include <math.h> // fabs
+
+/* --------------------------------------------------------------------------
+** BEGIN: Added helper for robust float comparison (abs/rel tolerance)
+** |a-b| <= max(absTol, relTol * max(|a|,|b|))
+** Use for tricky tests with different scales or accumulated error.
+** -------------------------------------------------------------------------- /
+*/
+int floats_close(double a, double b, double absTol, double relTol)
+{
+double diff = a - b;
+if (diff < 0)
+diff = -diff;
+double aa = fabs(a);
+double bb = fabs(b);
+double maxab = (aa > bb) ? aa : bb;
+double tol_rel = relTol * maxab;
+double tol = (absTol > tol_rel) ? absTol : tol_rel;
+return (diff <= tol);
+}
 
 // Compares two tuples for equality
 // floats_equal is in tuple_predicates.c
