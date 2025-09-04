@@ -14,6 +14,10 @@ collects tests with valgrind and outputs the results to valgrind.log file
 # 2) make fclean
 deletes valgrind.log file and the rest
 
+# 3) norminette (.normignore has a bug)
+"Instead of running norminette ., just run your new script from the project root: -->
+# ./check_norm.sh
+
 There is also a folder for comparing .ppm files for some tests
 
 folder documentation.md is a mess

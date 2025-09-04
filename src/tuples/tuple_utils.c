@@ -6,30 +6,39 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:41:31 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/03 22:30:13 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:18:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "tuples.h" // t_tuple, prototypes, EPS via defines.h
-# include <math.h> // fabs
+#include "tuples.h" // t_tuple, prototypes, EPS via defines.h
+#include <math.h> // fabs
 
 /* --------------------------------------------------------------------------
 ** BEGIN: Added helper for robust float comparison (abs/rel tolerance)
-** |a-b| <= max(absTol, relTol * max(|a|,|b|))
+** |a-b| <= max(abs_tol, rel_tol * max(|a|,|b|))
 ** Use for tricky tests with different scales or accumulated error.
+** Checks if two doubles are close within absolute/relative tolerances.
 ** -------------------------------------------------------------------------- /
 */
-int floats_close(double a, double b, double absTol, double relTol)
+
+int	floats_close(double a, double b, double abs_tol, double rel_tol)
 {
-double diff = a - b;
-if (diff < 0)
-diff = -diff;
-double aa = fabs(a);
-double bb = fabs(b);
-double maxab = (aa > bb) ? aa : bb;
-double tol_rel = relTol * maxab;
-double tol = (absTol > tol_rel) ? absTol : tol_rel;
-return (diff <= tol);
+	double	diff;
+	double	maxab;
+	double	tol_rel;
+	double	tol;
+
+	diff = a - b;
+	if (diff < 0.0)
+		diff = -diff;
+	maxab = fabs(a);
+	if (fabs(b) > maxab)
+		maxab = fabs(b);
+	tol_rel = rel_tol * maxab;
+	tol = abs_tol;
+	if (tol_rel > tol)
+		tol = tol_rel;
+	return (diff <= tol);
 }
 
 // Compares two tuples for equality
@@ -38,10 +47,10 @@ return (diff <= tol);
 
 int	tuples_equal(t_tuple t1, t_tuple t2)
 {
-	if (floats_equal(t1.x, t2.x) && \
-		floats_equal(t1.y, t2.y) && \
-		floats_equal(t1.z, t2.z) && \
-		floats_equal(t1.w, t2.w))
+	if (floats_equal(t1.x, t2.x)
+		&& floats_equal(t1.y, t2.y)
+		&& floats_equal(t1.z, t2.z)
+		&& floats_equal(t1.w, t2.w))
 		return (1);
 	return (0);
 }

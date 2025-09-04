@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 16:09:18 by oostapen          #+#    #+#             */
-/*   Updated: 2024/12/02 16:09:32 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:57:00 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	ft_atoi(const char *s)
 
 	result = 0;
 	sign = 1;
-	while (*s == ' ' || *s == '\t' || *s == '\n' || \
-			*s == '\r' || *s == '\f' || *s == '\v')
+	while (*s == ' ' || *s == '\t' || *s == '\n'
+		|| *s == '\r' || *s == '\f' || *s == '\v')
 		s++;
 	if (*s == '-' || *s == '+')
 	{
@@ -69,18 +69,20 @@ int	ft_atoi(const char *s)
 
 // #include <stdlib.h>
 
-// int main() {
-//     char str1[] = "--1234";
-//     char str2[] = "++5678";
-//     char str3[] = "sdf12345";
+// int main()
+// {
+// 	char str1[] = "--1234";
+// 	char str2[] = "++5678";
+// 	char str3[] = "sdf12345";
 // 	printf("=== Testing ft_atoi ===\n");
-//     printf("atoi('%s') = %d\n", str1, ft_atoi(str1));
-//     printf("atoi('%s') = %d\n", str2, ft_atoi(str2));
-//     printf("atoi('%s') = %d\n", str3, ft_atoi(str3));
+// 	printf("atoi('%s') = %d\n", str1, ft_atoi(str1));
+// 	printf("atoi('%s') = %d\n", str2, ft_atoi(str2));
+// 	printf("atoi('%s') = %d\n", str3, ft_atoi(str3));
 // 	printf("\n");
 // 	printf("=== Testing ORIGINAL atoi ===\n");
-//     printf("atoi('%s') = %d\n", str1, atoi(str1));
-//     printf("atoi('%s') = %d\n", str2, atoi(str2));
-//     printf("atoi('%s') = %d\n", str3, atoi(str3));
+// 	printf("atoi('%s') = %d\n", str1, atoi(str1));
+// 	printf("atoi('%s') = %d\n", str2, atoi(str2));
+// 	printf("atoi('%s') = %d\n", str3, atoi(str3));
 
-//     return 0;
+// 	return (0);
+// }

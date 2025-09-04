@@ -3,26 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   image_to_ppm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 22:08:59 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/20 00:46:16 by alex             ###   ########.fr       */
+/*   Updated: 2025/09/04 16:34:03 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "colors.h"
 #include <math.h>
 
+/*
 // place it to ft_libft prototype :
-// static void	ft_itoa_buf(int n, char *buf)
-// {
-// 	if (n > 99)
-// 		ft_strlcpy(buf, (char[]){n / 100 + '0', (n / 10 % 10) + '0', n % 10 + '0', 0}, 4);
-// 	else if (n > 9)
-// 		ft_strlcpy(buf, (char[]){n / 10 + '0', n % 10 + '0', 0}, 4);
-// 	else
-// 		ft_strlcpy(buf, (char[]){n + '0', 0}, 2);
-// }
+static void	ft_itoa_buf(int n, char *buf)
+{
+	if (n > 99)
+		ft_strlcpy(buf, (char [])
+		{n / 100 + '0', (n / 10 % 10) + '0', n % 10 + '0', 0}, 4);
+	else if (n > 9)
+		ft_strlcpy(buf, (char []){n / 10 + '0', n % 10 + '0', 0}, 4);
+	else
+		ft_strlcpy(buf, (char []){n + '0', 0}, 2);
+}
+*/
 
 static void	append_color_string(char *line, int *line_len, int channel, int fd)
 {
@@ -46,20 +49,22 @@ static void	append_color_string(char *line, int *line_len, int channel, int fd)
 	*line_len += num_len;
 }
 
-// static void	append_to_line(char **line, int *line_len, const char *str, int fd)
-// {
-// 	int	str_len;
+/*
+static void	append_to_line(char **line, int *line_len, const char *str, int fd)
+{
+	int	str_len;
 
-// 	str_len = ft_strlen(str);
-// 	if (*line_len + str_len > 70)
-// 	{
-// 		ft_putendl_fd(*line, fd);
-// 		ft_bzero(*line, 71);
-// 		*line_len = 0;
-// 	}
-// 	ft_strlcat(*line, str, 71);
-// 	*line_len += str_len;
-// }
+	str_len = ft_strlen(str);
+	if (*line_len + str_len > 70)
+	{
+		ft_putendl_fd(*line, fd);
+		ft_bzero(*line, 71);
+		*line_len = 0;
+	}
+	ft_strlcat(*line, str, 71);
+	*line_len += str_len;
+}
+*/
 
 static void	write_pixel_data(t_image *img, int fd)
 {

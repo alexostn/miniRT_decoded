@@ -1,14 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa_buf.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 19:13:42 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/04 19:14:49 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 /*	PUT HEADER IN
  * ft_itoa_buf
  * -----------
- * Converts a non-negative integer n (expected range: 0–255) to a null-terminated string.
- * The result is written into the provided buffer `buf`, which must be at least 4 bytes.
+ * Converts a non-negative integer n (expected range: 0–255)
+ * to a null-terminated string.
+ * The result is written into the provided buffer `buf`,
+ * which must be at least 4 bytes.
  * No dynamic memory allocation is used.
  *
- * 1. If n is 100 or greater, writes three digits (hundreds, tens, units) and '\0'.
- * 2. If n is between 10 and 99, writes two digits (tens, units) and '\0'.
- * 3. If n is between 0 and 9, writes one digit and '\0'.
+ * 1.If n is 100 or greater, writes three digits(hundreds, tens, units) and '\0'.
+ * 2.If n is between 10 and 99, writes two digits (tens, units) and '\0'.
+ * 3.If n is between 0 and 9, writes one digit and '\0'.
  *
  * Example:
  *   int n = 123;
@@ -23,7 +36,7 @@ void	ft_itoa_buf(int n, char *buf)
 	if (n < 0 || n > 999)
 	{
 		ft_strlcpy(buf, "ERR", 4);
-		return;
+		return ;
 	}
 	if (n > 99)
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrices.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 16:34:24 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/04 16:34:35 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "matrices.h"
 
 t_matrix	create_matrix(double values[4][4])
@@ -5,7 +17,7 @@ t_matrix	create_matrix(double values[4][4])
 	t_matrix	m;
 	int			i;
 	int			j;
-	
+
 	i = 0;
 	while (i < 4)
 	{

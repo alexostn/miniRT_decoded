@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 18:10:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/03 21:22:49 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:39:54 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 # include "tuples.h"
 # include "defines.h"
-// #include <assert.h>
-// #include <stdio.h>
-
 
 /* bool in API prototypes */
 # include <stdbool.h>
@@ -30,8 +27,8 @@
 
 typedef struct s_matrix
 {
-	double data[4][4]; //- Row-major layout: data[row][col]
-} t_matrix;
+	double	data[4][4]; //- Row-major layout: data[row][col]
+}	t_matrix;
 
 t_matrix	mat_identity(void);
 t_matrix	mat_mul(t_matrix a, t_matrix b);
