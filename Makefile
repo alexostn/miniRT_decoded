@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/03 16:34:14 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/05 00:14:45 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/color_converters.c \
 			$(SRC_DIR)/tuples/pixel.c \
 			$(SRC_DIR)/tuples/image_to_ppm.c \
-			$(SRC_DIR)/matrices.c
+			$(SRC_DIR)/matrices/matrices.c \
+			$(SRC_DIR)/matrices/mat_mult_identity.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -63,7 +64,8 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/color_converters.c \
 						$(SRC_DIR)/tuples/pixel.c \
 						$(SRC_DIR)/tuples/image_to_ppm.c \
-						$(SRC_DIR)/matrices.c
+						$(SRC_DIR)/matrices/matrices.c \
+						$(SRC_DIR)/matrices/mat_mult_identity.c
 
 # 3. Object files for modules used by the tests
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))

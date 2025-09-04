@@ -24,6 +24,31 @@ void	print_color(t_color	pc)
 		pc.r, pc.g, pc.b, pc.a);
 }
 
+/*
+** This function prints the content of a 4x4 matrix in a formatted way.
+*/
+void	print_matrix(t_matrix m)
+{
+	int i;
+	int j;
+
+	i = 0;
+	printf("\n--- Matrix Content ---\n");
+	while (i < 4)
+	{
+		j = 0;
+		printf("|");
+		while (j < 4)
+		{
+			printf("%8.4f ", m.data[i][j]);
+			j++;
+		}
+		printf("|\n");
+		i++;
+	}
+	printf("---------------------\n\n");
+}
+
 // --- Test functions from Chapter 1: Tuples, Points, and Vectors ---
 void	test_ch1_tuple_is_point(void)
 {
@@ -1143,6 +1168,109 @@ void test_ch3_matrix_construction()
 	// assert(get_matrix_element(&M, 3, 2) == 15.5);
 }
 
+void test_ch3_identity_shape(void)
+{
+	printf("Chapter 3: Identity matrix shape (diagonal ones)\n");
+
+	t_matrix	id;
+	int			i;
+	int			j;
+
+	id = mat_identity(); /* build identity matrix*/
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			if (j == i)
+			{
+				TEST_ASSERT(floats_equal(id.data[i][j], 1.0), "Diagonal element is equal 1.0");
+			}
+			else
+			{
+				TEST_ASSERT(floats_equal(id.data[i][j], 0.0), "Off-diagonal element is equal 0.0");
+			}
+			j++;
+		}
+		i++;
+	}
+	print_matrix(id);
+}
+
+void test_ch3_matrix_equality(void)
+{
+	printf("Chapter 3: Matrix equality\n");
+	t_matrix a;
+	t_matrix b;
+
+	// Initialize matrix A
+	a.data[0][0] = 1; a.data[0][1] = 2; a.data[0][2] = 3; a.data[0][3] = 4;
+	a.data[1][0] = 5; a.data[1][1] = 6; a.data[1][2] = 7; a.data[1][3] = 8;
+	a.data[2][0] = 9; a.data[2][1] = 8; a.data[2][2] = 7; a.data[2][3] = 6;
+	a.data[3][0] = 5; a.data[3][1] = 4; a.data[3][2] = 3; a.data[3][3] = 2;
+
+	// Initialize matrix B (identical to A)
+	b.data[0][0] = 1; b.data[0][1] = 2; b.data[0][2] = 3; b.data[0][3] = 4;
+	b.data[1][0] = 5; b.data[1][1] = 6; b.data[1][2] = 7; b.data[1][3] = 8;
+	b.data[2][0] = 9; b.data[2][1] = 8; b.data[2][2] = 7; b.data[2][3] = 6;
+	b.data[3][0] = 5; b.data[3][1] = 4; b.data[3][2] = 3; b.data[3][3] = 2;
+
+	// Test 1: Identical matrices should be equal
+	TEST_ASSERT(mat_equal(a, b), "Matrices are equal");
+	print_matrix(a);
+	print_matrix(b);
+
+	// Modify matrix B to make it different
+	b.data[0][0] = 2; b.data[0][1] = 3; b.data[0][2] = 4; b.data[0][3] = 5;
+	b.data[1][0] = 6; b.data[1][1] = 7; b.data[1][2] = 8; b.data[1][3] = 9;
+	b.data[2][0] = 8; b.data[2][1] = 7; b.data[2][2] = 6; b.data[2][3] = 5;
+	b.data[3][0] = 4; b.data[3][1] = 3; b.data[3][2] = 2; b.data[3][3] = 1;
+
+	// Test 2: Different matrices should not be equal
+	TEST_ASSERT(!mat_equal(a, b), "Matrices are not equal");
+	print_matrix(a);
+	print_matrix(b);
+	printf("\n");
+}
+
+/*
+*   run_mat_mul_test: Initializes matrices, runs mat_mul,
+*   and checks the result against the expected output from the book.
+*   Uses existing `print_matrix` and custom `mat_equal` functions.
+*/
+void	test_ch3_run_mat_mul_test(void)
+{
+	t_matrix	a;
+	t_matrix	b;
+	t_matrix	result;
+	t_matrix	expected;
+
+	// Initialize matrices A and B (data from "The Raytracer Challenge", p. 28)
+	a = (t_matrix){{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 8, 7, 6}, {5, 4, 3, 2}}};
+	b = (t_matrix){{{-2, 1, 2, 3}, {3, 2, 1, -1}, {4, 3, 6, 5}, {1, 2, 7, 8}}};
+	
+	// Expected result for C = A * B
+	expected = (t_matrix){{{20, 22, 50, 48}, {44, 54, 114, 108}, \
+		{40, 58, 110, 102}, {16, 26, 46, 42}}};
+	
+	printf("--- Testing mat_mul ---\n");
+	printf("Matrix A:\n");
+	print_matrix(a);
+	printf("\nMatrix B:\n");
+	print_matrix(b);
+
+	result = mat_mul(a, b);
+
+	printf("\nResult of A * B:\n");
+	print_matrix(result);
+	printf("\nExpected result:\n");
+	print_matrix(expected);
+	if (mat_equal(result, expected))
+		printf("\nTest PASSED!\n");
+	else
+		printf("\nTest FAILED!\n");
+}
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
 
@@ -1216,8 +1344,15 @@ int main(void)
 	test_ch3_matrix_construction();
 	// Add calls to tests for subsequent chapters here
 	// test_ch2_some_canvas_feature();
-	// printf("\n");
-
+	printf("\n");
+	/*4September*/
+	test_ch3_identity_shape();
+	printf("\n");
+	test_ch3_matrix_equality();
+	printf("\n");
+	/*5September*/
+	test_ch3_run_mat_mul_test();
+	printf("\n");
 	printf("--- All book tests finished. ---\n");
 	return (0);
 }

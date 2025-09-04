@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile_mac                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alex <alex@student.42.fr>                  +#+  +:+       +#+         #
+#    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/06/22 04:05:22 by alex             ###   ########.fr        #
+#    Updated: 2025/09/05 00:15:35 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ MLX_LIB = -L. -lmlx -framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRCS    = $(SRC_DIR)/main.c \
+SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/window.c \
 			$(SRC_DIR)/image.c \
 			$(SRC_DIR)/init.c \
@@ -42,9 +42,10 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/color_converters.c \
 			$(SRC_DIR)/tuples/pixel.c \
 			$(SRC_DIR)/tuples/image_to_ppm.c \
-			$(SRC_DIR)/matrices.c
+			$(SRC_DIR)/matrices/matrices.c \
+			$(SRC_DIR)/matrices/mat_mult_identity.c
 
-OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Variables for booktests:
 # 1. Source file with book tests (located in the project root)
@@ -63,8 +64,9 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/color_converters.c \
 						$(SRC_DIR)/tuples/pixel.c \
 						$(SRC_DIR)/tuples/image_to_ppm.c \
-						$(SRC_DIR)/matrices.c
-
+						$(SRC_DIR)/matrices/matrices.c \
+						$(SRC_DIR)/matrices/mat_mult_identity.c
+						
 # 3. Object files for modules used by the tests
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
 
