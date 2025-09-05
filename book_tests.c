@@ -1254,7 +1254,7 @@ void	test_ch3_run_mat_mul_test(void)
 	expected = (t_matrix){{{20, 22, 50, 48}, {44, 54, 114, 108}, \
 		{40, 58, 110, 102}, {16, 26, 46, 42}}};
 	
-	printf("--- Testing mat_mul ---\n");
+	printf("Chapter 3: Testing matrice multiplication \n");
 	printf("Matrix A:\n");
 	print_matrix(a);
 	printf("\nMatrix B:\n");
@@ -1271,6 +1271,297 @@ void	test_ch3_run_mat_mul_test(void)
 	else
 		printf("\nTest FAILED!\n");
 }
+
+void	test_ch3_multiply_matrix_by_tuple(void)
+{
+	printf("Chapter 3: Multiplying a matrix by a tuple \n\n");
+
+	t_matrix	a;
+	t_tuple		b;
+	t_tuple		expected;
+	t_tuple		result;
+
+	// 1. Arrange
+	a = (t_matrix){{{1, 2, 3, 4},
+	{2, 4, 4, 2},
+	{8, 6, 4, 1},
+	{0, 0, 0, 1}}};
+
+	printf("Matrix a:\n");
+	print_matrix(a);
+
+	b = (t_tuple){1, 2, 3, 1};
+	printf("Tuple b:\n");
+	print_tuple(b);
+	printf("\n");
+
+	expected = (t_tuple){18, 24, 33, 1};
+	printf("Expected tuple:\n");
+	print_tuple(expected);
+	printf("\n");
+	// 2. Act
+	result = mat_mul_tuple(a, b);
+
+	TEST_ASSERT(tuples_equal(expected, result), "a * b = tuple(18, 24, 33, 1)");
+	printf("\n");
+}
+
+void	test_ch3_transpose_matrix(void)
+{
+	double	values[4][4] = {
+		{0, 9, 3, 0},
+		{9, 8, 0, 8},
+		{1, 8, 5, 3},
+		{0, 0, 5, 8}
+	};
+	double	expected_values[4][4] = {
+		{0, 9, 1, 0},
+		{9, 8, 8, 0},
+		{3, 0, 5, 5},
+		{0, 8, 3, 8}
+	};
+	t_matrix	a;
+	t_matrix	expected;
+	t_matrix	result;
+
+	printf("Chapter 3: Transposing a matrix\n\n");
+
+	a = create_matrix(values);
+	expected = create_matrix(expected_values);
+
+	printf("Matrix a (input):\n");
+	print_matrix(a);
+
+	result = mat_transpose(a);
+
+	printf("\nMatrix result (transposed):\n");
+	print_matrix(result);
+
+	TEST_ASSERT(mat_equal(result, expected), "mat_transpose: transpose is correct");
+}
+
+/*
+** Example: test_ch3_transpose_identity()
+** Description: Unit test for transpose of the identity matrix.
+** Uses: mat_identity(), mat_transpose(), mat_equal()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+
+void	test_ch3_transpose_identity(void)
+{
+	printf("Chapter 3: Transposing the identity matrix\n\n");
+	const t_matrix	identity = mat_identity();
+	t_matrix		result;
+	printf("identity:\n");
+	print_matrix(identity);
+	result = mat_transpose(identity);
+	printf("result:\n");
+	print_matrix(result);
+	TEST_ASSERT(mat_equal(result, identity), "transposed the identity matrix");
+}
+
+/*
+Here begin tests using submatrice, determinant for inversing using recursion,
+I am on my way with understanding it :)
+*/
+
+/*
+** Example: test_ch3_determinant_2x2()
+** Description: Unit test for the determinant of a 2x2 matrix.
+** Uses: create_matrix(), mat_determinant()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+void	test_ch3_determinant_2x2(void)
+{
+	printf("Chapter 3: Calculating the determinant of a 2x2 matrix\n\n");
+	double      values[4][4] = {
+		{1, 5, 0, 0},
+		{-3, 2, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0}
+	};
+	t_matrix	a = create_matrix(values);
+	double		det;
+
+	// This test assumes that mat_determinant can handle a 2x2 matrix,
+	// likely by calling an internal helper for the base case.
+	det = mat_determinant(a);
+
+	printf("Matrix A (testing top-left 2x2 part):\n");
+	print_matrix(a);
+
+	// Determinant of | 1  5 | is 1*2 - 5*(-3) = 2 + 15 = 17
+	//                | -3 2 |
+	TEST_ASSERT(floats_equal(det, 17.0), "Determinant of 2x2 matrix is correct and equal to:");
+	printf("%f",det);
+}
+
+/*
+** Example: test_ch3_submatrix_minor_cofactor()
+** Description: Unit tests for submatrix, minor, and cofactor calculations.
+** Uses: create_matrix(), mat_submatrix(), mat_minor(), mat_cofactor(), mat_equal()
+*/
+void	test_ch3_submatrix_minor_cofactor(void)
+{
+	t_matrix	a;
+	t_matrix	b;
+	t_matrix	sub;
+	t_matrix	expected_sub;
+	double  	a_values[4][4] = {
+		{1, 5, 0, 0}, {-3, 2, 7, 0}, {0, 6, -3, 0}, {0, 0, 0, 0}
+	};
+	double      expected_sub_values[4][4] = {
+		{-3, 7, 0, 0}, {0, -3, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}
+	};
+
+	printf("Chapter 3: Submatrix, Minor, and Cofactor\n\n");
+	a = create_matrix(a_values);
+	expected_sub = create_matrix(expected_sub_values);
+	printf("test a matrix (initial):\n");
+	print_matrix(a);
+	printf("expected_sub matrix:\n");
+	print_matrix(expected_sub);
+	printf("Original 3x3 Matrix a:\n");
+	print_matrix(a);
+
+	// Test submatrix of a 3x3 matrix
+	sub = mat_submatrix(a, 0, 1);
+	printf("Submatrix of a (removing row 0, col 1):\n");
+	print_matrix(sub);
+	TEST_ASSERT(mat_equal(sub, expected_sub), "Submatrix of 3x3 is correct");
+
+	// Test minor and cofactor
+	b = create_matrix(a_values);
+	// minor(A, 0, 0) is determinant of | 2,  7 | = 2*(-3) - 7*6 = -6 - 42 = -48
+	//                                  | 6, -3 |
+	TEST_ASSERT(floats_equal(mat_minor(b, 0, 0), -48), "Minor of 3x3 matrix");
+	// cofactor(A, 0, 0) is the same, since (0+0) is even.
+	TEST_ASSERT(floats_equal(mat_cofactor(b, 0, 0), -48), "Cofactor (sign not changed)");
+
+	// minor(A, 1, 0) is determinant of | 5,  0 | = 5*(-3) - 0*6 = -15
+	//                                  | 6, -3 |
+	TEST_ASSERT(floats_equal(mat_minor(b, 1, 0), -15), "Minor of 3x3 matrix (case 2)");
+	// cofactor(A, 1, 0) is negated, since (1+0) is odd.
+	TEST_ASSERT(floats_equal(mat_cofactor(b, 1, 0), 15), "Cofactor (sign changed)");
+}
+
+/*
+** Example: test_ch3_determinant_3x3_and_4x4()
+** Description: Unit tests for 3x3 and 4x4 matrix determinants.
+** Uses: create_matrix(), mat_determinant(), mat_cofactor()
+*/
+void	test_ch3_determinant_3x3_and_4x4(void)
+{
+	t_matrix	a;
+	t_matrix	b;
+	double		a_values[4][4] = {
+		{1, 2, 6, 0}, {-5, 8, -4, 0}, {2, 6, 4, 0}, {0, 0, 0, 0}
+	};
+	double		b_values[4][4] = {
+		{-2, -8, 3, 5}, {-3, 1, 7, 3}, {1, 2, -9, 6}, {-6, 7, 7, -9}
+	};
+
+	printf("Chapter 3: Calculating determinants of 3x3 and 4x4 matrices\n\n");
+
+	// Test 3x3 determinant
+	a = create_matrix(a_values);
+	printf("Matrix A (3x3):\n");
+	print_matrix(a);
+	TEST_ASSERT(floats_equal(mat_cofactor(a, 0, 0), 56),   "Cofactor A(0,0) = 56");
+	TEST_ASSERT(floats_equal(mat_cofactor(a, 0, 1), 12),   "Cofactor A(0,1) = 12");
+	TEST_ASSERT(floats_equal(mat_cofactor(a, 0, 2), -46),  "Cofactor A(0,2) = -46");
+	// Expected: 1*56 + 2*12 + 6*(-46) = 56 + 24 - 276 = -196
+	TEST_ASSERT(floats_equal(mat_determinant(a), -196), "Determinant of 3x3 matrix");
+
+	// Test 4x4 determinant
+	b = create_matrix(b_values);
+	printf("\nMatrix B (4x4):\n");
+	print_matrix(b);
+	TEST_ASSERT(floats_equal(mat_cofactor(b, 0, 0), 690),  "Cofactor B(0,0) = 690");
+	TEST_ASSERT(floats_equal(mat_cofactor(b, 0, 1), 447),  "Cofactor B(0,1) = 447");
+	TEST_ASSERT(floats_equal(mat_cofactor(b, 0, 2), 210),  "Cofactor B(0,2) = 210");
+	TEST_ASSERT(floats_equal(mat_cofactor(b, 0, 3), 51),   "Cofactor B(0,3) = 51");
+	// Expected: -2*690 + (-8)*447 + 3*210 + 5*51 = -1380 - 3576 + 630 + 255 = -4071
+	TEST_ASSERT(floats_equal(mat_determinant(b), -4071), "Determinant of 4x4 matrix");
+}
+
+/*
+** Example: test_ch3_inversion()
+** Description: Unit tests for matrix inversion, checking for invertibility.
+** Uses: create_matrix(), mat_inverse(), mat_determinant(), mat_equal()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+void    test_ch3_inversion(void)
+{
+	t_matrix    a;
+	t_matrix    inv_a;
+	t_matrix    expected_inv;
+	bool        is_invertible;
+	double      a_values[4][4] = {
+		{8, -5, 9, 2}, {7, 5, 6, 1}, {-6, 0, 9, 6}, {-3, 0, -9, -4}
+	};
+	double      expected_values[4][4] = {
+		{-0.15385, -0.15385, -0.28205, -0.51282},
+		{-0.07692,  0.12308,  0.02564,  0.03077},
+		{0.35897,   0.35897,  0.43590,  0.92308},
+		{-0.69231, -0.69231, -0.76923, -1.92308}
+	};
+
+	printf("Chapter 3: Matrix Inversion\n\n");
+	a = create_matrix(a_values);
+	expected_inv = create_matrix(expected_values);
+	printf("Matrix A:\n");
+	print_matrix(a);
+
+	// Test invertibility
+	TEST_ASSERT(!floats_equal(mat_determinant(a), 0), "Matrix is invertible (det != 0)");
+
+	inv_a = mat_inverse(a, &is_invertible);
+	TEST_ASSERT(is_invertible, "mat_inverse reports success");
+
+	printf("Inverse of A (calculated):\n");
+	print_matrix(inv_a);
+	printf("Inverse of A (expected):\n");
+	print_matrix(expected_inv);
+
+	TEST_ASSERT(mat_equal(inv_a, expected_inv), "Calculated inverse matches expected inverse");
+}
+
+/*
+** Example: test_ch3_inverse_sanity_check()
+** Description: Sanity check: A * inverse(A) must be the identity matrix.
+** Uses: mat_mul(), mat_inverse(), mat_identity(), mat_equal()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+void	test_ch3_inverse_sanity_check(void)
+{
+	t_matrix    a;
+	t_matrix    inv_a;
+	t_matrix    product;
+	bool        ok;
+	double      a_values[4][4] = {
+		{3, -9, 7, 3}, {3, -8, 2, -9}, {-4, 4, 4, 1}, {-6, 5, -1, 1}
+	};
+
+	printf("Chapter 3: Sanity Check: A * inverse(A) = Identity\n\n");
+	a = create_matrix(a_values);
+	printf("Matrix A:\n");
+	print_matrix(a);
+
+	inv_a = mat_inverse(a, &ok);
+	TEST_ASSERT(ok, "Matrix A is invertible for sanity check");
+	printf("Inverse of A:\n");
+	print_matrix(inv_a);
+
+	product = mat_mul(a, inv_a);
+	printf("Product of A * inverse(A):\n");
+	print_matrix(product);
+
+	// The product should be the identity matrix
+	TEST_ASSERT(mat_equal(product, mat_identity()), "Product of matrix and its inverse is identity");
+}
+
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
 
@@ -1353,6 +1644,24 @@ int main(void)
 	/*5September*/
 	test_ch3_run_mat_mul_test();
 	printf("\n");
+	test_ch3_multiply_matrix_by_tuple();
+	printf("\n");
+	test_ch3_transpose_matrix();
+	printf("\n");
+	test_ch3_transpose_identity();
+	printf("\n");
+/*Here begin tests using submatrice, determinant for inversing using recursion, I am on my way with understanding it :)*/
+	test_ch3_determinant_2x2();
+	printf("\n");
+	test_ch3_submatrix_minor_cofactor();
+	printf("\n");
+	test_ch3_determinant_3x3_and_4x4();
+	printf("\n");
+	test_ch3_inversion();
+	printf("\n");
+	test_ch3_inverse_sanity_check();
+	printf("\n");
+
 	printf("--- All book tests finished. ---\n");
 	return (0);
 }
