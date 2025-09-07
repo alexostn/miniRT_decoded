@@ -6,6 +6,7 @@
 #include "window.h"
 #include "image.h"
 #include "rays.h" // for ray tests
+#include "spheres.h" // for sphere tests
 
 #include <stdio.h> // for printf
 #include <fcntl.h> // for test files ppm and comparisson
@@ -32,6 +33,33 @@ void	print_ray(t_ray r)
 	printf("Ray direction: ");
 	print_tuple(r.direction);
 }
+
+void	print_intersections(t_xs xs)
+{
+	printf("Intersections count: %d\n", xs.count);
+	for (int i = 0; i < xs.count; i++)
+	{
+		printf("  t[%d] = %.1f\n", i, xs.intersections[i].t);
+	}
+}
+
+// Function prototypes for Chapter 5 tests
+void	test_ch5_ray_intersects_sphere_at_two_points(void);
+void	test_ch5_ray_intersects_sphere_at_tangent(void);
+void	test_ch5_ray_misses_sphere(void);
+void	test_ch5_ray_originates_inside_sphere(void);
+void	test_ch5_sphere_is_behind_ray(void);
+void	test_ch5_intersection_encapsulates_t_and_object(void);
+void	test_ch5_aggregating_intersections(void);
+void	test_ch5_intersect_sets_object_on_intersection(void);
+void	test_ch5_hit_when_all_intersections_have_positive_t(void);
+void	test_ch5_hit_when_some_intersections_have_negative_t(void);
+void	test_ch5_hit_when_all_intersections_have_negative_t(void);
+void	test_ch5_hit_is_always_lowest_nonnegative_intersection(void);
+void	test_ch5_sphere_default_transformation(void);
+void	test_ch5_changing_sphere_transformation(void);
+void	test_ch5_intersecting_scaled_sphere_with_ray(void);
+void	test_ch5_intersecting_translated_sphere_with_ray(void);
 
 /*
 ** This function prints the content of a 4x4 matrix in a formatted way.
@@ -1663,6 +1691,308 @@ void	test_ch5_scaling_ray(void)
 	TEST_ASSERT(tuples_equal(r2.direction, vector(0, 3, 0)), "r2.direction = vector(0, 3, 0)");
 }
 
+// --- Test functions from Chapter 5: Ray-Sphere Intersections ---
+
+// Scenario: A ray intersects a sphere at two points
+// Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
+// And s ← sphere()
+// When xs ← intersect(s, r)
+// Then xs.count = 2
+// And xs[0] = 4.0
+// And xs[1] = 6.0
+void	test_ch5_ray_intersects_sphere_at_two_points(void)
+{
+	printf("Chapter 5: A ray intersects a sphere at two points\n");
+	t_ray		r = ray(point(0, 0, -5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_xs		xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(fabs(xs.intersections[0].t - 4.0) < EPS, "xs[0] = 4.0");
+	TEST_ASSERT(fabs(xs.intersections[1].t - 6.0) < EPS, "xs[1] = 6.0");
+
+	intersections_destroy(&xs);
+}
+
+// Scenario: A ray intersects a sphere at a tangent
+// Given r ← ray(point(0, 1, -5), vector(0, 0, 1))
+// And s ← sphere()
+// When xs ← intersect(s, r)
+// Then xs.count = 2
+// And xs[0] = 5.0
+// And xs[1] = 5.0
+void	test_ch5_ray_intersects_sphere_at_tangent(void)
+{
+	printf("Chapter 5: A ray intersects a sphere at a tangent\n");
+	t_ray		r = ray(point(0, 1, -5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_xs		xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(fabs(xs.intersections[0].t - 5.0) < EPS, "xs[0] = 5.0");
+	TEST_ASSERT(fabs(xs.intersections[1].t - 5.0) < EPS, "xs[1] = 5.0");
+
+	intersections_destroy(&xs);
+}
+
+// Scenario: A ray misses a sphere
+// Given r ← ray(point(0, 2, -5), vector(0, 0, 1))
+// And s ← sphere()
+// When xs ← intersect(s, r)
+// Then xs.count = 0
+void	test_ch5_ray_misses_sphere(void)
+{
+	printf("Chapter 5: A ray misses a sphere\n");
+	t_ray		r = ray(point(0, 2, -5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_xs		xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 0, "xs.count = 0");
+
+	intersections_destroy(&xs);
+}
+
+// Scenario: A ray originates inside a sphere
+// Given r ← ray(point(0, 0, 0), vector(0, 0, 1))
+// And s ← sphere()
+// When xs ← intersect(s, r)
+// Then xs.count = 2
+// And xs[0] = -1.0
+// And xs[1] = 1.0
+void	test_ch5_ray_originates_inside_sphere(void)
+{
+	printf("Chapter 5: A ray originates inside a sphere\n");
+	t_ray		r = ray(point(0, 0, 0), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_xs		xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(fabs(xs.intersections[0].t - (-1.0)) < EPS, "xs[0] = -1.0");
+	TEST_ASSERT(fabs(xs.intersections[1].t - 1.0) < EPS, "xs[1] = 1.0");
+
+	intersections_destroy(&xs);
+}
+
+// Scenario: A sphere is behind a ray
+// Given r ← ray(point(0, 0, 5), vector(0, 0, 1))
+// And s ← sphere()
+// When xs ← intersect(s, r)
+// Then xs.count = 2
+// And xs[0] = -6.0
+// And xs[1] = -4.0
+void	test_ch5_sphere_is_behind_ray(void)
+{
+	printf("Chapter 5: A sphere is behind a ray\n");
+	t_ray		r = ray(point(0, 0, 5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_xs		xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(fabs(xs.intersections[0].t - (-6.0)) < EPS, "xs[0] = -6.0");
+	TEST_ASSERT(fabs(xs.intersections[1].t - (-4.0)) < EPS, "xs[1] = -4.0");
+
+	intersections_destroy(&xs);
+}
+
+/*
+** Chapter 5: Intersection tracking tests
+*/
+
+void	test_ch5_intersection_encapsulates_t_and_object(void)
+{
+	printf("Chapter 5: An intersection encapsulates t and object\n");
+	t_sphere		s = sphere_create();
+	t_intersection	i = intersection_create(3.5, &s);
+
+	TEST_ASSERT(fabs(i.t - 3.5) < EPS, "i.t = 3.5");
+	TEST_ASSERT(i.object == &s, "i.object = s");
+}
+
+void	test_ch5_aggregating_intersections(void)
+{
+	printf("Chapter 5: Aggregating intersections\n");
+	t_sphere		s = sphere_create();
+	t_intersection	i1 = intersection_create(1, &s);
+	t_intersection	i2 = intersection_create(2, &s);
+	t_xs			xs = xs_create(0);
+
+	xs = intersections_add(xs, i1);
+	xs = intersections_add(xs, i2);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(fabs(xs.intersections[0].t - 1.0) < EPS, "xs[0].t = 1");
+	TEST_ASSERT(fabs(xs.intersections[1].t - 2.0) < EPS, "xs[1].t = 2");
+
+	intersections_destroy(&xs);
+}
+
+void	test_ch5_intersect_sets_object_on_intersection(void)
+{
+	printf("Chapter 5: Intersect sets the object on the intersection\n");
+	t_ray		r = ray(point(0, 0, -5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_xs		xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(xs.intersections[0].object == &s, "xs[0].object = s");
+	TEST_ASSERT(xs.intersections[1].object == &s, "xs[1].object = s");
+
+	intersections_destroy(&xs);
+}
+
+void	test_ch5_hit_when_all_intersections_have_positive_t(void)
+{
+	printf("Chapter 5: The hit, when all intersections have positive t\n");
+	t_sphere		s = sphere_create();
+	t_intersection	i1 = intersection_create(1, &s);
+	t_intersection	i2 = intersection_create(2, &s);
+	t_xs			xs = xs_create(0);
+
+	xs = intersections_add(xs, i2);  // Add in reverse order
+	xs = intersections_add(xs, i1);
+
+	t_intersection	hit = intersections_hit(xs);
+	TEST_ASSERT(fabs(hit.t - 1.0) < EPS, "hit = i1");
+	TEST_ASSERT(hit.object == &s, "hit.object = s");
+
+	intersections_destroy(&xs);
+}
+
+void	test_ch5_hit_when_some_intersections_have_negative_t(void)
+{
+	printf("Chapter 5: The hit, when some intersections have negative t\n");
+	t_sphere		s = sphere_create();
+	t_intersection	i1 = intersection_create(-1, &s);
+	t_intersection	i2 = intersection_create(1, &s);
+	t_xs			xs = xs_create(0);
+
+	xs = intersections_add(xs, i2);  // Add in reverse order
+	xs = intersections_add(xs, i1);
+
+	t_intersection	hit = intersections_hit(xs);
+	TEST_ASSERT(fabs(hit.t - 1.0) < EPS, "hit = i2");
+	TEST_ASSERT(hit.object == &s, "hit.object = s");
+
+	intersections_destroy(&xs);
+}
+
+void	test_ch5_hit_when_all_intersections_have_negative_t(void)
+{
+	printf("Chapter 5: The hit, when all intersections have negative t\n");
+	t_sphere		s = sphere_create();
+	t_intersection	i1 = intersection_create(-2, &s);
+	t_intersection	i2 = intersection_create(-1, &s);
+	t_xs			xs = xs_create(0);
+
+	xs = intersections_add(xs, i2);  // Add in reverse order
+	xs = intersections_add(xs, i1);
+
+	t_intersection	hit = intersections_hit(xs);
+	TEST_ASSERT(hit.t < 0, "hit is nothing (negative t)");
+	TEST_ASSERT(hit.object == NULL, "hit.object is NULL");
+
+	intersections_destroy(&xs);
+}
+
+void	test_ch5_hit_is_always_lowest_nonnegative_intersection(void)
+{
+	printf("Chapter 5: The hit is always the lowest nonnegative intersection\n");
+	t_sphere		s = sphere_create();
+	t_intersection	i1 = intersection_create(5, &s);
+	t_intersection	i2 = intersection_create(7, &s);
+	t_intersection	i3 = intersection_create(-3, &s);
+	t_intersection	i4 = intersection_create(2, &s);
+	t_xs			xs = xs_create(0);
+
+	// Add in random order to test sorting
+	xs = intersections_add(xs, i1);
+	xs = intersections_add(xs, i2);
+	xs = intersections_add(xs, i3);
+	xs = intersections_add(xs, i4);
+
+	t_intersection	hit = intersections_hit(xs);
+	TEST_ASSERT(fabs(hit.t - 2.0) < EPS, "hit = i4");
+	TEST_ASSERT(hit.object == &s, "hit.object = s");
+
+	intersections_destroy(&xs);
+}
+
+/*
+** Chapter 5: Sphere transformation tests
+*/
+
+// Helper functions for transformations (simplified versions for testing)
+t_matrix	translation(double x, double y, double z)
+{
+	t_matrix	m = mat_identity();
+	m.data[0][3] = x;
+	m.data[1][3] = y;
+	m.data[2][3] = z;
+	return (m);
+}
+
+t_matrix	scaling(double x, double y, double z)
+{
+	t_matrix	m = mat_identity();
+	m.data[0][0] = x;
+	m.data[1][1] = y;
+	m.data[2][2] = z;
+	return (m);
+}
+
+void	test_ch5_sphere_default_transformation(void)
+{
+	printf("Chapter 5: A sphere's default transformation\n");
+	t_sphere	s = sphere_create();
+	t_matrix	identity = mat_identity();
+
+	TEST_ASSERT(mat_equal(s.transform, identity), "s.transform = identity_matrix");
+}
+
+void	test_ch5_changing_sphere_transformation(void)
+{
+	printf("Chapter 5: Changing a sphere's transformation\n");
+	t_sphere	s = sphere_create();
+	t_matrix	t = translation(2, 3, 4);
+
+	s = sphere_set_transform(s, t);
+	TEST_ASSERT(mat_equal(s.transform, t), "s.transform = t");
+}
+
+void	test_ch5_intersecting_scaled_sphere_with_ray(void)
+{
+	printf("Chapter 5: Intersecting a scaled sphere with a ray\n");
+	t_ray		r = ray(point(0, 0, -5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_matrix	scale = scaling(2, 2, 2);
+	t_xs		xs;
+
+	s = sphere_set_transform(s, scale);
+	xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
+	TEST_ASSERT(fabs(xs.intersections[0].t - 4.0) < EPS, "xs[0].t = 4");
+	TEST_ASSERT(fabs(xs.intersections[1].t - 6.0) < EPS, "xs[1].t = 6");
+
+	intersections_destroy(&xs);
+}
+
+void	test_ch5_intersecting_translated_sphere_with_ray(void)
+{
+	printf("Chapter 5: Intersecting a translated sphere with a ray\n");
+	t_ray		r = ray(point(0, 0, -5), vector(0, 0, 1));
+	t_sphere	s = sphere_create();
+	t_matrix	translate = translation(5, 0, 0);
+	t_xs		xs;
+
+	s = sphere_set_transform(s, translate);
+	xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 0, "xs.count = 0");
+
+	intersections_destroy(&xs);
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
 
@@ -1771,6 +2101,44 @@ int main(void)
 	test_ch5_translating_ray();
 	printf("\n");
 	test_ch5_scaling_ray();
+	printf("\n");
+
+	// --- Test functions from Chapter 5: Ray-Sphere Intersections ---
+	test_ch5_ray_intersects_sphere_at_two_points();
+	printf("\n");
+	test_ch5_ray_intersects_sphere_at_tangent();
+	printf("\n");
+	test_ch5_ray_misses_sphere();
+	printf("\n");
+	test_ch5_ray_originates_inside_sphere();
+	printf("\n");
+	test_ch5_sphere_is_behind_ray();
+	printf("\n");
+	
+	// Chapter 5: Intersection tracking tests
+	test_ch5_intersection_encapsulates_t_and_object();
+	printf("\n");
+	test_ch5_aggregating_intersections();
+	printf("\n");
+	test_ch5_intersect_sets_object_on_intersection();
+	printf("\n");
+	test_ch5_hit_when_all_intersections_have_positive_t();
+	printf("\n");
+	test_ch5_hit_when_some_intersections_have_negative_t();
+	printf("\n");
+	test_ch5_hit_when_all_intersections_have_negative_t();
+	printf("\n");
+	test_ch5_hit_is_always_lowest_nonnegative_intersection();
+	printf("\n");
+
+	// Chapter 5: Sphere transformation tests
+	test_ch5_sphere_default_transformation();
+	printf("\n");
+	test_ch5_changing_sphere_transformation();
+	printf("\n");
+	test_ch5_intersecting_scaled_sphere_with_ray();
+	printf("\n");
+	test_ch5_intersecting_translated_sphere_with_ray();
 	printf("\n");
 
 	printf("--- All book tests finished. ---\n");

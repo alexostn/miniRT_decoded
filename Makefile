@@ -47,7 +47,9 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_determinant.c \
 			$(SRC_DIR)/matrices/matrice_operations.c \
 			$(SRC_DIR)/matrices/matrice_inverse.c \
-			$(SRC_DIR)/rays/rays.c
+			$(SRC_DIR)/rays/rays.c \
+			$(SRC_DIR)/spheres/spheres.c \
+			$(SRC_DIR)/spheres/intersections_utils.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
