@@ -105,8 +105,8 @@ t_xs	sphere_intersect(t_sphere *s, t_ray r)
 	
 
 	// Create intersections (always return 2, even if equal)
-		t_intersection	i1 = intersection_create(t1, s);
-		t_intersection	i2 = intersection_create(t2, s);
+    t_intersection	i1 = intersection_create(t1, s);
+    t_intersection	i2 = intersection_create(t2, s);
 
 	// Add intersections in ascending order
 	if (t1 <= t2)

@@ -1,5 +1,27 @@
 #include "matrices.h" // for matrices tests
 #include "test_utils.h" // for TEST_ASSERT
+
+// Global variables for test statistics
+static int g_tests_run = 0;
+static int g_tests_failed = 0;
+static char g_failed_tests[1000][100]; // Store failed test names
+
+// Override TEST_ASSERT to count tests
+#undef TEST_ASSERT
+#define TEST_ASSERT(condition, message) \
+	do { \
+		g_tests_run++; \
+		printf("%-61s: ", message); \
+		if (condition) { \
+			printf(ANSI_COLOR_GREEN "PASS" ANSI_COLOR_RESET "\n"); \
+		} else { \
+			printf(ANSI_COLOR_RED "FAIL" ANSI_COLOR_RESET "\n"); \
+			if (g_tests_failed < 1000) { \
+				snprintf(g_failed_tests[g_tests_failed], 100, "%s", message); \
+				g_tests_failed++; \
+			} \
+		} \
+	} while (0)
 #include "tuples.h" // mention it for files from src/
 #include "projectile.h" // projectile.h includes environment.h
 #include "colors.h"
@@ -1922,23 +1944,6 @@ void	test_ch5_hit_is_always_lowest_nonnegative_intersection(void)
 */
 
 // Helper functions for transformations (simplified versions for testing)
-t_matrix	translation(double x, double y, double z)
-{
-	t_matrix	m = mat_identity();
-	m.data[0][3] = x;
-	m.data[1][3] = y;
-	m.data[2][3] = z;
-	return (m);
-}
-
-t_matrix	scaling(double x, double y, double z)
-{
-	t_matrix	m = mat_identity();
-	m.data[0][0] = x;
-	m.data[1][1] = y;
-	m.data[2][2] = z;
-	return (m);
-}
 
 void	test_ch5_sphere_default_transformation(void)
 {
@@ -1953,7 +1958,17 @@ void	test_ch5_changing_sphere_transformation(void)
 {
 	printf("Chapter 5: Changing a sphere's transformation\n");
 	t_sphere	s = sphere_create();
-	t_matrix	t = translation(2, 3, 4);
+	t_matrix	t;
+
+	// TODO: This test requires translation() function from Chapter 4
+	// For now, we'll create a manual translation matrix
+	double	values[4][4] = {
+		{1, 0, 0, 2},
+		{0, 1, 0, 3},
+		{0, 0, 1, 4},
+		{0, 0, 0, 1}
+	};
+	t = create_matrix(values);
 
 	s = sphere_set_transform(s, t);
 	TEST_ASSERT(mat_equal(s.transform, t), "s.transform = t");
@@ -1964,8 +1979,18 @@ void	test_ch5_intersecting_scaled_sphere_with_ray(void)
 	printf("Chapter 5: Intersecting a scaled sphere with a ray\n");
 	t_ray		r = ray(point(0, 0, -5), vector(0, 0, 1));
 	t_sphere	s = sphere_create();
-	t_matrix	scale = scaling(2, 2, 2);
+	t_matrix	scale;
 	t_xs		xs;
+
+	// TODO: This test requires scaling() function from Chapter 4
+	// For now, we'll create a manual scaling matrix
+	double	values[4][4] = {
+		{2, 0, 0, 0},
+		{0, 2, 0, 0},
+		{0, 0, 2, 0},
+		{0, 0, 0, 1}
+	};
+	scale = create_matrix(values);
 
 	s = sphere_set_transform(s, scale);
 	xs = sphere_intersect(&s, r);
@@ -1982,8 +2007,18 @@ void	test_ch5_intersecting_translated_sphere_with_ray(void)
 	printf("Chapter 5: Intersecting a translated sphere with a ray\n");
 	t_ray		r = ray(point(0, 0, -5), vector(0, 0, 1));
 	t_sphere	s = sphere_create();
-	t_matrix	translate = translation(5, 0, 0);
+	t_matrix	translate;
 	t_xs		xs;
+
+	// TODO: This test requires translation() function from Chapter 4
+	// For now, we'll create a manual translation matrix
+	double	values[4][4] = {
+		{1, 0, 0, 5},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1}
+	};
+	translate = create_matrix(values);
 
 	s = sphere_set_transform(s, translate);
 	xs = sphere_intersect(&s, r);
@@ -2141,6 +2176,25 @@ int main(void)
 	test_ch5_intersecting_translated_sphere_with_ray();
 	printf("\n");
 
+	// Print test summary
+	printf("========================================\n");
+	printf("           TEST SUMMARY REPORT\n");
+	printf("========================================\n");
+	printf("Total tests run: %d\n", g_tests_run);
+	printf("Tests passed: %d\n", g_tests_run - g_tests_failed);
+	printf("Tests failed: %d\n", g_tests_failed);
+	
+	if (g_tests_failed > 0) {
+		printf("\nFailed tests:\n");
+		printf("-------------\n");
+		for (int i = 0; i < g_tests_failed; i++) {
+			printf("%d. %s\n", i + 1, g_failed_tests[i]);
+		}
+	} else {
+		printf("\n🎉 All tests passed successfully!\n");
+	}
+	
+	printf("========================================\n");
 	printf("--- All book tests finished. ---\n");
-	return (0);
+	return (g_tests_failed > 0 ? 1 : 0);
 }

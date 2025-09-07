@@ -139,31 +139,22 @@ t_xs	intersections_add(t_xs xs, t_intersection i)
 t_intersection	intersections_hit(t_xs xs)
 {
 	t_intersection	hit;
-	double			smallest_t;
-	int				hit_index;
-
+	
+	// Initialize as "no hit"
 	hit.t = -1.0;
 	hit.object = NULL;
-	smallest_t = -1.0;
-	hit_index = -1;
-
-	// Find the smallest positive t value
+	
+	// Since intersections are sorted by t (ascending),
+	// the first positive t is the hit
 	for (int i = 0; i < xs.count; i++)
 	{
-		if (xs.intersections[i].t >= 0 && 
-			(smallest_t < 0 || xs.intersections[i].t < smallest_t))
+		if (xs.intersections[i].t >= 0)
 		{
-			smallest_t = xs.intersections[i].t;
-			hit_index = i;
+			hit = xs.intersections[i];
+			break; // Found the first positive t, we're done!
 		}
 	}
-
-	// Return the hit intersection if found
-	if (hit_index >= 0)
-	{
-		hit = xs.intersections[hit_index];
-	}
-
+	
 	return (hit);
 }
 
