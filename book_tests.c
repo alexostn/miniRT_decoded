@@ -5,6 +5,7 @@
 #include "colors.h"
 #include "window.h"
 #include "image.h"
+#include "rays.h" // for ray tests
 
 #include <stdio.h> // for printf
 #include <fcntl.h> // for test files ppm and comparisson
@@ -22,6 +23,14 @@ void	print_color(t_color	pc)
 {
 	printf("r=%.5f, g=%.5f, b=%.5f, w=%.5f\n",
 		pc.r, pc.g, pc.b, pc.a);
+}
+
+void	print_ray(t_ray r)
+{
+	printf("Ray origin: ");
+	print_tuple(r.origin);
+	printf("Ray direction: ");
+	print_tuple(r.direction);
 }
 
 /*
@@ -1562,6 +1571,98 @@ void	test_ch3_inverse_sanity_check(void)
 }
 
 
+// --- Test functions from Chapter 5: Ray-Sphere Intersections ---
+
+// Scenario: Creating and querying a ray
+// Given origin ← point(1, 2, 3)
+// And direction ← vector(4, 5, 6)
+// When r ← ray(origin, direction)
+// Then r.origin = origin
+// And r.direction = direction
+void	test_ch5_creating_and_querying_ray(void)
+{
+	printf("Chapter 5: Creating and querying a ray\n");
+	t_tuple	origin = point(1, 2, 3);
+	t_tuple	direction = vector(4, 5, 6);
+	t_ray	r = ray(origin, direction);
+
+	TEST_ASSERT(tuples_equal(r.origin, origin), "r.origin = origin");
+	TEST_ASSERT(tuples_equal(r.direction, direction), "r.direction = direction");
+}
+
+// Scenario: Computing a point from a distance
+// Given r ← ray(point(2, 3, 4), vector(1, 0, 0))
+// Then position(r, 0) = point(2, 3, 4)
+// And position(r, 1) = point(3, 3, 4)
+// And position(r, -1) = point(1, 3, 4)
+// And position(r, 2.5) = point(4.5, 3, 4)
+void	test_ch5_computing_point_from_distance(void)
+{
+	printf("Chapter 5: Computing a point from a distance\n");
+	t_ray	r = ray(point(2, 3, 4), vector(1, 0, 0));
+
+	TEST_ASSERT(tuples_equal(ray_position(r, 0), point(2, 3, 4)), "position(r, 0) = point(2, 3, 4)");
+	TEST_ASSERT(tuples_equal(ray_position(r, 1), point(3, 3, 4)), "position(r, 1) = point(3, 3, 4)");
+	TEST_ASSERT(tuples_equal(ray_position(r, -1), point(1, 3, 4)), "position(r, -1) = point(1, 3, 4)");
+	TEST_ASSERT(tuples_equal(ray_position(r, 2.5), point(4.5, 3, 4)), "position(r, 2.5) = point(4.5, 3, 4)");
+}
+
+// Scenario: Translating a ray
+// Given r ← ray(point(1, 2, 3), vector(0, 1, 0))
+// And m ← translation(3, 4, 5)
+// When r2 ← transform(r, m)
+// Then r2.origin = point(4, 6, 8)
+// And r2.direction = vector(0, 1, 0)
+void	test_ch5_translating_ray(void)
+{
+	printf("Chapter 5: Translating a ray\n");
+	t_ray		r = ray(point(1, 2, 3), vector(0, 1, 0));
+	t_matrix	m;
+	t_ray		r2;
+
+	// TODO: This test requires translation() function from Chapter 4
+	// For now, we'll create a manual translation matrix
+	double	values[4][4] = {
+		{1, 0, 0, 3},
+		{0, 1, 0, 4},
+		{0, 0, 1, 5},
+		{0, 0, 0, 1}
+	};
+	m = create_matrix(values);
+	r2 = ray_transform(r, m);
+
+	TEST_ASSERT(tuples_equal(r2.origin, point(4, 6, 8)), "r2.origin = point(4, 6, 8)");
+	TEST_ASSERT(tuples_equal(r2.direction, vector(0, 1, 0)), "r2.direction = vector(0, 1, 0)");
+}
+
+// Scenario: Scaling a ray
+// Given r ← ray(point(1, 2, 3), vector(0, 1, 0))
+// And m ← scaling(2, 3, 4)
+// When r2 ← transform(r, m)
+// Then r2.origin = point(2, 6, 12)
+// And r2.direction = vector(0, 3, 0)
+void	test_ch5_scaling_ray(void)
+{
+	printf("Chapter 5: Scaling a ray\n");
+	t_ray		r = ray(point(1, 2, 3), vector(0, 1, 0));
+	t_matrix	m;
+	t_ray		r2;
+
+	// TODO: This test requires scaling() function from Chapter 4
+	// For now, we'll create a manual scaling matrix
+	double	values[4][4] = {
+		{2, 0, 0, 0},
+		{0, 3, 0, 0},
+		{0, 0, 4, 0},
+		{0, 0, 0, 1}
+	};
+	m = create_matrix(values);
+	r2 = ray_transform(r, m);
+
+	TEST_ASSERT(tuples_equal(r2.origin, point(2, 6, 12)), "r2.origin = point(2, 6, 12)");
+	TEST_ASSERT(tuples_equal(r2.direction, vector(0, 3, 0)), "r2.direction = vector(0, 3, 0)");
+}
+
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
 
@@ -1660,6 +1761,16 @@ int main(void)
 	test_ch3_inversion();
 	printf("\n");
 	test_ch3_inverse_sanity_check();
+	printf("\n");
+
+	// --- Test functions from Chapter 5: Ray-Sphere Intersections ---
+	test_ch5_creating_and_querying_ray();
+	printf("\n");
+	test_ch5_computing_point_from_distance();
+	printf("\n");
+	test_ch5_translating_ray();
+	printf("\n");
+	test_ch5_scaling_ray();
 	printf("\n");
 
 	printf("--- All book tests finished. ---\n");
