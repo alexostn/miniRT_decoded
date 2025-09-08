@@ -18,6 +18,7 @@ mv test_files "../$TMP_DIR/" || true
 mv libft "../$TMP_DIR/" || true
 mv mlx-linux "../$TMP_DIR/" || true
 mv book_tests.c "../$TMP_DIR/" || true
+# You can add any other directory to ignore using the same pattern
 
 echo "-------------------------------------"
 echo "Running norminette on the project..."

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:34:24 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/05 20:59:47 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/08 18:36:38 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,3 @@ double	get_matrix_element(const t_matrix *m, int row, int col)
 	}
 	return (m->data[row][col]);
 }
-
