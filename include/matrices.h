@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 18:10:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/08 18:47:29 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:51:04 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_matrix	mat_transpose(t_matrix m);
 double		mat_determinant(t_matrix m);
 t_matrix	mat_inverse(t_matrix m, bool *ok);
 
-// --- Determinant, Cofactor, and Inverse Functions are complex mechanism to be able to inverse ---
+//Determinant, Cofactor, and Inverse Functions
+//are complex mechanism to be able to inverse
 
 t_matrix	mat_submatrix(t_matrix m, int row_to_skip, int col_to_skip);
 double		mat_determinant(t_matrix m);

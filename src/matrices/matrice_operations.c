@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 00:01:38 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/05 20:49:55 by oostapen         ###   ########.fr       */
+/*   Created: 2025/09/10 18:54:32 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/10 19:04:23 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tuples.h"   // t_tuple definition
-#include "matrices.h" // t_matrix definition
+#include "tuples.h"
+#include "matrices.h"
 #include <stdbool.h>
 
 bool	mat_equal(t_matrix a, t_matrix b)
@@ -53,7 +53,7 @@ t_matrix	mat_mul(t_matrix a, t_matrix b)
 	int			col;
 	double		dot_product;
 	int			i;
-	
+
 	row = 0;
 	while (row < 4)
 	{
@@ -89,15 +89,15 @@ t_matrix	mat_mul(t_matrix a, t_matrix b)
 t_tuple	mat_mul_tuple(t_matrix m, t_tuple t)
 {
 	t_tuple	result;
-	
-	result.x = m.data[0][0] * t.x + m.data[0][1] * t.y \
-	+ m.data[0][2] * t.z + m.data[0][3] * t.w;
-	result.y = m.data[1][0] * t.x + m.data[1][1] * t.y \
-	+ m.data[1][2] * t.z + m.data[1][3] * t.w;
-	result.z = m.data[2][0] * t.x + m.data[2][1] * t.y \
-	+ m.data[2][2] * t.z + m.data[2][3] * t.w;
-	result.w = m.data[3][0] * t.x + m.data[3][1] * t.y \
-	+ m.data[3][2] * t.z + m.data[3][3] * t.w;
+
+	result.x = m.data[0][0] * t.x + m.data[0][1] * t.y
+		+ m.data[0][2] * t.z + m.data[0][3] * t.w;
+	result.y = m.data[1][0] * t.x + m.data[1][1] * t.y
+		+ m.data[1][2] * t.z + m.data[1][3] * t.w;
+	result.z = m.data[2][0] * t.x + m.data[2][1] * t.y
+		+ m.data[2][2] * t.z + m.data[2][3] * t.w;
+	result.w = m.data[3][0] * t.x + m.data[3][1] * t.y
+		+ m.data[3][2] * t.z + m.data[3][3] * t.w;
 	return (result);
 }
 
