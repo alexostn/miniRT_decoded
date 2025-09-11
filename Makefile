@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/10 20:53:27 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/11 20:27:26 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,12 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/image_to_ppm.c \
 			$(SRC_DIR)/matrices/matrices.c \
 			$(SRC_DIR)/matrices/matrice_creation.c \
-			$(SRC_DIR)/matrices/matrice_determinant.c \
 			$(SRC_DIR)/matrices/matrice_operations.c \
 			$(SRC_DIR)/matrices/matrice_inverse.c \
-			$(SRC_DIR)/matrices/matrice_submatrix.c
+			$(SRC_DIR)/matrices/matrice_submatrix.c \
+			$(SRC_DIR)/matrices/transformations.c \
+			$(SRC_DIR)/matrices/matrice_determinant_API.c\
+			$(SRC_DIR)/matrices/matrice_determinant_recursive.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -70,10 +72,12 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/tuples/image_to_ppm.c \
 						$(SRC_DIR)/matrices/matrices.c \
 						$(SRC_DIR)/matrices/matrice_creation.c \
-						$(SRC_DIR)/matrices/matrice_determinant.c \
 						$(SRC_DIR)/matrices/matrice_operations.c \
 						$(SRC_DIR)/matrices/matrice_inverse.c \
-						$(SRC_DIR)/matrices/matrice_submatrix.c
+						$(SRC_DIR)/matrices/matrice_submatrix.c \
+						$(SRC_DIR)/matrices/transformations.c \
+						$(SRC_DIR)/matrices/matrice_determinant_API.c\
+						$(SRC_DIR)/matrices/matrice_determinant_recursive.c
 
 # 3. Object files for modules used by the tests
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
