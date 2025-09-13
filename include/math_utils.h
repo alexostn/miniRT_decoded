@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   defines.h                                          :+:      :+:    :+:   */
+/*   math_utils.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 21:11:17 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/13 22:56:46 by oostapen         ###   ########.fr       */
+/*   Created: 2025/09/13 21:04:48 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/13 22:56:54 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINES_H
-# define DEFINES_H
+#ifndef MATH_UTILS_H
+# define MATH_UTILS_H
 
-/* precision for comparing float/double */
-/*#  define EPS 1e-6 to be closer to book I came back to 0.00001 (1e-5)*/
-# ifndef EPS
-#  define EPS 0.00001
+# include <math.h>
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
 # endif
+
+double	degrees_to_radians(double degrees);
+
 #endif

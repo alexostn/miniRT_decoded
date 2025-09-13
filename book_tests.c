@@ -1,3 +1,4 @@
+#include "math_utils.h"
 #include "matrices.h" // for matrices tests
 #include "transformations.h"// for transormation matrices tests
 #include "test_utils.h" // for TEST_ASSERT
@@ -7,6 +8,7 @@
 #include "window.h"
 #include "image.h"
 
+#include <math.h> // for radians and grad etc.
 #include <stdio.h> // for printf
 #include <fcntl.h> // for test files ppm and comparisson
 #include <stdbool.h> // for file_ends_with_newline
@@ -1512,12 +1514,6 @@ void    test_ch3_inversion(void)
 		{7 , 7 , -6 , -7},
 		{1 , -3 , 7 , 4}
 	};
-	// double      a_to_invert[4][4] = {
-	// 	{-5 , 2 , 6 , -8},
-	// 	{1 , -5 , 1 , 8},
-	// 	{7 , 7 , -6 , -7},
-	// 	{1 , -3 , 7 , 4}
-	// };
 
 	double      expected_values[4][4] = {
 		{0.21805 , 0.45113 , 0.24060 , -0.04511},
@@ -1580,24 +1576,6 @@ void	test_ch3_inverse_sanity_check(void)
 }
 
 /*
-** Example: test_ch4_translation()
-** Description: Tests for the translation matrix.
-** Uses: translation(), point(), vector(), mat_mul_tuple(), tuples_equal()
-** Verified: Based on Chapter 4 of "The Raytracer Challenge".
-*/
-
-t_matrix	translation(double x, double y, double z)
-{
-	t_matrix	m;
-
-	m = mat_identity();
-	m.data[0][3] = x;
-	m.data[1][3] = y;
-	m.data[2][3] = z;
-	return (m);
-}
-
-/*
 ** Example: test_ch4_translation_moves_point()
 ** Description: Unit test for applying a translation matrix to a point.
 ** Uses: translation(), point(), mat_mul_tuple(), tuples_equal()
@@ -1630,58 +1608,6 @@ void	test_ch4_translation_moves_point(void)
 	TEST_ASSERT(tuples_equal(result_p, expected_p), "Point should be translated to (2, 1, 7)");
 	printf("\n");
 }
-
-/*
-** Example: test_ch4_inverse_translation_moves_point_back()
-** Description: Unit test for applying an inverse translation matrix.
-** Uses: translation(), mat_inverse(), point(), mat_mul_tuple(), tuples_equal()
-** Verified: Based on "The Raytracer Challenge", Chapter 4.
-*/
-// void	test_ch4_inverse_translation_moves_point_back(void)
-// {
-// 	t_matrix	transform;
-// 	t_matrix	inv_transform;
-// 	t_tuple		p;
-// 	t_tuple		translated_p;
-// 	// t_tuple		original_p;
-// 	bool		ok;
-
-// 	printf("Chapter 4: Multiplying a point by the inverse of a translation matrix\n");
-
-// 	// Arrange: Create translation matrix, its inverse, and a point
-// 	transform = translation(5, -3, 2);
-// 	printf("%-20s", "Matrix translation(5, -3, 2):\n");
-// 	print_matrix(transform);
-// 	printf("\n");
-
-// 	inv_transform = mat_inverse(transform, &ok);
-// 	printf("%-20s", "Matrix mat_inverse(transform):\n");
-// 	print_matrix(inv_transform);
-// 	printf("\n");
-
-// 	p = point(-3, 4, 5);
-// 	printf("%-20s", "p point(-3, 4, 5):\n");
-// 	print_tuple(p);
-// 	printf("\n");
-
-// 	translated_p = mat_mul_tuple(inv_transform, p);
-// 	printf("%-20s", "inv * p = point(-8, 7, 3):\n");
-// 	print_tuple(translated_p);
-// 	printf("\n");
-
-// 	// Act: Apply the inverse transformation
-// 	// original_p = mat_mul_tuple(inv_transform, translated_p);
-
-// 	// Assert: Check if the point is back to its original coordinates
-// 	// printf("%-20s", "Inverse matrix:");
-// 	// print_matrix(inv_transform);
-// 	// printf("%-20s", "Translated point:");
-// 	// print_tuple(translated_p);
-// 	// printf("%-20s", "Moved-back point:");
-// 	// print_tuple(original_p);
-// 	TEST_ASSERT(tuples_equal(translated_p, point(-8, 7, 3)), "Point should return to original position");
-// 	printf("\n");
-// }
 
 /*
 ** Example: test_ch4_inverse_translation_moves_point_back()
@@ -1757,6 +1683,225 @@ void	test_ch4_translation_ignores_vector(void)
 	TEST_ASSERT(tuples_equal(result_v, v), "Vector should not change after translation");
 	printf("\n");
 }
+
+/*
+** Example: test_ch4_scaling_point()
+** Description: Unit test for applying a scaling matrix to a point.
+** Uses: point(), scaling(), mat_mul_tuple(), tuples_equal()
+*/
+void	test_ch4_scaling_point(void)
+{
+	t_matrix    transform;
+	t_tuple     v;
+	t_tuple     result;
+	t_tuple     expected;
+
+	printf("Chapter 4: A scaling matrix applied to a point\n");
+
+	// Arrange: Create scaling matrix and point
+	transform = scaling(2, 3, 4);
+	v = point(-4, 6, 8);
+	expected = point(-8, 18, 32);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(transform, v);
+
+	// Assert: Check if the point was scaled correctly
+	printf("%-20s", "Original point:");
+	print_tuple(v);
+	printf("%-20s", "Scaling matrix:");
+	print_matrix(transform);
+	printf("%-20s", "Scaled point:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "point should be scaled to (-8, 18, 32)");
+	printf("\n");
+}
+
+/*
+** Example: test_ch4_scaling_vector()
+** Description: Unit test for applying a scaling matrix to a vector.
+** Uses: vector(), scaling(), mat_mul_tuple(), tuples_equal()
+*/
+void    test_ch4_scaling_vector(void)
+{
+	t_matrix    transform;
+	t_tuple     v;
+	t_tuple     result;
+	t_tuple     expected;
+
+	printf("Chapter 4: A scaling matrix applied to a vector\n");
+
+	// Arrange: Create scaling matrix and vector
+	transform = scaling(2, 3, 4);
+	v = vector(-4, 6, 8);
+	expected = vector(-8, 18, 32);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(transform, v);
+
+	// Assert: Check if the vector was scaled correctly
+	printf("%-20s", "Original vector:");
+	print_tuple(v);
+	printf("%-20s", "Scaling matrix:");
+	print_matrix(transform);
+	printf("%-20s", "Scaled vector:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "Vector should be scaled to (-8, 18, 32)");
+	printf("\n");
+}
+
+void	test_ch4_mult_by_inverse_of_scaling_matrix(void)
+{
+	t_matrix	transform;
+	t_matrix	inv;
+	t_tuple     v;
+	t_tuple     result;
+	t_tuple     expected;
+	bool		is_invertible;
+	printf("Chapter 4: Multiplying by the inverse of a scaling matrix\n");
+
+	// Arrange: Create scaling matrix and vector
+	transform = scaling(2, 3, 4);
+
+	inv = mat_inverse(transform, &is_invertible);
+
+
+	v = vector(-4, 6, 8);
+	expected = vector(-2, 2, 2);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(inv, v);
+
+	// Assert: Check if the vector was scaled correctly
+	printf("%-20s", "Original vector:");
+	print_tuple(v);
+	printf("%-20s", "Scaling matrix:");
+	print_matrix(transform);
+	printf("%-20s", "Inverted matrix:");
+	print_matrix(inv);
+	printf("%-20s", "Scaled vector:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "Vector * inverted matrix = vector should be scaled to (-2, 2, 2)");
+	printf("\n");
+}
+
+void	test_ch4_reflection_scaling_by_negative(void)
+{
+	t_matrix	transform;
+	t_tuple		p;
+	t_tuple		result;
+	t_tuple		expected;
+
+	printf("Chapter 4: Reflection is scaling by a negative value\n");
+
+	// Arrange: Create scaling matrix and point
+	transform = scaling(-1, 1, 1);
+	p = point(2, 3, 4);
+	expected = point(-2, 3, 4);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(transform, p);
+
+	// Assert: Check if the point was scaled correctly
+	printf("%-20s", "Original point:");
+	print_tuple(p);
+	printf("%-20s", "Scaling matrix:");
+	printf("%-20s", "could be changed in any other direction x, y, z");
+	print_matrix(transform);
+	printf("%-20s", "Scaled reflected point:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "Point scaled to (-2, 3, 4) or reflected");
+	printf("\n");
+}
+
+/*
+** Example: test_degrees_to_radians()
+** Description: Unit test for the degrees_to_radians() helper function.
+** Uses: degrees_to_radians(), TEST_ASSERT(), fabs()
+*/
+void	test_degrees_to_radians(void)
+{
+	double	rad;
+	double	expected;
+
+	printf("Chapter 4: Helper to convert degrees to radians\n");
+
+	rad = degrees_to_radians(90.0);
+	expected = M_PI / 2.0;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "90 degrees should be PI/2");
+
+	rad = degrees_to_radians(180.0);
+	expected = M_PI;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "180 degrees should be PI");
+
+	rad = degrees_to_radians(45.0);
+	expected = M_PI / 4.0;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "45 degrees should be PI/4");
+
+	rad = degrees_to_radians(360.0);
+	expected = 2 * M_PI;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "360 degrees should be 2*PI");
+	printf("\n");
+}
+
+/*
+** Example: test_ch4_rotation_x()
+** Description: Unit test for rotating a point around the X-axis.
+** Uses: point(), rotation_x(), mat_mul_tuple(), tuples_equal(), TEST_ASSERT()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+void	test_ch4_rotation_x(void)
+{
+	t_tuple		p;
+	t_matrix	half_quarter;
+	t_matrix	full_quarter;
+	t_tuple		result;
+
+	printf("Chapter 4: Rotating a point around the x axis\n\n");
+
+	// --- Test case 1: Rotation by 45 degrees (PI / 4) ---
+	printf("--- Test Case 1: Rotation by 45 degrees ---\n");
+	p = point(0, 1, 0);
+	half_quarter = rotation_x(M_PI / 4);
+	
+	// --- START: Added descriptive output ---
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (45 deg):\n");
+	print_matrix(half_quarter);
+	
+	result = mat_mul_tuple(half_quarter, p);
+	
+	printf("Result after rotation:\n");
+	print_tuple(result);
+	// --- END: Added descriptive output ---
+	
+	TEST_ASSERT(tuples_equal(result, point(0, sqrt(2) / 2, sqrt(2) / 2)),
+		"Rotation by half_quarter (45 deg)");
+	printf("\n");
+
+	// --- Test case 2: Rotation by 90 degrees (PI / 2) ---
+	printf("--- Test Case 2: Rotation by 90 degrees ---\n");
+	p = point(0, 1, 0);
+	full_quarter = rotation_x(M_PI / 2);
+
+	// --- START: Rewritten descriptive output ---
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (90 deg):\n");
+	print_matrix(full_quarter);
+
+	result = mat_mul_tuple(full_quarter, p);
+	
+	printf("Result after rotation:\n");
+	print_tuple(result);
+	// --- END: Rewritten descriptive output ---
+	
+	TEST_ASSERT(tuples_equal(result, point(0, 0, 1)),
+		"Rotation by full_quarter (90 deg)");
+	printf("\n");
+}
+
 
 // --- Add test functions for subsequent chapters here ---
 // void test_ch.._.._.._..(void) { ... }
@@ -1862,6 +2007,16 @@ int main(void)
 	test_ch4_translation_moves_point();
 	test_ch4_inverse_translation_moves_point_back();
 	test_ch4_translation_ignores_vector();
+	printf("\n");
+	/*13September*/
+	test_ch4_scaling_point();
+	test_ch4_scaling_vector();
+	test_ch4_mult_by_inverse_of_scaling_matrix();
+	test_ch4_reflection_scaling_by_negative();
+	/*Rotation*/
+	test_degrees_to_radians();
+	printf("\n");
+	test_ch4_rotation_x();
 	printf("\n");
 	printf("--- All book tests finished. ---\n");
 	return (0);

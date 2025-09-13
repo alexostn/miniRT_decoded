@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   defines.h                                          :+:      :+:    :+:   */
+/*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 21:11:17 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/13 22:56:46 by oostapen         ###   ########.fr       */
+/*   Created: 2025/09/13 21:06:04 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/13 22:57:51 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINES_H
-# define DEFINES_H
+#include "math_utils.h"
 
-/* precision for comparing float/double */
-/*#  define EPS 1e-6 to be closer to book I came back to 0.00001 (1e-5)*/
-# ifndef EPS
-#  define EPS 0.00001
-# endif
-#endif
+/*
+** Converts an angle from degrees to radians.
+** Standard mathematical libraries use radians for trigonometric functions.
+*/
+double	degrees_to_radians(double degrees)
+{
+	return (degrees * M_PI / 180.0);
+}
