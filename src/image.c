@@ -23,14 +23,14 @@
  * @param width Width of the image in pixels.
  * @param height Height of the image in pixels.
  * @return Pointer to the created t_image structure, or NULL on failure.
- * 
+ *
  * 	if (!mlx_ptr || width <= 0 || height <= 0)
 		return (NULL); // Add input parameter validation
  * 	img->mlx_ptr = mlx_ptr; // Save pointer to mlx
  *
  * 	if (!img->addr)
- * // Additional check, although mlx_new_image is usually more important
- * mlx_new_image() from mlxlib 
+ * // Additional check, although mlx_new_image is usually more importan
+ * mlx_new_image() from mlxlib
  * initializes pixels with 0 = black
  */
 t_image	*image_create(void *mlx_ptr, int width, int height)
@@ -67,8 +67,8 @@ t_image	*image_create(void *mlx_ptr, int width, int height)
  *
  * @param image Pointer to the t_image structure to destroy.
  *              The mlx_ptr within the image structure is used.
- * 
- * 	if (image->img_ptr && image->mlx_ptr) // Ensure mlx_ptr is also present
+ *
+ * 	if (image->img_ptr && image->mlx_ptr) // Ensure mlx_ptr is also presen
  */
 void	image_destroy(t_image *image)
 {
@@ -88,8 +88,8 @@ void	image_destroy(t_image *image)
  * @param x X-coordinate of the pixel.
  * @param y Y-coordinate of the pixel.
  * @param color Color of the pixel (integer representation).
- * 
- * bits_per_pixel / 8 we divide to know how many pixels, each pixel = 8 bit
+ *
+ * bits_per_pixel / 8 we divide to know how many pixels, each pixel = 8 bi
  * 	if (!image || !image->addr) // Check validity of image and its address
 		return ;
  */

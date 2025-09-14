@@ -19,12 +19,12 @@
 
 /*
 ** Intersection structure
-** Represents a single intersection between a ray and an object
+** Represents a single intersection between a ray and an objec
 */
 typedef struct s_intersection
 {
 	double	t;			// distance along the ray
-	void	*object;	// pointer to the intersected object
+	void	*object;	// pointer to the intersected objec
 }	t_intersection;
 
 /*

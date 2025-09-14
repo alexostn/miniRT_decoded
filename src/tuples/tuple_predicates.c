@@ -22,7 +22,7 @@ int	floats_equal(double a, double b)
 	return (0);
 }
 
-// Checks if the tuple is a point
+// Checks if the tuple is a poin
 int	is_point(t_tuple t)
 {
 	return (floats_equal(t.w, 1.0));

@@ -106,7 +106,7 @@ t_tuple	mat_mul_tuple(t_matrix m, t_tuple t)
 *
 * Description:
 *   Creates and returns the transpose of a 4x4 matrix.
-*   The transpose of a matrix is a new matrix whose rows are the columns of 
+*   The transpose of a matrix is a new matrix whose rows are the columns of
 *   the original. (This is swapping the row and column indices.)
 *
 * Parameters:

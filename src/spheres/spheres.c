@@ -18,7 +18,7 @@
 /*
 ** sphere_create()
 ** Creates a new unit sphere centered at origin
-** 
+**
 ** Returns:
 ** - t_sphere: new sphere with identity transformation
 */
@@ -34,11 +34,11 @@ t_sphere	sphere_create(void)
 /*
 ** sphere_set_transform()
 ** Sets the transformation matrix for a sphere
-** 
+**
 ** Parameters:
 ** - s: sphere to modify
 ** - transform: transformation matrix to apply
-** 
+**
 ** Returns:
 ** - t_sphere: sphere with new transformation
 */
@@ -51,11 +51,11 @@ t_sphere	sphere_set_transform(t_sphere s, t_matrix transform)
 /*
 ** sphere_intersect()
 ** Computes intersections between a ray and a unit sphere
-** 
+**
 ** Parameters:
 ** - s: pointer to the sphere
-** - r: the ray to intersect
-** 
+** - r: the ray to intersec
+**
 ** Returns:
 ** - t_xs: collection of intersections (0, 1, or 2)
 */
@@ -83,16 +83,19 @@ t_xs	sphere_intersect(t_sphere *s, t_ray r)
 
 	// Compute quadratic coefficients
 	// a = dot(ray.direction, ray.direction) - 3D only
-	a = r.direction.x * r.direction.x + r.direction.y * r.direction.y + r.direction.z * r.direction.z;
+	a = r.direction.x * r.direction.x + r.direction.y * r.direction.y
+		+ r.direction.z * r.direction.z;
 
 	// b = 2 * dot(ray.direction, sphere_to_ray) - 3D only
-	b = 2.0 * (r.direction.x * sphere_to_ray.x + r.direction.y * sphere_to_ray.y + r.direction.z * sphere_to_ray.z);
+	b = 2.0 * (r.direction.x * sphere_to_ray.x + r.direction.y * sphere_to_ray.y
+		+ r.direction.z * sphere_to_ray.z);
 
 	// c = dot(sphere_to_ray, sphere_to_ray) - 1 - 3D only
 	// (subtract 1 because unit sphere has radius 1)
-	c = (sphere_to_ray.x * sphere_to_ray.x + sphere_to_ray.y * sphere_to_ray.y + sphere_to_ray.z * sphere_to_ray.z) - 1.0;
+	c = (sphere_to_ray.x * sphere_to_ray.x + sphere_to_ray.y * sphere_to_ray.y
+		+ sphere_to_ray.z * sphere_to_ray.z) - 1.0;
 
-	// Compute discriminant
+	// Compute discriminan
 	discriminant = b * b - 4 * a * c;
 
 	// If discriminant is negative, ray misses sphere
@@ -126,14 +129,14 @@ t_xs	sphere_intersect(t_sphere *s, t_ray r)
 /*
 ** sphere_normal_at()
 ** Computes the normal vector at a point on the sphere surface
-** 
+**
 ** For a unit sphere at origin, the normal is simply the point itself
 ** (normalized). For transformed spheres, we need to apply inverse-transpose.
-** 
+**
 ** Parameters:
 ** - s: pointer to the sphere
 ** - world_point: point on sphere surface in world coordinates
-** 
+**
 ** Returns:
 ** - t_tuple: normalized normal vector
 */
@@ -184,7 +187,7 @@ t_tuple	sphere_normal_at(t_sphere *s, t_tuple world_point)
 	// Set w component to 0 (normal is a vector, not a point)
 	world_normal.w = 0.0;
 
-	// Normalize the result
+	// Normalize the resul
 	return (normalize_vector(world_normal));
 }
 

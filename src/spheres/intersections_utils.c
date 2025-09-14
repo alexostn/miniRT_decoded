@@ -16,11 +16,11 @@
 /*
 ** intersection_create()
 ** Creates a new intersection with given t value and object pointer
-** 
+**
 ** Parameters:
 ** - t: distance along the ray where intersection occurs
-** - obj: pointer to the intersected object
-** 
+** - obj: pointer to the intersected objec
+**
 ** Returns:
 ** - t_intersection: new intersection
 */
@@ -36,10 +36,10 @@ t_intersection	intersection_create(double t, void *obj)
 /*
 ** xs_create()
 ** Creates a new intersections collection
-** 
+**
 ** Parameters:
 ** - count: initial number of intersections
-** 
+**
 ** Returns:
 ** - t_xs: new intersections collection
 */
@@ -61,7 +61,7 @@ t_xs	xs_create(int count)
 /*
 ** intersections_destroy()
 ** Frees memory allocated for intersections collection
-** 
+**
 ** Parameters:
 ** - xs: pointer to intersections collection to destroy
 */
@@ -77,12 +77,12 @@ void	intersections_destroy(t_xs *xs)
 
 /*
 ** intersections_add()
-** Adds a new intersection to the collection, maintaining sorted order by t
-** 
+** Adds a new intersection to the collection, maintaining sorted order by
+**
 ** Parameters:
 ** - xs: existing intersections collection
 ** - i: intersection to add
-** 
+**
 ** Returns:
 ** - t_xs: new intersections collection with added intersection (sorted by t)
 */
@@ -104,14 +104,14 @@ t_xs	intersections_add(t_xs xs, t_intersection i)
 	while (insert_pos < xs.count && xs.intersections[insert_pos].t < i.t)
 		insert_pos++;
 
-	// Copy existing intersections before insertion point
+	// Copy existing intersections before insertion poin
 	for (j = 0; j < insert_pos; j++)
 		new_intersections[j] = xs.intersections[j];
 
 	// Insert new intersection
 	new_intersections[insert_pos] = i;
 
-	// Copy remaining intersections after insertion point
+	// Copy remaining intersections after insertion poin
 	for (j = insert_pos; j < xs.count; j++)
 		new_intersections[j + 1] = xs.intersections[j];
 
@@ -129,12 +129,12 @@ t_xs	intersections_add(t_xs xs, t_intersection i)
 /*
 ** intersections_hit()
 ** Finds the intersection with the smallest positive t value
-** 
+**
 ** Parameters:
 ** - xs: intersections collection
-** 
+**
 ** Returns:
-** - t_intersection: the hit intersection, or NULL intersection if no hit
+** - t_intersection: the hit intersection, or NULL intersection if no hi
 */
 t_intersection	intersections_hit(t_xs xs)
 {
@@ -145,7 +145,7 @@ t_intersection	intersections_hit(t_xs xs)
 	hit.object = NULL;
 	
 	// Since intersections are sorted by t (ascending),
-	// the first positive t is the hit
+	// the first positive t is the hi
 	for (int i = 0; i < xs.count; i++)
 	{
 		if (xs.intersections[i].t >= 0)
@@ -161,10 +161,10 @@ t_intersection	intersections_hit(t_xs xs)
 /*
 ** intersections_count()
 ** Returns the number of intersections in the collection
-** 
+**
 ** Parameters:
 ** - xs: intersections collection
-** 
+**
 ** Returns:
 ** - int: number of intersections
 */
@@ -176,11 +176,11 @@ int	intersections_count(t_xs xs)
 /*
 ** intersections_get()
 ** Gets an intersection at a specific index
-** 
+**
 ** Parameters:
 ** - xs: intersections collection
-** - index: index of the intersection to get
-** 
+** - index: index of the intersection to ge
+**
 ** Returns:
 ** - t_intersection: the intersection at the given index
 **   Returns a null intersection if index is out of bounds

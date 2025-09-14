@@ -20,7 +20,7 @@
 #define MAX_CAMERA     1
 #define MAX_LIGHT      1
 
-typedef struct s_ambient
+typedef struct s_ambien
 {
 	double	ratio;
 	t_color	color;
@@ -35,7 +35,7 @@ typedef struct s_camera
 	int			initialized;
 }	t_camera;
 
-typedef struct s_light
+typedef struct s_ligh
 {
 	t_point3	pos;
 	double		brightness;

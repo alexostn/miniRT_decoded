@@ -17,11 +17,11 @@
 /*
 ** ray()
 ** Create a new ray with given origin and direction
-** 
+**
 ** Parameters:
 ** - origin: starting point of the ray (should be a point with w=1)
 ** - direction: direction vector of the ray (should be a vector with w=0)
-** 
+**
 ** Returns:
 ** - new ray structure
 */
@@ -36,13 +36,13 @@ t_ray	ray(t_tuple origin, t_tuple direction)
 
 /*
 ** ray_position()
-** Compute the position of a point along a ray at distance t
-** Formula: position = origin + direction * t
-** 
+** Compute the position of a point along a ray at distance
+** Formula: position = origin + direction *
+**
 ** Parameters:
 ** - r: the ray
 ** - t: distance along the ray
-** 
+**
 ** Returns:
 ** - point at distance t along the ray
 */
@@ -54,11 +54,11 @@ t_tuple	ray_position(t_ray r, double t)
 /*
 ** ray_transform()
 ** Transforms a ray by applying a transformation matrix
-** 
+**
 ** Parameters:
 ** - r: the ray to transform
 ** - m: transformation matrix to apply
-** 
+**
 ** Returns:
 ** - t_ray: new transformed ray
 */

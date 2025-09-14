@@ -35,7 +35,7 @@ typedef struct s_vec3
 // -----------------------
 // Forward declarations
 // -----------------------
-// NB!: do one general structure for all objects 
+// NB!: do one general structure for all objects
 // empty fields will stay 0 f.ex.:
 typedef struct s_sphere		t_sphere;
 typedef struct s_plane		t_plane;
@@ -44,7 +44,7 @@ typedef struct s_cylinder	t_cylinder;
 // -----------------------
 // Scene configuration
 // -----------------------
-typedef struct s_ambient
+typedef struct s_ambien
 {
 	double	ratio;
 	t_color	color;
@@ -59,7 +59,7 @@ typedef struct s_camera
 	int			initialized;
 }	t_camera;
 
-typedef struct s_light
+typedef struct s_ligh
 {
 	t_point3	pos;
 	double		brightness;
