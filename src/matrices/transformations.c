@@ -15,14 +15,13 @@
 /*
 ** Creates a translation matrix.
 */
-// t_matrix	translation(double x, double y, double z)
-// {
-// 	t_matrix	m;
+t_matrix	translation(double x, double y, double z)
+{
+	t_matrix	m;
 
-// 	m = mat_identity();
-// 	print_matrix(m);
-// 	m.data[0][3] = x;
-// 	m.data[1][3] = y;
-// 	m.data[2][3] = z;
-// 	return (m);
-// }
+	m = mat_identity();
+	m.data[0][3] = x;
+	m.data[1][3] = y;
+	m.data[2][3] = z;
+	return (m);
+}

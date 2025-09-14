@@ -10,11 +10,10 @@ TMP_DIR="norm_tmp"
 # Create the temporary directory in the parent directory (../)
 mkdir -p "../$TMP_DIR"
 
-echo "-> Temporarily moving ignored items (tests, test_files, libft, mlx-linux, book_tests.c)...to ../$TMP_DIR"
+echo "-> Temporarily moving ignored items (tests, libft, mlx-linux, book_tests.c)...to ../$TMP_DIR"
 # Move the directories to be ignored one level up.
 # "|| true" is needed so the script doesn't stop if a directory is missing.
 mv tests "../$TMP_DIR/" || true
-mv test_files "../$TMP_DIR/" || true
 mv libft "../$TMP_DIR/" || true
 mv mlx-linux "../$TMP_DIR/" || true
 mv book_tests.c "../$TMP_DIR/" || true

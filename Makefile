@@ -185,7 +185,27 @@ fclean: clean
 	rm -f valgrind.log
 
 re: fclean all
-.PHONY: all clean fclean re btest vbtest # vbtest is compilation for valgrind TO DELETE LATER
+
+# New organized test system
+run_test:
+	cd tests && make test
+
+test-ch1:
+	cd tests && make test-ch1
+
+test-ch2:
+	cd tests && make test-ch2
+
+test-ch3:
+	cd tests && make test-ch3
+
+test-ch4:
+	cd tests && make test-ch4
+
+test-ch5:
+	cd tests && make test-ch5
+
+.PHONY: all clean fclean re btest vbtest test-organized test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 # vbtest is compilation for valgrind TO DELETE LATER
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later
