@@ -1848,7 +1848,6 @@ void	test_degrees_to_radians(void)
 ** Example: test_ch4_rotation_x()
 ** Description: Unit test for rotating a point around the X-axis.
 ** Uses: point(), rotation_x(), mat_mul_tuple(), tuples_equal(), TEST_ASSERT()
-** Verified: All 42 Norm, naming, and formatting rules applied.
 */
 void	test_ch4_rotation_x(void)
 {
@@ -1898,6 +1897,152 @@ void	test_ch4_rotation_x(void)
 	// --- END: Rewritten descriptive output ---
 	
 	TEST_ASSERT(tuples_equal(result, point(0, 0, 1)),
+		"Rotation by full_quarter (90 deg)");
+	printf("\n");
+}
+/*
+** Inverse of an x-rotation
+*/
+void    test_ch4_rotation_x_inversed(void)
+{
+	t_tuple     p;
+	t_matrix    half_quarter;
+	t_matrix    inv;
+	bool        is_invertible;
+	t_tuple     result;
+
+	printf("--- Chapter 4: Inverse of an x-rotation ---\n\n");
+
+	// --- Arrange: Set up the rotation and the point ---
+	p = point(0, 1, 0);
+	half_quarter = rotation_x(M_PI / 4);
+
+	// --- Act: Calculate the inverse matrix and apply it ---
+	inv = mat_inverse(half_quarter, &is_invertible);
+	result = mat_mul_tuple(inv, p);
+
+	// --- Log output for clarity ---
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (+45 deg):\n");
+	print_matrix(half_quarter);
+	printf("INVERSE of the rotation matrix (-45 deg):\n");
+	print_matrix(inv);
+	printf("Result after applying INVERSE rotation:\n");
+	print_tuple(result);
+
+	// --- Assert: Check the final position ---
+	TEST_ASSERT(tuples_equal(result, point(0, sqrt(2) / 2, -sqrt(2) / 2)),
+		"Inverse rotation by half_quarter (-45 deg)");
+
+	printf("\n");
+}
+
+
+
+
+/*
+** Example: test_ch4_rotation_y()
+** Description: Unit test for rotating a point around the y-axis.
+** Uses: point(), rotation_y(), mat_mul_tuple(), tuples_equal(), TEST_ASSERT()
+*/
+void	test_ch4_rotation_y(void)
+{
+	t_tuple		p;
+	t_matrix	half_quarter;
+	t_matrix	full_quarter;
+	t_tuple		result;
+
+	printf("Chapter 4: Rotating a point around the y axis\n\n");
+
+	// --- Test case 1: Rotation by 45 degrees (PI / 4) ---
+	printf("--- Test Case 1: Rotation by 45 degrees ---\n");
+	p = point(0, 0, 1);
+	half_quarter = rotation_y(M_PI / 4);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (45 deg):\n");
+	print_matrix(half_quarter);
+	
+	result = mat_mul_tuple(half_quarter, p);
+	
+	printf("Result after rotation:\n");
+	print_tuple(result);
+	
+	TEST_ASSERT(tuples_equal(result, point(sqrt(2) / 2, 0, sqrt(2) / 2)),
+		"Rotation by half_quarter (45 deg)");
+	printf("\n");
+
+	// --- Test case 2: Rotation by 90 degrees (PI / 2) ---
+	printf("--- Test Case 2: Rotation by 90 degrees ---\n");
+	p = point(0, 0, 1);
+	full_quarter = rotation_y(M_PI / 2);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (90 deg):\n");
+	print_matrix(full_quarter);
+
+	result = mat_mul_tuple(full_quarter, p);
+
+	printf("Result after rotation:\n");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, point(1, 0, 0)),
+		"Rotation by full_quarter (90 deg)");
+	printf("\n");
+}
+
+/*
+** Example: test_ch4_rotation_z()
+** Description: Unit test for rotating a point around the Z-axis.
+** Uses: point(), rotation_z(), mat_mul_tuple(), tuples_equal(), TEST_ASSERT()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+void	test_ch4_rotation_z(void)
+{
+	t_tuple		p;
+	t_matrix	half_quarter;
+	t_matrix	full_quarter;
+	t_tuple		result;
+
+	printf("Chapter 4: Rotating a point around the z axis\n\n");
+
+	// --- Test case 1: Rotation by 45 degrees (PI / 4) ---
+	printf("--- Test Case 1: Rotation by 45 degrees ---\n");
+	p = point(0, 1, 0);
+	half_quarter = rotation_z(M_PI / 4);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (45 deg):\n");
+	print_matrix(half_quarter);
+
+	result = mat_mul_tuple(half_quarter, p);
+
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(-sqrt(2) / 2, sqrt(2) / 2, 0)),
+		"Rotation by half_quarter (45 deg)");
+	printf("\n");
+
+	// --- Test case 2: Rotation by 90 degrees (PI / 2) ---
+	printf("--- Test Case 2: Rotation by 90 degrees ---\n");
+	p = point(0, 1, 0);
+	full_quarter = rotation_z(M_PI / 2);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (90 deg):\n");
+	print_matrix(full_quarter);
+
+	result = mat_mul_tuple(full_quarter, p);
+
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(-1, 0, 0)),
 		"Rotation by full_quarter (90 deg)");
 	printf("\n");
 }
@@ -2017,6 +2162,13 @@ int main(void)
 	test_degrees_to_radians();
 	printf("\n");
 	test_ch4_rotation_x();
+	printf("\n");
+	/*12September*/
+	test_ch4_rotation_x_inversed();
+	printf("\n");
+	test_ch4_rotation_y();
+	printf("\n");
+	test_ch4_rotation_z();
 	printf("\n");
 	printf("--- All book tests finished. ---\n");
 	return (0);
