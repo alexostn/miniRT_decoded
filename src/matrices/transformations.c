@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrices.c                                         :+:      :+:    :+:   */
+/*   transformations.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/04 16:34:24 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/08 18:36:38 by oostapen         ###   ########.fr       */
+/*   Created: 2025/09/11 16:02:25 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/11 16:58:26 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "matrices.h"
+#include "transformations.h"
 
-// proceed mistake (return 0 or message)
-double	get_matrix_element(const t_matrix *m, int row, int col)
-{
-	if (row < 0 || row >= 4 || col < 0 || col >= 4)
-	{
-		return (0.0);
-	}
-	return (m->data[row][col]);
-}
+/*
+** Creates a translation matrix.
+*/
+// t_matrix	translation(double x, double y, double z)
+// {
+// 	t_matrix	m;
+
+// 	m = mat_identity();
+// 	print_matrix(m);
+// 	m.data[0][3] = x;
+// 	m.data[1][3] = y;
+// 	m.data[2][3] = z;
+// 	return (m);
+// }
