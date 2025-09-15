@@ -41,7 +41,7 @@ static t_matrix	identity(void)
 // Sets *ok to true if successful, false if not invertible (det == 0)
 // Returns the inverse if ok, otherwise returns identity matrix
 // Transpose by assigning to inv.data[col][row]
-// Divide cofactor by determinant
+// Divide cofactor by determinan
 t_matrix	mat_inverse(t_matrix m, bool *ok)
 {
 	t_matrix	inv;

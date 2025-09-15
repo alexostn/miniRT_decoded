@@ -1,16 +1,16 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile_mac                                       :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/14 22:36:59 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/15 20:21:03 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Makefile for miniRT (C, miniLibX-mms, macOS)
+# Makefile for miniRT (C, miniLibX, no malloc)
 NAME    = miniRT
 CC      = cc
 CFLAGS  = -Wall -Wextra -Werror -g -Iinclude -Itests/ -I$(LIBFT_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)
@@ -20,15 +20,15 @@ LIBFT_DIR   = libft
 LIBFT_LIB   = $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
-# MiniLibX-mms variables (macOS):
-MLX_DIR = minilibx-mms
-MLX_LIB = -L. -lmlx -framework Cocoa -framework OpenGL -framework IOKit
+# MiniLibX variables:
+MLX_DIR = mlx-linux
+MLX_LIB = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
 
-# Project variables:
+# Project variables:2
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRCS	= $(SRC_DIR)/main.c \
+SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/window.c \
 			$(SRC_DIR)/image.c \
 			$(SRC_DIR)/init.c \
@@ -51,12 +51,10 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/spheres/intersections_utils.c \
 			$(SRC_DIR)/matrices/matrice_submatrix.c \
 			$(SRC_DIR)/matrices/transformations.c \
-			$(SRC_DIR)/matrices/matrice_determinant_API.c\
-			$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
-			$(SRC_DIR)/math/math_utils.c \
-			$(SRC_DIR)/matrices/matrice_rotation.c
+			$(SRC_DIR)/matrices/matrice_determinant_API.c \
+			$(SRC_DIR)/matrices/matrice_determinant_recursive.c
 
-OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Variables for booktests:
 # 1. Source file with book tests (located in the project root)
@@ -84,10 +82,8 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/spheres/intersections_utils.c \
 						$(SRC_DIR)/matrices/matrice_submatrix.c \
 						$(SRC_DIR)/matrices/transformations.c \
-						$(SRC_DIR)/matrices/matrice_determinant_API.c\
-						$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
-						$(SRC_DIR)/math/math_utils.c \
-						$(SRC_DIR)/matrices/matrice_rotation.c
+						$(SRC_DIR)/matrices/matrice_determinant_API.c \
+						$(SRC_DIR)/matrices/matrice_determinant_recursive.c
 
 # 3. Object files for modules used by the tests
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
@@ -106,7 +102,7 @@ TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
 TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
 
 # Rule for compiling ONE test
-$(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) ./libmlx.dylib
+$(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
@@ -124,26 +120,25 @@ newtests: $(TEST_BINS)
 	done
 # >>> MODULE TESTING SECTION END
 
+
 # basic rules:
 all: $(NAME)
 
-# Dependencies for the main project
-$(NAME): $(OBJS) $(LIBFT_LIB) ./libmlx.dylib
-	$(CC) $(OBJS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
-	@echo "✅ miniRT compiled successfully!"
-
 # libft compilation rule:
 $(LIBFT_LIB):
-	@echo "📚 Compiling libft..."
 	@make -s -C $(LIBFT_DIR)
-	@echo "✅ libft compiled successfully!"
 	
-# MLX-mms compilation rule:
-./libmlx.dylib:
-	@echo "🖼️  Compiling minilibx-mms..."
+# to avoid mistakes with Makefile.gen we compile it in advance:
+$(MLX_DIR)/Makefile.gen:
+	cd $(MLX_DIR) && ./configure
+
+# MLX compilation rule:
+$(MLX_DIR)/libmlx.a: $(MLX_DIR)/Makefile.gen
 	@make -s -C $(MLX_DIR)
-	@cp $(MLX_DIR)/libmlx.dylib .
-	@echo "✅ libmlx.dylib copied to project root"
+
+# miniRT compilation rule:
+$(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
+	$(CC) $(OBJS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
 
 # Rule for compiling .c from src/ to obj/ (for the main project and test modules)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -171,7 +166,7 @@ vbtest: $(BOOK_TEST_EXECUTABLE)
 	@echo "Valgrind tests finished. See valgrind.log for details."
 
 # tests compilation rules:
-$(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) ./libmlx.dylib
+$(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
 # clean rules:
@@ -188,7 +183,6 @@ fclean: clean
 	rm -f $(BOOK_TEST_EXECUTABLE)
 	rm -f $(TEST_BINS)
 	rm -f valgrind.log
-	rm -f libmlx.dylib
 
 re: fclean all
 
@@ -211,7 +205,7 @@ test-ch4:
 test-ch5:
 	cd tests && make test-ch5
 
-.PHONY: all clean fclean re btest vbtest newtests test_% test-organized test-ch1 test-ch2 test-ch3 test-ch4 test-ch5
+.PHONY: all clean fclean re btest vbtest test-organized test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 # vbtest is compilation for valgrind TO DELETE LATER
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

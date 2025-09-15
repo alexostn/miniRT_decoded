@@ -15,7 +15,7 @@
 
 # include "defines.h"
 
-# include <math.h> // for fabs, pow, sqrt
+# include <math.h> // for fabs, pow, sqr
 
 // Homogeneous 4D tuple (can be a point or a vector)
 // w = 1.0 for a point, w = 0.0 for a vector
@@ -35,7 +35,7 @@ typedef struct s_tuple // tuples.h (vector operations)
 ** a pointer (t_tuple *tuple_create_heap(...))
 */
 t_tuple		tuple(double x, double y, double z, double w);
-t_tuple		point(double x, double y, double z); // Constructor for a point
+t_tuple		point(double x, double y, double z); // Constructor for a poin
 t_tuple		vector(double x, double y, double z); // Constructor for a vector
 t_tuple		rgb(double x, double y, double z); //Constructor for a color
 /*** Color creation and conversion: ***/

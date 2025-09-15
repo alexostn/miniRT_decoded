@@ -28,7 +28,7 @@ typedef struct s_color
 }	t_color;
 
 /*** Supported color formats (byte order in uint32_t): ***/
-typedef enum e_format
+typedef enum e_forma
 {
 	FORMAT_ARGB,
 	FORMAT_RGBA,
@@ -37,7 +37,7 @@ typedef enum e_format
 }	t_format;
 
 /***Color format ***/
-typedef struct s_color_format
+typedef struct s_color_forma
 {
 	t_color		color;
 	t_format	format;

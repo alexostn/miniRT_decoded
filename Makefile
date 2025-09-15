@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/13 23:10:36 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/15 22:54:24 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,12 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_creation.c \
 			$(SRC_DIR)/matrices/matrice_operations.c \
 			$(SRC_DIR)/matrices/matrice_inverse.c \
+			$(SRC_DIR)/rays/rays.c \
+			$(SRC_DIR)/spheres/spheres.c \
+			$(SRC_DIR)/spheres/intersections_utils.c \
 			$(SRC_DIR)/matrices/matrice_submatrix.c \
 			$(SRC_DIR)/matrices/transformations.c \
-			$(SRC_DIR)/matrices/matrice_determinant_API.c\
+			$(SRC_DIR)/matrices/matrice_determinant_API.c \
 			$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
 			$(SRC_DIR)/math/math_utils.c \
 			$(SRC_DIR)/matrices/matrice_rotation.c
@@ -76,9 +79,12 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/matrices/matrice_creation.c \
 						$(SRC_DIR)/matrices/matrice_operations.c \
 						$(SRC_DIR)/matrices/matrice_inverse.c \
+						$(SRC_DIR)/rays/rays.c \
+						$(SRC_DIR)/spheres/spheres.c \
+						$(SRC_DIR)/spheres/intersections_utils.c \
 						$(SRC_DIR)/matrices/matrice_submatrix.c \
 						$(SRC_DIR)/matrices/transformations.c \
-						$(SRC_DIR)/matrices/matrice_determinant_API.c\
+						$(SRC_DIR)/matrices/matrice_determinant_API.c \
 						$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
 						$(SRC_DIR)/math/math_utils.c \
 						$(SRC_DIR)/matrices/matrice_rotation.c
@@ -95,27 +101,27 @@ BOOK_TEST_EXECUTABLE = run_book_tests
 
 # >>> MODULE TESTING SECTION BEGINNING
 # New tests (automatic discovery)
-TESTS_DIR = tests
-TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
-TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
+# TESTS_DIR = tests
+# TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
+# TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
 
-# Rule for compiling ONE test
-$(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
+# # Rule for compiling ONE test
+# $(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
+# 	@mkdir -p $(@D)
+# 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
-# Rule for running ONE test
-test_%: $(TESTS_DIR)/test_%
-	@echo "Running $@..."
-	./$<
-	@echo "Test finished"
+# # Rule for running ONE test
+# test_%: $(TESTS_DIR)/test_%
+# 	@echo "Running $@..."
+# 	./$<
+# 	@echo "Test finished"
 
-# Rule for running ALL new tests
-newtests: $(TEST_BINS)
-	@for t in $(notdir $(TEST_BINS)); do \
-		echo "Running $$t..."; \
-		./$(TESTS_DIR)/$$t; \
-	done
+# # Rule for running ALL new tests
+# newtests: $(TEST_BINS)
+# 	@for t in $(notdir $(TEST_BINS)); do \
+# 		echo "Running $$t..."; \
+# 		./$(TESTS_DIR)/$$t; \
+# 	done
 # >>> MODULE TESTING SECTION END
 
 
@@ -183,7 +189,27 @@ fclean: clean
 	rm -f valgrind.log
 
 re: fclean all
-.PHONY: all clean fclean re btest vbtest # vbtest is compilation for valgrind TO DELETE LATER
+
+# New organized test system
+run_test:
+	cd tests && make test
+
+test-ch1:
+	cd tests && make test-ch1
+
+test-ch2:
+	cd tests && make test-ch2
+
+test-ch3:
+	cd tests && make test-ch3
+
+test-ch4:
+	cd tests && make test-ch4
+
+test-ch5:
+	cd tests && make test-ch5
+
+.PHONY: all clean fclean re btest vbtest test-organized test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 # vbtest is compilation for valgrind TO DELETE LATER
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

@@ -15,7 +15,7 @@
 
 # include "tuples.h"
 
-typedef struct s_environment
+typedef struct s_environmen
 {
 	t_tuple	gravity;
 	t_tuple	wind;

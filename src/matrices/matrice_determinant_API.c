@@ -49,7 +49,8 @@ double	mat_determinant(t_matrix m)
 
 /*
 ** Public API: Calculates the minor of a matrix.
-** It dispatches to the recursive helper with the correct size for the submatrix.
+** It dispatches to the recursive helper with the correct size for the
+** submatrix.
 */
 double	mat_minor(t_matrix m, int row, int col)
 {

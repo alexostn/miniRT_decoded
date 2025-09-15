@@ -39,7 +39,8 @@ mlx-linux/Makefile.gen
 
 # Test files and outputs
 test_files/*.ppm
-tests/test_*
+tests/run_test
+tests/obj/
 valgrind.log
 *.log
 
