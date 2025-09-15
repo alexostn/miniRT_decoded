@@ -1,3 +1,11 @@
+# Rule to build libft before building tests
+../libft/libft.a:
+	@$(MAKE) -C ../libft
+
+# Rule to build mlx before building tests
+../mlx-linux/libmlx_Linux.a:
+	@$(MAKE) -s -C ../mlx-linux
+
 # Makefile for The Raytracer Challenge Book Tests
 # This Makefile builds and runs the organized test structure
 
@@ -59,7 +67,7 @@ TARGET = run_test
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 	MLX_DIR = ../mlx-linux
-	MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
 	MLX_INCLUDE = -I$(MLX_DIR)
 else
 	MLX_DIR = ../minilibx-mms
@@ -92,15 +100,11 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Link the test executable
-$(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a
+$(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a ../mlx-linux/libmlx_Linux.a
 	$(CC) $(OBJS) $(TEST_OBJS) -o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
 
 # Run all tests
 test: $(TARGET)
-	./$(TARGET)
-
-# Alias for test (different name to avoid circular dependency)
-run_test: $(TARGET)
 	./$(TARGET)
 
 # Run tests with valgrind (if available)
