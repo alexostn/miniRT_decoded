@@ -117,19 +117,19 @@ re: fclean all
 
 # Individual chapter tests (for debugging)
 test-ch1: $(TARGET)
-	./$(TARGET) | grep -A 1000 "Chapter 1:"
+	./$(TARGET) 1
 
 test-ch2: $(TARGET)
-	./$(TARGET) | grep -A 1000 "Chapter 2:"
+	./$(TARGET) 2
 
 test-ch3: $(TARGET)
-	./$(TARGET) | grep -A 1000 "Chapter 3:"
+	./$(TARGET) 3
 
 test-ch4: $(TARGET)
-	./$(TARGET) | grep -A 1000 "Chapter 4:"
+	./$(TARGET) 4
 
 test-ch5: $(TARGET)
-	./$(TARGET) | grep -A 1000 "Chapter 5:"
+	./$(TARGET) 5
 
 # Help target
 help:

@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/15 22:54:24 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/16 19:24:57 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -185,6 +185,7 @@ fclean: clean
 	@make -s -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 	rm -f $(BOOK_TEST_EXECUTABLE)
+	rm -f tests/run_test
 	rm -f $(TEST_BINS)
 	rm -f valgrind.log
 

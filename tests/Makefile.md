@@ -1,105 +1,150 @@
-# Makefile for The Raytracer Challenge Book Tests (ULTRA-ROBUST FINAL VERSION)
+# Rule to build libft before building tests
+../libft/libft.a:
+	@$(MAKE) -C ../libft
 
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -g
-LDFLAGS		= -L../libft -lft
+# Rule to build mlx before building tests
+../mlx-linux/libmlx_Linux.a:
+	@$(MAKE) -s -C ../mlx-linux
 
-TARGET		= run_test
-SRC_DIR		= ../src
-OBJ_DIR		= obj
+# Makefile for The Raytracer Challenge Book Tests
+# This Makefile builds and runs the organized test structure
+
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g -O2
+LDFLAGS = -L../libft -lft
+
+# Directories
+SRC_DIR = ../src
+INCLUDE_DIR = ../include
+TEST_DIR = .
 CHAPTERS_DIR = chapters
+OBJ_DIR = obj
 
-# --- ИСХОДНЫЕ ФАЙЛЫ ---
+# Source files for the main project (excluding main.c to avoid conflicts)
+SRCS = $(SRC_DIR)/window.c \
+	$(SRC_DIR)/image.c \
+	$(SRC_DIR)/init.c \
+	$(SRC_DIR)/tuples/tuple_creation.c \
+	$(SRC_DIR)/tuples/tuple_predicates.c \
+	$(SRC_DIR)/tuples/tuple_utils.c \
+	$(SRC_DIR)/tuples/tuple_multiply_divide.c \
+	$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
+	$(SRC_DIR)/phisics/projectile.c \
+	$(SRC_DIR)/tuples/colors.c \
+	$(SRC_DIR)/tuples/color_converters.c \
+	$(SRC_DIR)/tuples/pixel.c \
+	$(SRC_DIR)/tuples/image_to_ppm.c \
+	$(SRC_DIR)/matrices/matrices.c \
+	$(SRC_DIR)/matrices/matrice_creation.c \
+	$(SRC_DIR)/matrices/matrice_operations.c \
+	$(SRC_DIR)/matrices/matrice_inverse.c \
+	$(SRC_DIR)/matrices/matrice_submatrix.c \
+	$(SRC_DIR)/matrices/transformations.c \
+	$(SRC_DIR)/matrices/matrice_determinant_API.c \
+	$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
+	$(SRC_DIR)/rays/rays.c \
+	$(SRC_DIR)/spheres/spheres.c \
+	$(SRC_DIR)/spheres/intersections_utils.c \
+	$(SRC_DIR)/math/math_utils.c \
+	$(SRC_DIR)/matrices/matrice_rotation.c
 
-SRCS_ROOT = window.c image.c init.c
-SRCS_TUPLES = tuples/tuple_creation.c tuples/tuple_predicates.c tuples/tuple_utils.c \
-			  tuples/tuple_multiply_divide.c tuples/tuple_magitude_normalize_dot.c \
-			  tuples/colors.c tuples/color_converters.c tuples/pixel.c tuples/image_to_ppm.c
-SRCS_MATRICES = matrices/matrices.c matrices/matrice_creation.c matrices/matrice_operations.c \
-				matrices/matrice_inverse.c matrices/matrice_submatrix.c matrices/transformations.c \
-				matrices/matrice_determinant_API.c matrices/matrice_determinant_recursive.c \
-				matrices/matrice_rotation.c
-SRCS_PHYSICS = phisics/projectile.c
-SRCS_RAYS = rays/rays.c
-SRCS_SPHERES = spheres/spheres.c spheres/intersections_utils.c
-SRCS_MATH = math/math_utils.c
+# Test source files
+TEST_SRCS = test_common.c \
+	test_runner.c \
+	$(CHAPTERS_DIR)/test_chapter1.c \
+	$(CHAPTERS_DIR)/test_chapter2.c \
+	$(CHAPTERS_DIR)/test_chapter3.c \
+	$(CHAPTERS_DIR)/test_chapter4.c \
+	$(CHAPTERS_DIR)/test_chapter5.c
 
-TEST_SRCS_ROOT = test_common.c test_runner.c
-TEST_SRCS_CH = chapters/test_chapter1.c chapters/test_chapter2.c chapters/test_chapter3.c \
-			   chapters/test_chapter4.c chapters/test_chapter5.c
+# Object files
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+TEST_OBJS = $(TEST_SRCS:%.c=$(OBJ_DIR)/%.o)
 
-OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS_ROOT:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(SRCS_TUPLES:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(SRCS_MATRICES:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(SRCS_PHYSICS:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(SRCS_RAYS:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(SRCS_SPHERES:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(SRCS_MATH:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(TEST_SRCS_ROOT:.c=.o)) \
-	   $(addprefix $(OBJ_DIR)/, $(TEST_SRCS_CH:.c=.o))
+# Target executable
+TARGET = run_test
 
-# --- БИБЛИОТЕКИ ---
+# MLX library paths (detect OS)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	MLX_DIR = ../mlx-linux
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+	MLX_INCLUDE = -I$(MLX_DIR)
+else
+	MLX_DIR = ../minilibx-mms
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+	MLX_INCLUDE = -I$(MLX_DIR)
+endif
 
-MLX_DIR		= ../mlx-linux
-MLX_FLAGS	= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
-INCLUDES	= -I../include -I$(MLX_DIR) -I../libft/inc
+# Include directories
+INCLUDES = -I$(INCLUDE_DIR) -I$(MLX_DIR) -I../libft/inc $(MLX_INCLUDE)
 
-# --- ОСНОВНЫЕ ПРАВИЛА ---
-
-.PHONY: all test run_test vtest clean fclean re dirs
-
+# Default target
 all: $(TARGET)
 
-$(TARGET): $(OBJS) ../libft/libft.a
-$(CC) $(OBJS) -o $@ $(LDFLAGS) $(MLX_FLAGS)
+# Build main project object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-test: all
+# Build test object files
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+
+# Link the test executable
+$(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a ../mlx-linux/libmlx_Linux.a
+	$(CC) $(OBJS) $(TEST_OBJS) -o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
+
+# Run all tests
+test: $(TARGET)
 	./$(TARGET)
 
-run_test: test
-
-vtest: all
+# Run tests with valgrind (if available)
+vtest: $(TARGET)
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET)
 
-re: fclean all
-
+# Clean up
 clean:
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(TARGET)
 
-# --- ПРАВИЛА КОМПИЛЯЦИИ ---
+re: fclean all
 
-dirs:
-	mkdir -p $(OBJ_DIR) $(OBJ_DIR)/tuples $(OBJ_DIR)/matrices $(OBJ_DIR)/phisics \
-	$(OBJ_DIR)/rays $(OBJ_DIR)/spheres $(OBJ_DIR)/math $(OBJ_DIR)/chapters
+# Individual chapter tests (for debugging)
+test-ch1: $(TARGET)
+	./$(TARGET) 1
 
-# Правила для каждой подпапки
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+test-ch2: $(TARGET)
+	./$(TARGET) 2
 
-$(OBJ_DIR)/tuples/%.o: $(SRC_DIR)/tuples/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+test-ch3: $(TARGET)
+	./$(TARGET) 3
 
-$(OBJ_DIR)/matrices/%.o: $(SRC_DIR)/matrices/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+test-ch4: $(TARGET)
+	./$(TARGET) 4
 
-$(OBJ_DIR)/phisics/%.o: $(SRC_DIR)/phisics/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+test-ch5: $(TARGET)
+	./$(TARGET) 5
 
-$(OBJ_DIR)/rays/%.o: $(SRC_DIR)/rays/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+# Help target
+help:
+	@echo "Available targets:"
+	@echo "  all      - Build the organized test suite"
+	@echo "  test     - Run all tests"
+	@echo "  vtest    - Run tests with valgrind"
+	@echo "  clean    - Remove object files"
+	@echo "  fclean   - Remove object files and executable"
+	@echo "  re       - Rebuild everything"
+	@echo "  test-ch1 - Run only Chapter 1 tests"
+	@echo "  test-ch2 - Run only Chapter 2 tests"
+	@echo "  test-ch3 - Run only Chapter 3 tests"
+	@echo "  test-ch4 - Run only Chapter 4 tests"
+	@echo "  test-ch5 - Run only Chapter 5 tests"
+	@echo "  help     - Show this help message"
 
-$(OBJ_DIR)/spheres/%.o: $(SRC_DIR)/spheres/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJ_DIR)/math/%.o: $(SRC_DIR)/math/%.c | dirs
-$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-# Правила для тестов
-$(OBJ_DIR)/%.o: %.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJ_DIR)/chapters/%.o: $(CHAPTERS_DIR)/%.c | dirs
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+.PHONY: all test vtest clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 help

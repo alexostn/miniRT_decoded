@@ -8,10 +8,20 @@ This directory contains a reorganized version of all tests from "The Raytracer C
 ### Option 1: From the main project directory
 
 ```bash
-# Run all organized tests
+# Run all organized tests from Mac
 make -f Makefile_mac run_test
 
-# Run tests for a specific chapter
+# Run all organized tests from ubuntu
+make run_test
+
+# Run tests for a specific chapter on Mac
+make -f Makefile_mac test-ch1    # Chapter 1: Tuples
+make -f Makefile_mac test-ch2    # Chapter 2: Colors
+make -f Makefile_mac test-ch3    # Chapter 3: Matrices
+make -f Makefile_mac test-ch4    # Chapter 4: Transformations
+make -f Makefile_mac test-ch5    # Chapter 5: Ray-Sphere Intersections
+```
+# Run tests for a specific chapter on ubuntu
 make -f Makefile_mac test-ch1    # Chapter 1: Tuples
 make -f Makefile_mac test-ch2    # Chapter 2: Colors
 make -f Makefile_mac test-ch3    # Chapter 3: Matrices
@@ -27,7 +37,7 @@ cd tests/
 # Run all tests
 make run_test
 
-# Run tests with valgrind
+# Run tests with valgrind (works only from tests/)
 make vtest
 
 # Run tests for a specific chapter
