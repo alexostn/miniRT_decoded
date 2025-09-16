@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # (chmod +x check_norm.sh before)
 # "Instead of running norminette ., just run your new script from the project root:
 # ./check_norm.sh
@@ -9,10 +11,8 @@ IGNORE_LIST=(
 	"tests"
 	"libft"
 	"mlx-linux"
-	"src/spheres" #remove the rule and Norminette it please thank You:)
-	"src/rays" #remove the rule and Norminette it please thank You:)
-	# "path/to/another/file.c"
 	# You can add any other directory to ignore using the same pattern
+	# "path/to/another/file.c"
 )
 
 # The name of the temporary archive file.
