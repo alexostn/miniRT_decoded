@@ -27,7 +27,7 @@ make test-all
 # Shows: Chapter 1-5 results + TOTAL: 200/200 tests ✅ (100.0%)
 ```
 
-### Run Individual Chapter Tests #works and shows more then one mistake, just some strange Makefile errors at the end, but this probably not that important
+### Run Individual Chapter Tests
 ```bash
 make test-ch1    # Chapter 1: Tuples, Points, and Vectors (50 tests)
 make test-ch2    # Chapter 2: Colors and Canvas (32 tests)
@@ -40,7 +40,7 @@ make test-ch5    # Chapter 5: Ray-Sphere Intersections (45 tests)
 ```bash
 # Run all tests with Valgrind memory checking
 make test-all-valgrind
-# Outputs to: tests/valgrind_all.log #works
+# Outputs to: tests/valgrind_all.log
 ```
 
 ### Help and Available Commands
@@ -79,3 +79,4 @@ make fclean
 - The unified Makefile works on both Mac and Linux
 - All 200 tests should pass (100% success rate)
 - PPM files are automatically generated and compared during tests
+
