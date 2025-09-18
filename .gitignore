@@ -33,6 +33,7 @@ minilibx-mms/*.abi.json
 minilibx-mms/*.swiftsourceinfo
 minilibx-mms/module-cache/
 minilibx-mms/libmlx.dylib
+mlx-linux/
 mlx-linux/*.o
 mlx-linux/libmlx.a
 mlx-linux/Makefile.gen

@@ -2,9 +2,14 @@
 ../libft/libft.a:
 	@$(MAKE) -C ../libft
 
-# Rule to build mlx before building tests
+# Rule to build mlx before building tests (Linux)
 ../mlx-linux/libmlx_Linux.a:
 	@$(MAKE) -s -C ../mlx-linux
+
+# Rule to build mlx before building tests (macOS)
+../minilibx-mms/libmlx.dylib:
+	@$(MAKE) -s -C ../minilibx-mms
+	@cp ../minilibx-mms/libmlx.dylib ../libmlx.dylib
 
 # Makefile for The Raytracer Challenge Book Tests
 # This Makefile builds and runs the organized test structure
@@ -94,9 +99,14 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 
-# Link the test executable
+# Link the test executable (with OS-specific MLX dependencies)
+ifeq ($(UNAME_S),Linux)
 $(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a ../mlx-linux/libmlx_Linux.a
 	$(CC) $(OBJS) $(TEST_OBJS) -o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
+else
+$(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a ../minilibx-mms/libmlx.dylib
+	$(CC) $(OBJS) $(TEST_OBJS) -o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
+endif
 
 # Run all tests
 test: $(TARGET)
@@ -112,6 +122,7 @@ clean:
 
 fclean: clean
 	rm -f $(TARGET)
+	rm -f ../libmlx.dylib
 
 re: fclean all
 
@@ -131,20 +142,30 @@ test-ch4: $(TARGET)
 test-ch5: $(TARGET)
 	./$(TARGET) 5
 
+# Run all tests with Valgrind (Linux only)
+test-all-valgrind: $(TARGET)
+	@echo "🔍 Running ALL tests with Valgrind..."
+	@echo "=========================================="
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind_all.log ./$(TARGET)
+	@echo "=========================================="
+	@echo "✅ All tests with Valgrind completed!"
+	@echo "📋 Check valgrind_all.log for details"
+
 # Help target
 help:
 	@echo "Available targets:"
-	@echo "  all      - Build the organized test suite"
-	@echo "  test     - Run all tests"
-	@echo "  vtest    - Run tests with valgrind"
-	@echo "  clean    - Remove object files"
-	@echo "  fclean   - Remove object files and executable"
-	@echo "  re       - Rebuild everything"
-	@echo "  test-ch1 - Run only Chapter 1 tests"
-	@echo "  test-ch2 - Run only Chapter 2 tests"
-	@echo "  test-ch3 - Run only Chapter 3 tests"
-	@echo "  test-ch4 - Run only Chapter 4 tests"
-	@echo "  test-ch5 - Run only Chapter 5 tests"
-	@echo "  help     - Show this help message"
+	@echo "  all              - Build the organized test suite"
+	@echo "  test             - Run all tests"
+	@echo "  vtest            - Run tests with valgrind"
+	@echo "  test-all-valgrind - Run ALL tests with Valgrind (Linux only)"
+	@echo "  clean            - Remove object files"
+	@echo "  fclean           - Remove object files and executable"
+	@echo "  re               - Rebuild everything"
+	@echo "  test-ch1         - Run only Chapter 1 tests"
+	@echo "  test-ch2         - Run only Chapter 2 tests"
+	@echo "  test-ch3         - Run only Chapter 3 tests"
+	@echo "  test-ch4         - Run only Chapter 4 tests"
+	@echo "  test-ch5         - Run only Chapter 5 tests"
+	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 help
