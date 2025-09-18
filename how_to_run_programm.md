@@ -1,23 +1,79 @@
-# git submodule update --init
-to download submodule with miniLibx (mlx)
+# How to Run miniRT Program
 
-# 1) make or make re
- ./miniRT
-starts a window , it can be closed with a cross or esq
+## Initial Setup
+```bash
+# Download submodule with miniLibX (mlx)
+git submodule update --init --recursive
+```
 
-# make btest or make re btest
-<!-- PREVIOUS VERSION builds the tests from book and you can see the results -->
+## Building and Running the Main Program
+```bash
+# Build the main miniRT project
+make
+# or
+make re
 
-# 1) make vbtest or make re vbtest
-<!-- PREVIOUS VERSION collects tests with valgrind and outputs the results to valgrind.log file -->
+# Run the program
+./miniRT
+# Starts a window that can be closed with the X button or ESC key
+```
 
-# 2) make fclean
-deletes valgrind.log file and the rest
+## Testing System (NEW UNIFIED SYSTEM)
 
-# 3) norminette (.normignore has a bug)
-"Instead of running norminette ., just run your new script from the project root: -->
-# ./check_norm.sh
+### Run All Tests
+```bash
+# Run ALL chapter tests with consolidated summary
+make test-all
+# Shows: Chapter 1-5 results + TOTAL: 200/200 tests ✅ (100.0%)
+```
 
-There is also a folder for comparing .ppm files for some tests
+### Run Individual Chapter Tests
+```bash
+make test-ch1    # Chapter 1: Tuples, Points, and Vectors (50 tests)
+make test-ch2    # Chapter 2: Colors and Canvas (32 tests)
+make test-ch3    # Chapter 3: Matrices (48 tests)
+make test-ch4    # Chapter 4: Transformations (25 tests)
+make test-ch5    # Chapter 5: Ray-Sphere Intersections (45 tests)
+```
 
-folder documentation.md is a mess
+### Memory Testing (Linux only)
+```bash
+# Run all tests with Valgrind memory checking
+make test-all-valgrind
+# Outputs to: tests/valgrind_all.log
+```
+
+### Help and Available Commands
+```bash
+# Show all available make commands
+make help
+```
+
+## Cross-Platform Support
+The Makefile automatically detects your OS:
+- **Linux**: Uses `mlx-linux` with X11 libraries
+- **macOS**: Uses `minilibx-mms` with Cocoa/OpenGL frameworks
+
+## Cleaning Up
+```bash
+# Remove object files and executables
+make fclean
+# Also removes valgrind.log files
+```
+
+## Code Style Checking
+```bash
+# Run norminette on the project
+./check_norm.sh
+# (Includes automatic .normignore handling)
+```
+
+## Test Output Files
+- PPM files are generated in `tests/files/` directory
+- Test results show detailed output for each chapter
+- Memory leak reports saved to `tests/valgrind_all.log` (Linux)
+
+## Notes
+- The unified Makefile works on both Mac and Linux
+- All 200 tests should pass (100% success rate)
+- PPM files are automatically generated and compared during tests
