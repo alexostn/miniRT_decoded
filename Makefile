@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/18 22:28:13 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/18 22:39:30 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,7 +198,7 @@ clock: $(CLOCK_EXEC)
 	@echo "$(BLUE)Running clock demo...$(RESET)"
 	./$(CLOCK_EXEC)
 
-$(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_LIB) $(MLX)
+$(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
 	@echo "$(GREEN)Compiling clock demo:$(RESET) $(CLOCK_EXEC)"
 	$(CC) $(CFLAGS) -o $(CLOCK_EXEC) $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
 
