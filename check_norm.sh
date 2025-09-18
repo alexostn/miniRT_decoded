@@ -35,7 +35,7 @@ if [ ${#files_to_move[@]} -gt 0 ]; then
 	# --remove-files does all the magic: archives the files, then deletes them.
 	tar -cf "$TMP_ARCHIVE" --remove-files "${files_to_move[@]}"
 else
-	echo "-> No ignored items found to move."
+    echo "-> No ignored items found to move."
 fi
 
 
@@ -51,13 +51,13 @@ echo "-------------------------------------"
 # --- 3. Restoring and Cleaning Up ---
 # If the temporary archive exists, extract it and then delete it.
 if [ -f "$TMP_ARCHIVE" ]; then
-	echo "-> Restoring items to their original locations..."
-	# tar -x (extract) -f (from file)
-	# The files will be restored to their original paths.
-	tar -xf "$TMP_ARCHIVE"
-	# Remove the archive file itself.
-	rm "$TMP_ARCHIVE"
-	echo "Done."
+    echo "-> Restoring items to their original locations..."
+    # tar -x (extract) -f (from file)
+    # The files will be restored to their original paths.
+    tar -xf "$TMP_ARCHIVE"
+    # Remove the archive file itself.
+    rm "$TMP_ARCHIVE"
+    echo "Done."
 else
-	echo "-> No archive found to restore from."
+    echo "-> No archive found to restore from."
 fi
