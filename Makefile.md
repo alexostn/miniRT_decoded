@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/16 22:36:23 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/15 20:21:03 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,9 +52,7 @@ SRCS    = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_submatrix.c \
 			$(SRC_DIR)/matrices/transformations.c \
 			$(SRC_DIR)/matrices/matrice_determinant_API.c \
-			$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
-			$(SRC_DIR)/math/math_utils.c \
-			$(SRC_DIR)/matrices/matrice_rotation.c
+			$(SRC_DIR)/matrices/matrice_determinant_recursive.c
 
 OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -85,9 +83,7 @@ BOOK_TEST_MODULE_SRCS = $(SRC_DIR)/tuples/tuple_creation.c \
 						$(SRC_DIR)/matrices/matrice_submatrix.c \
 						$(SRC_DIR)/matrices/transformations.c \
 						$(SRC_DIR)/matrices/matrice_determinant_API.c \
-						$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
-						$(SRC_DIR)/math/math_utils.c \
-						$(SRC_DIR)/matrices/matrice_rotation.c
+						$(SRC_DIR)/matrices/matrice_determinant_recursive.c
 
 # 3. Object files for modules used by the tests
 BOOK_TEST_MODULE_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(BOOK_TEST_MODULE_SRCS))
@@ -101,27 +97,27 @@ BOOK_TEST_EXECUTABLE = run_book_tests
 
 # >>> MODULE TESTING SECTION BEGINNING
 # New tests (automatic discovery)
-# TESTS_DIR = tests
-# TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
-# TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
+TESTS_DIR = tests
+TEST_SOURCES = $(wildcard $(TESTS_DIR)/test_*.c)
+TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(TESTS_DIR)/%, $(TEST_SOURCES))
 
-# # Rule for compiling ONE test
-# $(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
-# 	@mkdir -p $(@D)
-# 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
+# Rule for compiling ONE test
+$(TESTS_DIR)/%: $(TESTS_DIR)/%.c $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
-# # Rule for running ONE test
-# test_%: $(TESTS_DIR)/test_%
-# 	@echo "Running $@..."
-# 	./$<
-# 	@echo "Test finished"
+# Rule for running ONE test
+test_%: $(TESTS_DIR)/test_%
+	@echo "Running $@..."
+	./$<
+	@echo "Test finished"
 
-# # Rule for running ALL new tests
-# newtests: $(TEST_BINS)
-# 	@for t in $(notdir $(TEST_BINS)); do \
-# 		echo "Running $$t..."; \
-# 		./$(TESTS_DIR)/$$t; \
-# 	done
+# Rule for running ALL new tests
+newtests: $(TEST_BINS)
+	@for t in $(notdir $(TEST_BINS)); do \
+		echo "Running $$t..."; \
+		./$(TESTS_DIR)/$$t; \
+	done
 # >>> MODULE TESTING SECTION END
 
 
@@ -173,8 +169,6 @@ vbtest: $(BOOK_TEST_EXECUTABLE)
 $(BOOK_TEST_EXECUTABLE): $(BOOK_TEST_RUNNER_OBJ) $(BOOK_TEST_MODULE_OBJS) $(LIBFT_LIB) $(MLX_DIR)/libmlx.a
 	$(CC) $(CFLAGS) $^ $(LIBFT_FLAGS) $(MLX_LIB) -o $@
 
-
-
 # clean rules:
 clean:
 	@make -s -C $(LIBFT_DIR) clean
@@ -187,7 +181,6 @@ fclean: clean
 	@make -s -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 	rm -f $(BOOK_TEST_EXECUTABLE)
-	rm -f tests/run_test
 	rm -f $(TEST_BINS)
 	rm -f valgrind.log
 

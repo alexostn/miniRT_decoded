@@ -2,6 +2,7 @@
 # define TEST_COMMON_H
 
 // Common includes for all test files
+#include "math_utils.h"
 #include "matrices.h"
 #include "transformations.h"
 #include "tuples.h"
@@ -34,7 +35,7 @@ void	print_intersections(t_xs xs);
 void	print_matrix(t_matrix m);
 int		compare_files(const char *f1, const char *f2);
 bool	file_ends_with_newline(const char *filename);
-int	is_canvas_black(t_image *canvas);
+int		is_canvas_black(t_image *canvas);
 
 // Override TEST_ASSERT to count tests
 # undef TEST_ASSERT

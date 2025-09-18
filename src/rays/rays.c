@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2024/12/19 10:00:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:04:05 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,9 @@ t_ray	ray_transform(t_ray r, t_matrix m)
 
 	// Transform the origin (point)
 	transformed_ray.origin = mat_mul_tuple(m, r.origin);
-	
+
 	// Transform the direction (vector)
 	// Note: direction is NOT normalized after transformation
 	transformed_ray.direction = mat_mul_tuple(m, r.direction);
-	
 	return (transformed_ray);
 }

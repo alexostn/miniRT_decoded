@@ -6,10 +6,10 @@ to download submodule with miniLibx (mlx)
 starts a window , it can be closed with a cross or esq
 
 # make btest or make re btest
-builds the tests from book and you can see the results
+<!-- PREVIOUS VERSION builds the tests from book and you can see the results -->
 
 # 1) make vbtest or make re vbtest
-collects tests with valgrind and outputs the results to valgrind.log file
+<!-- PREVIOUS VERSION collects tests with valgrind and outputs the results to valgrind.log file -->
 
 # 2) make fclean
 deletes valgrind.log file and the rest

@@ -91,6 +91,463 @@ void	test_ch4_translation_ignores_vector(void)
 	printf("\n");
 }
 
+void	test_ch4_scaling_point(void)
+{
+	t_matrix    transform;
+	t_tuple     v;
+	t_tuple     result;
+	t_tuple     expected;
+
+	printf("Chapter 4: A scaling matrix applied to a point\n");
+
+	// Arrange: Create scaling matrix and point
+	transform = scaling(2, 3, 4);
+	v = point(-4, 6, 8);
+	expected = point(-8, 18, 32);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(transform, v);
+
+	// Assert: Check if the point was scaled correctly
+	printf("%-20s", "Original point:");
+	print_tuple(v);
+	printf("%-20s", "Scaling matrix:");
+	print_matrix(transform);
+	printf("%-20s", "Scaled point:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "point should be scaled to (-8, 18, 32)");
+	printf("\n");
+}
+
+void    test_ch4_scaling_vector(void)
+{
+	t_matrix    transform;
+	t_tuple     v;
+	t_tuple     result;
+	t_tuple     expected;
+
+	printf("Chapter 4: A scaling matrix applied to a vector\n");
+
+	// Arrange: Create scaling matrix and vector
+	transform = scaling(2, 3, 4);
+	v = vector(-4, 6, 8);
+	expected = vector(-8, 18, 32);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(transform, v);
+
+	// Assert: Check if the vector was scaled correctly
+	printf("%-20s", "Original vector:");
+	print_tuple(v);
+	printf("%-20s", "Scaling matrix:");
+	print_matrix(transform);
+	printf("%-20s", "Scaled vector:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "Vector should be scaled to (-8, 18, 32)");
+	printf("\n");
+}
+
+void	test_ch4_mult_by_inverse_of_scaling_matrix(void)
+{
+	t_matrix	transform;
+	t_matrix	inv;
+	t_tuple     v;
+	t_tuple     result;
+	t_tuple     expected;
+	bool		is_invertible;
+	printf("Chapter 4: Multiplying by the inverse of a scaling matrix\n");
+
+	// Arrange: Create scaling matrix and vector
+	transform = scaling(2, 3, 4);
+	inv = mat_inverse(transform, &is_invertible);
+	v = vector(-4, 6, 8);
+	expected = vector(-2, 2, 2);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(inv, v);
+
+	// Assert: Check if the vector was scaled correctly
+	printf("%-20s", "Original vector:");
+	print_tuple(v);
+	printf("%-20s", "Scaling matrix:");
+	print_matrix(transform);
+	printf("%-20s", "Inverted matrix:");
+	print_matrix(inv);
+	printf("%-20s", "Scaled vector:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "Vector * inverted matrix = vector should be scaled to (-2, 2, 2)");
+	printf("\n");
+}
+
+void	test_ch4_reflection_scaling_by_negative(void)
+{
+	t_matrix	transform;
+	t_tuple		p;
+	t_tuple		result;
+	t_tuple		expected;
+
+	printf("Chapter 4: Reflection is scaling by a negative value\n");
+
+	// Arrange: Create scaling matrix and point
+	transform = scaling(-1, 1, 1);
+	p = point(2, 3, 4);
+	expected = point(-2, 3, 4);
+
+	// Act: Apply the transformation
+	result = mat_mul_tuple(transform, p);
+
+	// Assert: Check if the point was scaled correctly
+	printf("%-20s", "Original point:");
+	print_tuple(p);
+	printf("%-20s", "Scaling matrix:");
+	printf("%-20s", "could be changed in any other direction x, y, z");
+	print_matrix(transform);
+	printf("%-20s", "Scaled reflected point:");
+	print_tuple(result);
+	TEST_ASSERT(tuples_equal(result, expected), "Point scaled to (-2, 3, 4) or reflected");
+	printf("\n");
+}
+
+void	test_degrees_to_radians(void)
+{
+	double	rad;
+	double	expected;
+
+	printf("Chapter 4: Helper to convert degrees to radians\n");
+
+	rad = degrees_to_radians(90.0);
+	expected = M_PI / 2.0;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "90 degrees should be PI/2");
+
+	rad = degrees_to_radians(180.0);
+	expected = M_PI;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "180 degrees should be PI");
+
+	rad = degrees_to_radians(45.0);
+	expected = M_PI / 4.0;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "45 degrees should be PI/4");
+
+	rad = degrees_to_radians(360.0);
+	expected = 2 * M_PI;
+	TEST_ASSERT(fabs(rad - expected) < EPS, "360 degrees should be 2*PI");
+	printf("\n");
+}
+
+void	test_ch4_rotation_x(void)
+{
+	t_tuple		p;
+	t_matrix	half_quarter;
+	t_matrix	full_quarter;
+	t_tuple		result;
+
+	printf("Chapter 4: Rotating a point around the x axis\n\n");
+
+	// --- Test case 1: Rotation by 45 degrees (PI / 4) ---
+	printf("--- Test Case 1: Rotation by 45 degrees ---\n");
+	p = point(0, 1, 0);
+	half_quarter = rotation_x(M_PI / 4);
+	
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (45 deg):\n");
+	print_matrix(half_quarter);
+	result = mat_mul_tuple(half_quarter, p);
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(0, sqrt(2) / 2, sqrt(2) / 2)),
+		"Rotation by half_quarter (45 deg)");
+	printf("\n");
+
+	// --- Test case 2: Rotation by 90 degrees (PI / 2) ---
+	printf("--- Test Case 2: Rotation by 90 degrees ---\n");
+	p = point(0, 1, 0);
+	full_quarter = rotation_x(M_PI / 2);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (90 deg):\n");
+	print_matrix(full_quarter);
+	result = mat_mul_tuple(full_quarter, p);
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(0, 0, 1)),
+		"Rotation by full_quarter (90 deg)");
+	printf("\n");
+}
+
+void    test_ch4_rotation_x_inversed(void)
+{
+	t_tuple     p;
+	t_matrix    half_quarter;
+	t_matrix    inv;
+	bool        is_invertible;
+	t_tuple     result;
+
+	printf("--- Chapter 4: Inverse of an x-rotation ---\n\n");
+
+	// --- Arrange: Set up the rotation and the point ---
+	p = point(0, 1, 0);
+	half_quarter = rotation_x(M_PI / 4);
+
+	// --- Act: Calculate the inverse matrix and apply it ---
+	inv = mat_inverse(half_quarter, &is_invertible);
+	result = mat_mul_tuple(inv, p);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (+45 deg):\n");
+	print_matrix(half_quarter);
+	printf("INVERSE of the rotation matrix (-45 deg):\n");
+	print_matrix(inv);
+	printf("Result after applying INVERSE rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(0, sqrt(2) / 2, -sqrt(2) / 2)),
+		"Inverse rotation by half_quarter (-45 deg)");
+	printf("\n");
+}
+
+void	test_ch4_rotation_y(void)
+{
+	t_tuple		p;
+	t_matrix	half_quarter;
+	t_matrix	full_quarter;
+	t_tuple		result;
+
+	printf("Chapter 4: Rotating a point around the y axis\n\n");
+
+	// --- Test case 1: Rotation by 45 degrees (PI / 4) ---
+	printf("--- Test Case 1: Rotation by 45 degrees ---\n");
+	p = point(0, 0, 1);
+	half_quarter = rotation_y(M_PI / 4);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (45 deg):\n");
+	print_matrix(half_quarter);
+	result = mat_mul_tuple(half_quarter, p);
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(sqrt(2) / 2, 0, sqrt(2) / 2)),
+		"Rotation by half_quarter (45 deg)");
+	printf("\n");
+
+	// --- Test case 2: Rotation by 90 degrees (PI / 2) ---
+	printf("--- Test Case 2: Rotation by 90 degrees ---\n");
+	p = point(0, 0, 1);
+	full_quarter = rotation_y(M_PI / 2);
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (90 deg):\n");
+	print_matrix(full_quarter);
+	result = mat_mul_tuple(full_quarter, p);
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(1, 0, 0)),
+		"Rotation by full_quarter (90 deg)");
+	printf("\n");
+}
+
+void	test_ch4_rotation_z(void)
+{
+	t_tuple		p;
+	t_matrix	half_quarter;
+	t_matrix	full_quarter;
+	t_tuple		result;
+
+	printf("Chapter 4: Rotating a point around the z axis\n\n");
+
+	// --- Test case 1: Rotation by 45 degrees (PI / 4) ---
+	printf("--- Test Case 1: Rotation by 45 degrees ---\n");
+	p = point(0, 1, 0);
+	half_quarter = rotation_z(M_PI / 4);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (45 deg):\n");
+	print_matrix(half_quarter);
+
+	result = mat_mul_tuple(half_quarter, p);
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(-sqrt(2) / 2, sqrt(2) / 2, 0)),
+		"Rotation by half_quarter (45 deg)");
+	printf("\n");
+
+	// --- Test case 2: Rotation by 90 degrees (PI / 2) ---
+	printf("--- Test Case 2: Rotation by 90 degrees ---\n");
+	p = point(0, 1, 0);
+	full_quarter = rotation_z(M_PI / 2);
+
+	printf("Original point:\n");
+	print_tuple(p);
+	printf("Rotation matrix (90 deg):\n");
+	print_matrix(full_quarter);
+	result = mat_mul_tuple(full_quarter, p);
+	printf("Result after rotation:\n");
+	print_tuple(result);
+
+	TEST_ASSERT(tuples_equal(result, point(-1, 0, 0)),
+		"Rotation by full_quarter (90 deg)");
+	printf("\n");
+}
+
+void	test_ch4_shearing_moves_x_in_proportion_to_y(void)
+{
+	t_matrix			transform;
+	t_tuple				p;
+	t_tuple				expected;
+	t_shear_params	params; // 1. Declare the params struct
+
+	printf("Chapter 4: A shearing transformation moves x in proportion to y\n");
+// 2. Initialize the struct with only the needed value
+	params = (t_shear_params){.xy = 1}; 
+	transform = shearing(params); // 3. Pass the struct to the function
+	p = point(2, 3, 4);
+	expected = point(5, 3, 4);
+
+	TEST_ASSERT(tuples_equal(mat_mul_tuple(transform, p), expected), "x is moved in proportion to y");
+	printf("\n");
+}
+
+void	test_ch4_shearing_moves_x_in_proportion_to_z(void)
+{
+	t_matrix			transform;
+	t_tuple				p;
+	t_tuple				expected;
+	t_shear_params		params;
+
+	printf("Chapter 4: A shearing transformation moves x in proportion to z\n");
+	params = (t_shear_params){.xz = 1};
+	transform = shearing(params);
+	p = point(2, 3, 4);
+	expected = point(6, 3, 4);
+	TEST_ASSERT(tuples_equal(mat_mul_tuple(transform, p), expected), "x is moved in proportion to z");
+	printf("\n");
+}
+
+void	test_ch4_shearing_moves_y_in_proportion_to_x(void)
+{
+	t_matrix			transform;
+	t_tuple				p;
+	t_tuple				expected;
+	t_shear_params		params;
+
+	printf("Chapter 4: A shearing transformation moves y in proportion to x\n");
+	params = (t_shear_params){.yx = 1};
+	transform = shearing(params);
+	p = point(2, 3, 4);
+	expected = point(2, 5, 4);
+	TEST_ASSERT(tuples_equal(mat_mul_tuple(transform, p), expected), "y is moved in proportion to x");
+	printf("\n");
+}
+
+void	test_ch4_shearing_moves_y_in_proportion_to_z(void)
+{
+	t_matrix			transform;
+	t_tuple				p;
+	t_tuple				expected;
+	t_shear_params		params;
+
+	printf("Chapter 4: A shearing transformation moves y in proportion to z\n");
+	params = (t_shear_params){.yz = 1};
+	transform = shearing(params);
+	p = point(2, 3, 4);
+	expected = point(2, 7, 4);
+	TEST_ASSERT(tuples_equal(mat_mul_tuple(transform, p), expected), "y is moved in proportion to z");
+	printf("\n");
+}
+
+void	test_ch4_shearing_moves_z_in_proportion_to_x(void)
+{
+	t_matrix			transform;
+	t_tuple				p;
+	t_tuple				expected;
+	t_shear_params		params;
+
+	printf("Chapter 4: A shearing transformation moves z in proportion to x\n");
+	params = (t_shear_params){.zx = 1};
+	transform = shearing(params);
+	p = point(2, 3, 4);
+	expected = point(2, 3, 6);
+	TEST_ASSERT(tuples_equal(mat_mul_tuple(transform, p), expected), "z is moved in proportion to x");
+	printf("\n");
+}
+
+void	test_ch4_shearing_moves_z_in_proportion_to_y(void)
+{
+	t_matrix			transform;
+	t_tuple				p;
+	t_tuple				expected;
+	t_shear_params		params;
+
+	printf("Chapter 4: A shearing transformation moves z in proportion to y\n");
+	params = (t_shear_params){.zy = 1};
+	transform = shearing(params);
+	p = point(2, 3, 4);
+	expected = point(2, 3, 7);
+	TEST_ASSERT(tuples_equal(mat_mul_tuple(transform, p), expected), "z is moved in proportion to y");
+	printf("\n");
+}
+
+// -------- Сhaining transformations test --------
+void	test_ch4_chaining_and_combining_transformations(void)
+{
+	t_tuple		p;
+	t_matrix	a;
+	t_matrix	b;
+	t_matrix	c;
+	t_matrix	t;
+	t_tuple		p_seq;
+	t_tuple		p_comb;
+
+	printf("Chapter 4: Chaining and Combining Transformations\n\n");
+	// --- 1. Arrange: Define the point and individual transformations ---
+	p = point(1, 0, 1);
+	a = rotation_x(M_PI / 2);
+	b = scaling(5, 5, 5);
+	c = translation(10, 5, 7);
+
+	printf("--- Individual Transformation Matrices ---\n");
+	printf("Original Point:\n");
+	print_tuple(p);
+	printf("A = Rotation Matrix:\n");
+	print_matrix(a);
+	printf("B = Scaling Matrix:\n");
+	print_matrix(b);
+	printf("C = Translation Matrix:\n");
+	print_matrix(c);
+
+	// --- 2. Act (Method 1): Apply transformations sequentially ---
+	printf("--- Method 1: Applying transformations sequentially ---\n");
+	printf("Order of application: 1. Rotate (A), 2. Scale (B), 3. Translate (C)\n");
+	p_seq = mat_mul_tuple(a, p);    // p' = A * p
+	p_seq = mat_mul_tuple(b, p_seq);  // p'' = B * p'
+	p_seq = mat_mul_tuple(c, p_seq);  // p_final = C * p''
+	printf("Result after sequential application:\n");
+	print_tuple(p_seq);
+
+	// --- 3. Act (Method 2): Combine matrices first, then apply ---
+	printf("\n--- Method 2: Combining matrices first (in reverse order) ---\n");
+	printf("Order of multiplication: T = C * B * A\n");
+	t = mat_mul(c, mat_mul(b, a));
+	printf("Combined Transformation Matrix T:\n");
+	print_matrix(t);
+
+	p_comb = mat_mul_tuple(t, p); // p_final = T * p
+	printf("Result after applying combined matrix T:\n");
+	print_tuple(p_comb);
+
+	// --- 4. Assert: Both methods must yield the same result ---
+	TEST_ASSERT(tuples_equal(p_seq, p_comb), "Sequential and combined transformations should be equal");
+	printf("\n");
+}
+
 // Main function to run all Chapter 4 tests
 void run_chapter4_tests(void)
 {
@@ -99,6 +556,30 @@ void run_chapter4_tests(void)
 	test_ch4_translation_moves_point();
 	test_ch4_inverse_translation_moves_point_back();
 	test_ch4_translation_ignores_vector();
-	
+	test_ch4_scaling_point();
+	test_ch4_scaling_vector();
+	test_ch4_mult_by_inverse_of_scaling_matrix();
+	test_ch4_reflection_scaling_by_negative();
+	/*Rotation*/
+	test_degrees_to_radians();
+	printf("\n");
+	test_ch4_rotation_x();
+	printf("\n");
+	/*12September*/
+	test_ch4_rotation_x_inversed();
+	printf("\n");
+	test_ch4_rotation_y();
+	printf("\n");
+	test_ch4_rotation_z();
+	/*16September*/
+	printf("\n=== Chapter 4: Shearing ===\n");
+	test_ch4_shearing_moves_x_in_proportion_to_y();
+	test_ch4_shearing_moves_x_in_proportion_to_z();
+	test_ch4_shearing_moves_y_in_proportion_to_x();
+	test_ch4_shearing_moves_y_in_proportion_to_z();
+	test_ch4_shearing_moves_z_in_proportion_to_x();
+	test_ch4_shearing_moves_z_in_proportion_to_y();
+	printf("\n=== Chapter 4: Chaining transformations ===\n");
+	test_ch4_chaining_and_combining_transformations();
 	printf("\n=== Chapter 4 Tests Complete ===\n\n");
 }
