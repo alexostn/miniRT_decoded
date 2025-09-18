@@ -27,7 +27,7 @@ t_sphere	sphere_create(void)
 	t_sphere	sphere;
 
 	sphere.transform = mat_identity();
-	sphere.material = NULL; // placeholder for now
+	sphere.material = NULL;
 	return (sphere);
 }
 
@@ -63,55 +63,38 @@ t_xs	sphere_intersect(t_sphere *s, t_ray r)
 {
 	t_xs			xs;
 	t_tuple			sphere_to_ray;
-	double			a, b, c, discriminant;
-	double			t1, t2;
+	double			a;
+	double			b;
+	double			c;
+	double			discriminant;
+	double			t1;
+	double			t2;
+	bool			ok;
+	t_matrix		inv_transform;
+	t_intersection	i1;
+	t_intersection	i2;
 
 	xs = xs_create(0);
-
-	// Transform ray to object space if sphere has transformation
 	if (!mat_equal(s->transform, mat_identity()))
 	{
-		bool		ok;
-		t_matrix	inv_transform = mat_inverse(s->transform, &ok);
+		inv_transform = mat_inverse(s->transform, &ok);
 		if (ok)
 			r = ray_transform(r, inv_transform);
 	}
-
-	// Vector from sphere center to ray origin
-	// Since sphere is at origin, this is just the ray origin
 	sphere_to_ray = r.origin;
-
-	// Compute quadratic coefficients
-	// a = dot(ray.direction, ray.direction) - 3D only
 	a = r.direction.x * r.direction.x + r.direction.y * r.direction.y
 		+ r.direction.z * r.direction.z;
-
-	// b = 2 * dot(ray.direction, sphere_to_ray) - 3D only
 	b = 2.0 * (r.direction.x * sphere_to_ray.x + r.direction.y * sphere_to_ray.y
 		+ r.direction.z * sphere_to_ray.z);
-
-	// c = dot(sphere_to_ray, sphere_to_ray) - 1 - 3D only
-	// (subtract 1 because unit sphere has radius 1)
 	c = (sphere_to_ray.x * sphere_to_ray.x + sphere_to_ray.y * sphere_to_ray.y
 		+ sphere_to_ray.z * sphere_to_ray.z) - 1.0;
-
-	// Compute discriminan
 	discriminant = b * b - 4 * a * c;
-
-	// If discriminant is negative, ray misses sphere
 	if (discriminant < 0)
 		return (xs);
-
-	// Compute intersection points
 	t1 = (-b - sqrt(discriminant)) / (2 * a);
 	t2 = (-b + sqrt(discriminant)) / (2 * a);
-	
-
-	// Create intersections (always return 2, even if equal)
-    t_intersection	i1 = intersection_create(t1, s);
-    t_intersection	i2 = intersection_create(t2, s);
-
-	// Add intersections in ascending order
+	i1 = intersection_create(t1, s);
+	i2 = intersection_create(t2, s);
 	if (t1 <= t2)
 	{
 		xs = intersections_add(xs, i1);
@@ -122,7 +105,6 @@ t_xs	sphere_intersect(t_sphere *s, t_ray r)
 		xs = intersections_add(xs, i2);
 		xs = intersections_add(xs, i1);
 	}
-
 	return (xs);
 }
 
@@ -145,12 +127,13 @@ t_tuple	sphere_normal_at(t_sphere *s, t_tuple world_point)
 	t_tuple	object_point;
 	t_tuple	object_normal;
 	t_tuple	world_normal;
+	bool		ok;
+	t_matrix	inv_transform;
+	t_matrix	inv_transpose;
 
-	// Transform world point to object space
 	if (!mat_equal(s->transform, mat_identity()))
 	{
-		bool		ok;
-		t_matrix	inv_transform = mat_inverse(s->transform, &ok);
+		inv_transform = mat_inverse(s->transform, &ok);
 		if (ok)
 			object_point = mat_mul_tuple(inv_transform, world_point);
 		else
@@ -160,18 +143,13 @@ t_tuple	sphere_normal_at(t_sphere *s, t_tuple world_point)
 	{
 		object_point = world_point;
 	}
-
-	// For unit sphere at origin, normal is the point itself
 	object_normal = object_point;
-
-	// Transform normal back to world space using inverse-transpose
 	if (!mat_equal(s->transform, mat_identity()))
 	{
-		bool		ok;
-		t_matrix	inv_transform = mat_inverse(s->transform, &ok);
+		inv_transform = mat_inverse(s->transform, &ok);
 		if (ok)
 		{
-			t_matrix	inv_transpose = mat_transpose(inv_transform);
+			inv_transpose = mat_transpose(inv_transform);
 			world_normal = mat_mul_tuple(inv_transpose, object_normal);
 		}
 		else
@@ -183,11 +161,6 @@ t_tuple	sphere_normal_at(t_sphere *s, t_tuple world_point)
 	{
 		world_normal = object_normal;
 	}
-
-	// Set w component to 0 (normal is a vector, not a point)
 	world_normal.w = 0.0;
-
-	// Normalize the resul
 	return (normalize_vector(world_normal));
 }
-
