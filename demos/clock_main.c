@@ -1,5 +1,5 @@
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <sys/stat.h>		// for ensure_dir
+#include <sys/types.h>		// for ensure_dir
 #include "image.h"
 #include "colors.h"
 #include "matrices.h"
@@ -35,7 +35,7 @@ int	main(void)
 {
 	void			*mlx_ptr;
 	t_image			*canvas;
-	const int		canvas_size = 200; // Let's make it a bit larger
+	const int		canvas_size = 200; // Tested with 1200 = works:)
 	const double	radius = 3.0 / 8.0 * canvas_size;
 	const t_color	white = {1.0, 1.0, 1.0, 0}; // Our white color
 	const t_tuple	center = point(canvas_size / 2, 0, canvas_size / 2);

@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/18 22:39:30 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/19 16:24:35 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,15 @@ else
 	MLX_TARGET = libmlx.dylib
 	MLX_CLEAN_TARGET = libmlx.dylib
 endif
+
+# --- VALGRIND (OPTIONAL RUNNER) ---
+# Usage: make <target> V=1
+RUNNER =
+ifeq ($(V),1)
+	VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=mlx.supp
+	RUNNER = valgrind $(VALGRIND_FLAGS)
+endif
+# --- END OF VALGRIND ---
 
 # Project variables:
 SRC_DIR = src
@@ -196,7 +205,7 @@ test-all-valgrind:
 # --- CLOCK demos/ ---
 clock: $(CLOCK_EXEC)
 	@echo "$(BLUE)Running clock demo...$(RESET)"
-	./$(CLOCK_EXEC)
+	$(RUNNER) ./$(CLOCK_EXEC)
 
 $(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
 	@echo "$(GREEN)Compiling clock demo:$(RESET) $(CLOCK_EXEC)"
