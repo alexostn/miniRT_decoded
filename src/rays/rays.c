@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/16 20:04:05 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/09/19 16:57:41 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ t_tuple	ray_position(t_ray r, double t)
 ** Returns:
 ** - t_ray: new transformed ray
 */
+// Transform the origin (point)
+// Transform the direction (vector)
+// Note: direction is NOT normalized after transformation
+
 t_ray	ray_transform(t_ray r, t_matrix m)
 {
 	t_ray	transformed_ray;
 
-	// Transform the origin (point)
 	transformed_ray.origin = mat_mul_tuple(m, r.origin);
-
-	// Transform the direction (vector)
-	// Note: direction is NOT normalized after transformation
 	transformed_ray.direction = mat_mul_tuple(m, r.direction);
 	return (transformed_ray);
 }

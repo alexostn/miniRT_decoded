@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/16 22:36:23 by oostapen         ###   ########.fr        #
+#    Updated: 2025/09/19 16:24:35 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,15 @@ else
 	MLX_TARGET = libmlx.dylib
 	MLX_CLEAN_TARGET = libmlx.dylib
 endif
+
+# --- VALGRIND (OPTIONAL RUNNER) ---
+# Usage: make <target> V=1
+RUNNER =
+ifeq ($(V),1)
+	VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=mlx.supp
+	RUNNER = valgrind $(VALGRIND_FLAGS)
+endif
+# --- END OF VALGRIND ---
 
 # Project variables:
 SRC_DIR = src
@@ -115,8 +124,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# >>> BOOK TESTS SECTION (REMOVED - no longer used)
-
+# --- CLOCK DEMO ---
+CLOCK_SRC       = demos/clock_main.c
+CLOCK_EXEC      = clock_demo
+CLOCK_OBJS      = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+# --- END OF CLOCK DEMO ---
+	
 # clean rules:
 clean:
 	@make -s -C $(LIBFT_DIR) clean
@@ -129,6 +142,8 @@ fclean: clean
 	rm -f $(NAME)
 	rm -f valgrind.log
 	rm -f $(MLX_CLEAN_TARGET)
+	rm -rf $(CLOCK_EXEC)
+	rm -rf demos/output
 
 re: fclean all
 
@@ -187,6 +202,17 @@ test-all-valgrind:
 	@echo "✅ All chapter tests with Valgrind completed!"
 	@echo "📋 Check valgrind_all.log in tests/ directory for details"
 
+# --- CLOCK demos/ ---
+clock: $(CLOCK_EXEC)
+	@echo "$(BLUE)Running clock demo...$(RESET)"
+	$(RUNNER) ./$(CLOCK_EXEC)
+
+$(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
+	@echo "$(GREEN)Compiling clock demo:$(RESET) $(CLOCK_EXEC)"
+	$(CC) $(CFLAGS) -o $(CLOCK_EXEC) $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
+
+# --- END of CLOCK demos/ ---
+
 # Help target
 help:
 	@echo "Available targets:"
@@ -205,7 +231,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-all test-all-valgrind help
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-all test-all-valgrind help clock
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

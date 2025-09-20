@@ -11,6 +11,7 @@ IGNORE_LIST=(
 	"tests"
 	"libft"
 	"mlx-linux"
+	"demos"
 	# You can add any other directory to ignore using the same pattern
 	# "path/to/another/file.c"
 )

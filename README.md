@@ -77,3 +77,4 @@ make fclean
 - The unified Makefile works on both Mac and Linux
 - All 200 tests should pass (100% success rate)
 - PPM files are automatically generated and compared during tests
+
