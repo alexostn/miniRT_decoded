@@ -6,7 +6,7 @@
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2024/12/19 10:00:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:10:11 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ t_sphere	sphere_set_transform(t_sphere s, t_matrix transform)
 ** Returns:
 ** - t_tuple: point in object space
 */
-static t_tuple	transform_point_to_object_space(t_sphere *s, t_tuple world_point)
+static t_tuple	transform_point_to_object_space(t_sphere *s,
+				t_tuple world_point)
 {
 	t_tuple		object_point;
 	t_matrix	inv_transform;
@@ -91,7 +92,8 @@ static t_tuple	transform_point_to_object_space(t_sphere *s, t_tuple world_point)
 ** Returns:
 ** - t_tuple: normal in world space
 */
-static t_tuple	transform_normal_to_world_space(t_sphere *s, t_tuple object_normal)
+static t_tuple	transform_normal_to_world_space(t_sphere *s,
+			t_tuple object_normal)
 {
 	t_tuple		world_normal;
 	t_matrix	inv_transform;

@@ -6,7 +6,7 @@
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/20 14:48:51 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:07:32 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 /*
 ** find_insertion_position()
-** Finds the correct position to insert a new intersection to maintain sorted order
+** Finds the correct position to insert a new intersection 
+** to maintain sorted order
 **
 ** Parameters:
 ** - xs: existing intersections collection
@@ -48,7 +49,8 @@ static int	find_insertion_position(t_xs xs, t_intersection i)
 ** Returns:
 ** - void
 */
-static void	create_sorted_intersections_array(t_xs xs, t_intersection *new_intersections,
+static void	create_sorted_intersections_array(t_xs xs, 
+		t_intersection *new_intersections,
 		t_intersection i, int insert_pos)
 {
 	int	j;

@@ -6,7 +6,7 @@
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/20 14:48:51 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:12:35 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,21 @@ static t_xs	add_intersections_sorted(t_xs xs, double t1, double t2, t_sphere *s)
 ** Returns:
 ** - void
 */
-static void	calculate_quadratic_coefficients(t_ray r, double *a, double *b, double *c)
+static void	calculate_quadratic_coefficients(t_ray r,
+			double *a, double *b, double *c)
 {
 	t_tuple	sphere_to_ray;
 
 	sphere_to_ray = r.origin;
-	*a = r.direction.x * r.direction.x + r.direction.y * r.direction.y
+	*a = r.direction.x * r.direction.x
+		+ r.direction.y * r.direction.y
 		+ r.direction.z * r.direction.z;
-	*b = 2.0 * (r.direction.x * sphere_to_ray.x + r.direction.y * sphere_to_ray.y
-		+ r.direction.z * sphere_to_ray.z);
-	*c = (sphere_to_ray.x * sphere_to_ray.x + sphere_to_ray.y * sphere_to_ray.y
-		+ sphere_to_ray.z * sphere_to_ray.z) - 1.0;
+	*b = 2.0 * (r.direction.x * sphere_to_ray.x
+			+ r.direction.y * sphere_to_ray.y
+			+ r.direction.z * sphere_to_ray.z);
+	*c = (sphere_to_ray.x * sphere_to_ray.x
+			+ sphere_to_ray.y * sphere_to_ray.y
+			+ sphere_to_ray.z * sphere_to_ray.z) - 1.0;
 }
 
 /*
@@ -86,7 +90,8 @@ static void	calculate_quadratic_coefficients(t_ray r, double *a, double *b, doub
 ** Returns:
 ** - bool: true if real roots exist, false otherwise
 */
-static bool	solve_quadratic_roots(double a, double b, double c, double *t1, double *t2)
+static bool	solve_quadratic_roots(double a, double b,
+		double c, double *t1, double *t2)
 {
 	double	discriminant;
 
