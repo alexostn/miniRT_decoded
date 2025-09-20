@@ -1,79 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersections_utils.c                              :+:      :+:    :+:   */
+/*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2024/12/19 10:00:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/09/20 14:48:51 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "spheres.h"
 #include <stdlib.h>
-
-/*
-** intersection_create()
-** Creates a new intersection with given t value and object pointer
-**
-** Parameters:
-** - t: distance along the ray where intersection occurs
-** - obj: pointer to the intersected objec
-**
-** Returns:
-** - t_intersection: new intersection
-*/
-t_intersection	intersection_create(double t, void *obj)
-{
-	t_intersection	i;
-
-	i.t = t;
-	i.object = obj;
-	return (i);
-}
-
-/*
-** xs_create()
-** Creates a new intersections collection
-**
-** Parameters:
-** - count: initial number of intersections
-**
-** Returns:
-** - t_xs: new intersections collection
-*/
-t_xs	xs_create(int count)
-{
-	t_xs	xs;
-
-	xs.count = 0;
-	xs.intersections = NULL;
-	if (count > 0)
-	{
-		xs.intersections = malloc(count * sizeof(t_intersection));
-		if (xs.intersections)
-			xs.count = count;
-	}
-	return (xs);
-}
-
-/*
-** intersections_destroy()
-** Frees memory allocated for intersections collection
-**
-** Parameters:
-** - xs: pointer to intersections collection to destroy
-*/
-void	intersections_destroy(t_xs *xs)
-{
-	if (xs && xs->intersections)
-	{
-		free(xs->intersections);
-		xs->intersections = NULL;
-		xs->count = 0;
-	}
-}
 
 /*
 ** intersections_add()
@@ -97,32 +35,27 @@ t_xs	intersections_add(t_xs xs, t_intersection i)
 	new_count = xs.count + 1;
 	new_intersections = malloc(new_count * sizeof(t_intersection));
 	if (!new_intersections)
-		return (xs); // Return original if allocation fails
-
-	// Find insertion position to maintain sorted order (ascending by t)
+		return (xs);
 	insert_pos = 0;
 	while (insert_pos < xs.count && xs.intersections[insert_pos].t < i.t)
 		insert_pos++;
-
-	// Copy existing intersections before insertion poin
-	for (j = 0; j < insert_pos; j++)
+	j = 0;
+	while (j < insert_pos)
+	{
 		new_intersections[j] = xs.intersections[j];
-
-	// Insert new intersection
+		j++;
+	}
 	new_intersections[insert_pos] = i;
-
-	// Copy remaining intersections after insertion poin
-	for (j = insert_pos; j < xs.count; j++)
+	j = insert_pos;
+	while (j < xs.count)
+	{
 		new_intersections[j + 1] = xs.intersections[j];
-
-	// Free old memory
+		j++;
+	}
 	if (xs.intersections)
 		free(xs.intersections);
-
-	// Create new collection
 	new_xs.count = new_count;
 	new_xs.intersections = new_intersections;
-
 	return (new_xs);
 }
 
@@ -139,38 +72,21 @@ t_xs	intersections_add(t_xs xs, t_intersection i)
 t_intersection	intersections_hit(t_xs xs)
 {
 	t_intersection	hit;
-	
-	// Initialize as "no hit"
+	int				i;
+
 	hit.t = -1.0;
 	hit.object = NULL;
-	
-	// Since intersections are sorted by t (ascending),
-	// the first positive t is the hi
-	for (int i = 0; i < xs.count; i++)
+	i = 0;
+	while (i < xs.count)
 	{
 		if (xs.intersections[i].t >= 0)
 		{
 			hit = xs.intersections[i];
-			break; // Found the first positive t, we're done!
+			break ;
 		}
+		i++;
 	}
-	
 	return (hit);
-}
-
-/*
-** intersections_count()
-** Returns the number of intersections in the collection
-**
-** Parameters:
-** - xs: intersections collection
-**
-** Returns:
-** - int: number of intersections
-*/
-int	intersections_count(t_xs xs)
-{
-	return (xs.count);
 }
 
 /*
@@ -191,9 +107,7 @@ t_intersection	intersections_get(t_xs xs, int index)
 
 	null_intersection.t = -1.0;
 	null_intersection.object = NULL;
-
 	if (index < 0 || index >= xs.count)
 		return (null_intersection);
-
 	return (xs.intersections[index]);
 }
