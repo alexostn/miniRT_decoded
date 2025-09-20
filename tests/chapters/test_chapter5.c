@@ -49,15 +49,8 @@ void	test_ch5_translating_ray(void)
 	t_matrix	m;
 	t_ray		r2;
 
-	// TODO: This test requires translation() function from Chapter 4
-	// For now, we'll create a manual translation matrix
-	double	values[4][4] = {
-		{1, 0, 0, 3},
-		{0, 1, 0, 4},
-		{0, 0, 1, 5},
-		{0, 0, 0, 1}
-	};
-	m = create_matrix(values);
+	m = translation(3, 4, 5);
+	print_matrix(m);
 	r2 = ray_transform(r, m);
 
 	TEST_ASSERT(tuples_equal(r2.origin, point(4, 6, 8)), "r2.origin = point(4, 6, 8)");
@@ -77,15 +70,8 @@ void	test_ch5_scaling_ray(void)
 	t_matrix	m;
 	t_ray		r2;
 
-	// TODO: This test requires scaling() function from Chapter 4
-	// For now, we'll create a manual scaling matrix
-	double	values[4][4] = {
-		{2, 0, 0, 0},
-		{0, 3, 0, 0},
-		{0, 0, 4, 0},
-		{0, 0, 0, 1}
-	};
-	m = create_matrix(values);
+	m = scaling(2, 3, 4);
+	print_matrix(m);
 	r2 = ray_transform(r, m);
 
 	TEST_ASSERT(tuples_equal(r2.origin, point(2, 6, 12)), "r2.origin = point(2, 6, 12)");
@@ -330,16 +316,8 @@ void	test_ch5_changing_sphere_transformation(void)
 	t_sphere	s = sphere_create();
 	t_matrix	t;
 
-	// TODO: This test requires translation() function from Chapter 4
-	// For now, we'll create a manual translation matrix
-	double	values[4][4] = {
-		{1, 0, 0, 2},
-		{0, 1, 0, 3},
-		{0, 0, 1, 4},
-		{0, 0, 0, 1}
-	};
-	t = create_matrix(values);
-
+	t = translation(2, 3, 4);
+	print_matrix(t);
 	s = sphere_set_transform(s, t);
 	TEST_ASSERT(mat_equal(s.transform, t), "s.transform = t");
 }
@@ -352,16 +330,8 @@ void	test_ch5_intersecting_scaled_sphere_with_ray(void)
 	t_matrix	scale;
 	t_xs		xs;
 
-	// TODO: This test requires scaling() function from Chapter 4
-	// For now, we'll create a manual scaling matrix
-	double	values[4][4] = {
-		{2, 0, 0, 0},
-		{0, 2, 0, 0},
-		{0, 0, 2, 0},
-		{0, 0, 0, 1}
-	};
-	scale = create_matrix(values);
-
+	scale = scaling(2, 2, 2);
+	print_matrix(scale);
 	s = sphere_set_transform(s, scale);
 	xs = sphere_intersect(&s, r);
 
@@ -380,21 +350,34 @@ void	test_ch5_intersecting_translated_sphere_with_ray(void)
 	t_matrix	translate;
 	t_xs		xs;
 
-	// TODO: This test requires translation() function from Chapter 4
-	// For now, we'll create a manual translation matrix
-	double	values[4][4] = {
-		{1, 0, 0, 5},
-		{0, 1, 0, 0},
-		{0, 0, 1, 0},
-		{0, 0, 0, 1}
-	};
-	translate = create_matrix(values);
+	translate = translation(5, 0, 0);
 
 	s = sphere_set_transform(s, translate);
 	xs = sphere_intersect(&s, r);
 
 	TEST_ASSERT(xs.count == 0, "xs.count = 0");
 
+	intersections_destroy(&xs);
+}
+
+/*
+** Intersecting a translated sphere (hit case)
+** To aim the ray toward the translated center 
+** to get xs.count = 2.
+*/
+void	test_ch5_intersecting_translated_sphere_hit(void)
+{
+	printf("Chapter 5: Intersecting a translated sphere (hit case)\n");
+	printf("aim the ray vector toward sphere center: vector(5,0,0)\n");
+	t_ray r = ray(point(0, 0, -5), vector(5, 0, 5)); // aim toward center (5,0,0)
+	t_sphere s = sphere_create();
+	t_matrix t = translation(5, 0, 0);
+	t_xs xs;
+
+	s = sphere_set_transform(s, t);
+	xs = sphere_intersect(&s, r);
+
+	TEST_ASSERT(xs.count == 2, "xs.count = 2");
 	intersections_destroy(&xs);
 }
 
@@ -423,6 +406,7 @@ void run_chapter5_tests(void)
 	test_ch5_changing_sphere_transformation();
 	test_ch5_intersecting_scaled_sphere_with_ray();
 	test_ch5_intersecting_translated_sphere_with_ray();
-	
+	test_ch5_intersecting_translated_sphere_hit();
+
 	printf("\n=== Chapter 5 Tests Complete ===\n\n");
 }
