@@ -6,7 +6,7 @@
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/20 17:12:35 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:20:39 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ static void	calculate_quadratic_coefficients(t_ray r,
 ** Returns:
 ** - bool: true if real roots exist, false otherwise
 */
-static bool	solve_quadratic_roots(t_quadratic_coeffs coeffs, 
+static bool	solve_quadratic_roots(t_quadratic_coeffs coeffs,
 		double *t1, double *t2)
 {
 	double	discriminant;
 
-	discriminant = coeffs.b * coeffs.b 
-			- 4 * coeffs.a * coeffs.c;
+	discriminant = coeffs.b * coeffs.b
+		- 4 * coeffs.a * coeffs.c;
 	if (discriminant < 0)
 		return (false);
 	*t1 = (-coeffs.b - sqrt(discriminant)) / (2 * coeffs.a);
