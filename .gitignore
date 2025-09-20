@@ -20,7 +20,6 @@ obj/
 miniRT
 run_book_tests
 libmlx.dylib
-*.ppm
 
 # Library build artifacts
 libft/libft.a
@@ -39,7 +38,6 @@ mlx-linux/libmlx.a
 mlx-linux/Makefile.gen
 
 # Test files and outputs
-test_files/*.ppm
 tests/run_test
 tests/obj/
 valgrind.log
