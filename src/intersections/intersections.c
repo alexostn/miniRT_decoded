@@ -14,8 +14,63 @@
 #include <stdlib.h>
 
 /*
+** find_insertion_position()
+** Finds the correct position to insert a new intersection to maintain sorted order
+**
+** Parameters:
+** - xs: existing intersections collection
+** - i: intersection to add
+**
+** Returns:
+** - int: position where the intersection should be inserted
+*/
+static int	find_insertion_position(t_xs xs, t_intersection i)
+{
+	int	insert_pos;
+
+	insert_pos = 0;
+	while (insert_pos < xs.count && xs.intersections[insert_pos].t < i.t)
+		insert_pos++;
+	return (insert_pos);
+}
+
+/*
+** create_sorted_intersections_array()
+** Creates a new sorted intersections array by copying existing intersections
+** and inserting the new intersection at the correct position
+**
+** Parameters:
+** - xs: existing intersections collection
+** - new_intersections: destination array
+** - i: intersection to insert
+** - insert_pos: position where to insert the intersection
+**
+** Returns:
+** - void
+*/
+static void	create_sorted_intersections_array(t_xs xs, t_intersection *new_intersections,
+		t_intersection i, int insert_pos)
+{
+	int	j;
+
+	j = 0;
+	while (j < insert_pos)
+	{
+		new_intersections[j] = xs.intersections[j];
+		j++;
+	}
+	new_intersections[insert_pos] = i;
+	j = insert_pos;
+	while (j < xs.count)
+	{
+		new_intersections[j + 1] = xs.intersections[j];
+		j++;
+	}
+}
+
+/*
 ** intersections_add()
-** Adds a new intersection to the collection, maintaining sorted order by
+** Adds a new intersection to the collection, maintaining sorted order by t
 **
 ** Parameters:
 ** - xs: existing intersections collection
@@ -30,28 +85,13 @@ t_xs	intersections_add(t_xs xs, t_intersection i)
 	t_intersection	*new_intersections;
 	int				new_count;
 	int				insert_pos;
-	int				j;
 
 	new_count = xs.count + 1;
 	new_intersections = malloc(new_count * sizeof(t_intersection));
 	if (!new_intersections)
 		return (xs);
-	insert_pos = 0;
-	while (insert_pos < xs.count && xs.intersections[insert_pos].t < i.t)
-		insert_pos++;
-	j = 0;
-	while (j < insert_pos)
-	{
-		new_intersections[j] = xs.intersections[j];
-		j++;
-	}
-	new_intersections[insert_pos] = i;
-	j = insert_pos;
-	while (j < xs.count)
-	{
-		new_intersections[j + 1] = xs.intersections[j];
-		j++;
-	}
+	insert_pos = find_insertion_position(xs, i);
+	create_sorted_intersections_array(xs, new_intersections, i, insert_pos);
 	if (xs.intersections)
 		free(xs.intersections);
 	new_xs.count = new_count;
@@ -87,27 +127,4 @@ t_intersection	intersections_hit(t_xs xs)
 		i++;
 	}
 	return (hit);
-}
-
-/*
-** intersections_get()
-** Gets an intersection at a specific index
-**
-** Parameters:
-** - xs: intersections collection
-** - index: index of the intersection to ge
-**
-** Returns:
-** - t_intersection: the intersection at the given index
-**   Returns a null intersection if index is out of bounds
-*/
-t_intersection	intersections_get(t_xs xs, int index)
-{
-	t_intersection	null_intersection;
-
-	null_intersection.t = -1.0;
-	null_intersection.object = NULL;
-	if (index < 0 || index >= xs.count)
-		return (null_intersection);
-	return (xs.intersections[index]);
 }

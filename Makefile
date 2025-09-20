@@ -69,7 +69,9 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_inverse.c \
 			$(SRC_DIR)/rays/rays.c \
 			$(SRC_DIR)/spheres/spheres.c \
-			$(SRC_DIR)/spheres/intersections_utils.c \
+			$(SRC_DIR)/spheres/sphere_intersect.c \
+			$(SRC_DIR)/intersections/intersections.c \
+			$(SRC_DIR)/intersections/utils.c \
 			$(SRC_DIR)/matrices/matrice_submatrix.c \
 			$(SRC_DIR)/matrices/transformations.c \
 			$(SRC_DIR)/matrices/matrice_determinant_API.c \

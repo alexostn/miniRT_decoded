@@ -89,3 +89,26 @@ int	intersections_count(t_xs xs)
 {
 	return (xs.count);
 }
+
+/*
+** intersections_get()
+** Gets an intersection at a specific index
+**
+** Parameters:
+** - xs: intersections collection
+** - index: index of the intersection to ge
+**
+** Returns:
+** - t_intersection: the intersection at the given index
+**   Returns a null intersection if index is out of bounds
+*/
+t_intersection	intersections_get(t_xs xs, int index)
+{
+	t_intersection	null_intersection;
+
+	null_intersection.t = -1.0;
+	null_intersection.object = NULL;
+	if (index < 0 || index >= xs.count)
+		return (null_intersection);
+	return (xs.intersections[index]);
+}
