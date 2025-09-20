@@ -48,6 +48,17 @@ typedef struct s_sphere
 }	t_sphere;
 
 /*
+** Quadratic coefficients structure
+** Groups the three coefficients of a quadratic equation
+*/
+typedef struct s_quadratic_coeffs
+{
+	double	a;
+	double	b;
+	double	c;
+}	t_quadratic_coeffs;
+
+/*
 ** Sphere creation and operations
 */
 t_sphere		sphere_create(void);

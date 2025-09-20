@@ -81,25 +81,24 @@ static void	calculate_quadratic_coefficients(t_ray r,
 ** Solves the quadratic equation and finds the intersection points
 **
 ** Parameters:
-** - a: coefficient a
-** - b: coefficient b
-** - c: coefficient c
+** - coeffs: structure containing coefficients a, b, c
 ** - t1: pointer to store first root
 ** - t2: pointer to store second root
 **
 ** Returns:
 ** - bool: true if real roots exist, false otherwise
 */
-static bool	solve_quadratic_roots(double a, double b,
-		double c, double *t1, double *t2)
+static bool	solve_quadratic_roots(t_quadratic_coeffs coeffs, 
+		double *t1, double *t2)
 {
 	double	discriminant;
 
-	discriminant = b * b - 4 * a * c;
+	discriminant = coeffs.b * coeffs.b 
+			- 4 * coeffs.a * coeffs.c;
 	if (discriminant < 0)
 		return (false);
-	*t1 = (-b - sqrt(discriminant)) / (2 * a);
-	*t2 = (-b + sqrt(discriminant)) / (2 * a);
+	*t1 = (-coeffs.b - sqrt(discriminant)) / (2 * coeffs.a);
+	*t2 = (-coeffs.b + sqrt(discriminant)) / (2 * coeffs.a);
 	return (true);
 }
 
@@ -116,16 +115,14 @@ static bool	solve_quadratic_roots(double a, double b,
 */
 static t_xs	solve_sphere_quadratic(t_ray r, t_sphere *s)
 {
-	t_xs	xs;
-	double	a;
-	double	b;
-	double	c;
-	double	t1;
-	double	t2;
+	t_xs				xs;
+	t_quadratic_coeffs	coeffs;
+	double				t1;
+	double				t2;
 
 	xs = xs_create(0);
-	calculate_quadratic_coefficients(r, &a, &b, &c);
-	if (!solve_quadratic_roots(a, b, c, &t1, &t2))
+	calculate_quadratic_coefficients(r, &coeffs.a, &coeffs.b, &coeffs.c);
+	if (!solve_quadratic_roots(coeffs, &t1, &t2))
 		return (xs);
 	xs = add_intersections_sorted(xs, t1, t2, s);
 	return (xs);
