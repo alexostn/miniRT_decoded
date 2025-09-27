@@ -192,7 +192,7 @@ void	test_ch2_constructing_the_ppm_pixel_data(void)
 	write_pixel(canvas, 2, 1, cf2);
 	write_pixel(canvas, 4, 2, cf3);
 
-	fd = open("files/test_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open("files/output/test_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror("open");
@@ -206,7 +206,7 @@ void	test_ch2_constructing_the_ppm_pixel_data(void)
 	image_to_ppm(canvas, fd);
 	close(fd);
 
-	TEST_ASSERT(compare_files("files/test_output.ppm", "files/expected.ppm"), "PPM matches reference look at files/");
+	TEST_ASSERT(compare_files("files/output/test_output.ppm", "files/input/expected.ppm"), "PPM matches reference look at files/");
 	image_destroy(canvas);
 	#ifdef __linux__
 	mlx_destroy_display(mlx);
@@ -251,7 +251,7 @@ void	test_ch2_splitting_long_lines(void)
 		y++;
 	}
 
-	fd = open("files/splitting_long_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open("files/output/splitting_long_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror("open");
@@ -265,7 +265,7 @@ void	test_ch2_splitting_long_lines(void)
 	image_to_ppm(canvas, fd);
 	close(fd);
 
-	TEST_ASSERT(compare_files("files/splitting_long_output.ppm", "files/splitting_long.ppm"), "PPM matches reference look at files/");
+	TEST_ASSERT(compare_files("files/output/splitting_long_output.ppm", "files/input/splitting_long.ppm"), "PPM matches reference look at files/");
 	image_destroy(canvas);
 	#ifdef __linux__
 	mlx_destroy_display(mlx);
@@ -287,7 +287,7 @@ void	test_ch2_newline_character_at_the_end(void)
 		return ;
 	}
 	canvas = image_create(mlx, 5, 3);
-	fd = open("files/new_line_end_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open("files/output/new_line_end_output.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror("open");
@@ -300,7 +300,7 @@ void	test_ch2_newline_character_at_the_end(void)
 	}
 	image_to_ppm(canvas, fd);
 	close(fd);
-	TEST_ASSERT(file_ends_with_newline("files/new_line_end_output.ppm"), "PPM ends with a newline character");
+	TEST_ASSERT(file_ends_with_newline("files/output/new_line_end_output.ppm"), "PPM ends with a newline character");
 	image_destroy(canvas);
 	#ifdef __linux__
 	mlx_destroy_display(mlx);
@@ -384,14 +384,14 @@ void	test_ch2_test_projectile_trajectory(void)
 		ticks++;
 		printf("Tick %2d: X = %.5f, Y = %.5f\n", ticks, p.position.x, p.position.y);
 	}
-	int fd = open("files/trajectory14.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	int fd = open("files/output/trajectory14.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0) {
 		perror("Error opening PPM file");
 	} else {
 		image_to_ppm(canvas, fd);
 		close(fd);
 	}
-	printf("Projectile trajectory saved to files/trajectory14.ppm\n");
+		printf("Projectile trajectory saved to files/output/trajectory14.ppm\n");
 
 	image_destroy(canvas);
 	#ifdef __linux__

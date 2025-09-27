@@ -16,6 +16,7 @@
 # include "tuples.h"
 # include "matrices.h"
 # include "rays.h"
+# include "image.h"
 
 /*
 ** Intersection structure
@@ -58,6 +59,16 @@ typedef struct s_quadratic_coeffs
 	double	c;
 }	t_quadratic_coeffs;
 
+typedef struct s_silhouette_ctx
+{
+	t_tuple	origin;
+	double		wall_z;
+	double		pixel_size;
+	double		half;
+	int			pixels;
+	int			pixel_color;
+}	t_silhouette_ctx;
+
 /*
 ** Sphere creation and operations
 */
@@ -77,5 +88,10 @@ int				intersections_count(t_xs xs);
 t_intersection	intersection_create(double t, void *obj);
 t_intersection	intersections_get(t_xs xs, int index);
 t_intersection	intersections_hit(t_xs xs);
+
+/*
+** Sphere rendering functions
+*/
+void			render_sphere_silhouette(t_image *canvas, t_sphere sphere);
 
 #endif

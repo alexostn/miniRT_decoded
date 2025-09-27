@@ -18,6 +18,10 @@ obj/
 
 # Project specific build files
 miniRT
+
+# Demo output files
+demos/output/
+tests/files/output/
 run_book_tests
 libmlx.dylib
 

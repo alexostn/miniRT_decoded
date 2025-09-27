@@ -126,11 +126,15 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# --- CLOCK DEMO ---
+# --- DEMOS ---
 CLOCK_SRC       = demos/clock_main.c
 CLOCK_EXEC      = clock_demo
 CLOCK_OBJS      = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
-# --- END OF CLOCK DEMO ---
+
+SPHERE_SRC      = demos/sphere_render_main.c
+SPHERE_EXEC     = sphere_demo
+SPHERE_OBJS     = $(filter-out $(OBJ_DIR)/main.o, $(OBJS)) $(OBJ_DIR)/spheres/sphere_render.o
+# --- END OF DEMOS ---
 	
 # clean rules:
 clean:
@@ -138,6 +142,9 @@ clean:
 	@make -s -C $(MLX_DIR) clean
 	rm -f $(OBJS)
 	rm -rf $(OBJ_DIR)
+	@echo "🧹 Cleaning output files..."
+	rm -rf demos/output
+	rm -rf tests/files/output
 
 fclean: clean
 	@make -s -C $(LIBFT_DIR) fclean
@@ -145,6 +152,7 @@ fclean: clean
 	rm -f valgrind.log
 	rm -f $(MLX_CLEAN_TARGET)
 	rm -rf $(CLOCK_EXEC)
+	rm -rf $(SPHERE_EXEC)
 	rm -rf demos/output
 
 re: fclean all
@@ -204,21 +212,31 @@ test-all-valgrind:
 	@echo "✅ All chapter tests with Valgrind completed!"
 	@echo "📋 Check valgrind_all.log in tests/ directory for details"
 
-# --- CLOCK demos/ ---
+# --- DEMOS ---
 clock: $(CLOCK_EXEC)
-	@echo "$(BLUE)Running clock demo...$(RESET)"
+	@echo "🕐 Running clock demo..."
 	$(RUNNER) ./$(CLOCK_EXEC)
 
 $(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
-	@echo "$(GREEN)Compiling clock demo:$(RESET) $(CLOCK_EXEC)"
+	@echo "🔨 Compiling clock demo: $(CLOCK_EXEC)"
 	$(CC) $(CFLAGS) -o $(CLOCK_EXEC) $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
 
-# --- END of CLOCK demos/ ---
+sphere: $(SPHERE_EXEC)
+	@echo "🔴 Running sphere render demo..."
+	$(RUNNER) ./$(SPHERE_EXEC)
+
+$(SPHERE_EXEC): $(SPHERE_SRC) $(SPHERE_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
+	@echo "🔨 Compiling sphere demo: $(SPHERE_EXEC)"
+	$(CC) $(CFLAGS) -o $(SPHERE_EXEC) $(SPHERE_SRC) $(SPHERE_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
+
+# --- END of DEMOS ---
 
 # Help target
 help:
 	@echo "Available targets:"
 	@echo "  all              - Build the main miniRT project"
+	@echo ""
+	@echo "📚 TESTING:"
 	@echo "  test-all         - Run ALL chapter tests (ch1-ch5)"
 	@echo "  test-all-valgrind - Run ALL chapter tests with Valgrind"
 	@echo "  test-ch1         - Run Chapter 1 tests"
@@ -226,6 +244,12 @@ help:
 	@echo "  test-ch3         - Run Chapter 3 tests"
 	@echo "  test-ch4         - Run Chapter 4 tests"
 	@echo "  test-ch5         - Run Chapter 5 tests"
+	@echo ""
+	@echo "🎮 DEMOS:"
+	@echo "  clock            - Run clock face demo (Chapter 4)"
+	@echo "  sphere           - Run sphere render demo (Chapter 5)"
+	@echo ""
+	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"
 	@echo "  fclean           - Remove object files and executables"
 	@echo "  re               - Rebuild everything"
@@ -233,7 +257,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-all test-all-valgrind help clock
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-all test-all-valgrind help clock sphere
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

@@ -51,6 +51,7 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/rays/rays.c \
 	$(SRC_DIR)/spheres/spheres.c \
 	$(SRC_DIR)/spheres/sphere_intersect.c \
+	$(SRC_DIR)/spheres/sphere_render.c \
 	$(SRC_DIR)/intersections/intersections.c \
 	$(SRC_DIR)/intersections/utils.c \
 	$(SRC_DIR)/math/math_utils.c \

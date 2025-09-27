@@ -1,4 +1,20 @@
 #include "../test_common.h"
+#include <fcntl.h> // for open()
+#include <unistd.h> // for close()
+#include <math.h> // for M_PI
+#include <errno.h> // for errno
+#include <sys/stat.h> // for mkdir
+#include <sys/types.h> // for mode_t
+
+// Helper function to ensure directory exists
+static void ensure_dir(const char *path)
+{
+	struct stat st = {0};
+	if (stat(path, &st) == -1)
+	{
+		mkdir(path, 0775);
+	}
+}
 
 // Chapter 5: Ray-Sphere Intersections - Complete with all 36 tests
 
@@ -381,6 +397,79 @@ void	test_ch5_intersecting_translated_sphere_hit(void)
 	intersections_destroy(&xs);
 }
 
+/*
+** Chapter 5: Putting It Together - Visual Rendering Tests
+*/
+
+void	test_ch5_putting_it_together_sphere_silhouette(void)
+{
+	printf("Chapter 5: Putting it together - Sphere silhouette\n");
+	
+	// Ensure output directory exists
+	ensure_dir("files/output");
+	
+	// Create sphere
+	t_sphere sphere = sphere_create();
+	
+	// Render sphere silhouette directly to PPM
+	int fd = open("files/output/sphere_silhouette.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd >= 0)
+	{
+		render_sphere_silhouette_to_ppm(100, sphere, fd);
+		close(fd);
+		printf("Sphere silhouette saved to files/output/sphere_silhouette.ppm\n");
+	}
+	else
+	{
+		printf("Failed to create output file: errno=%d\n", errno);
+	}
+}
+
+void	test_ch5_putting_it_together_transformed_spheres(void)
+{
+	printf("Chapter 5: Putting it together - Transformed spheres\n");
+	
+	// Ensure output directory exists
+	ensure_dir("files/output");
+	
+	// Test 1: Sphere scaled along Y axis
+	t_sphere sphere1 = sphere_create();
+	sphere1 = sphere_set_transform(sphere1, scaling(1, 0.5, 1));
+	
+	int fd1 = open("files/output/sphere_scaled_y.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd1 >= 0)
+	{
+		render_sphere_silhouette_to_ppm(100, sphere1, fd1);
+		close(fd1);
+		printf("Y-scaled sphere saved to files/output/sphere_scaled_y.ppm\n");
+	}
+	
+	// Test 2: Sphere scaled along X axis
+	t_sphere sphere2 = sphere_create();
+	sphere2 = sphere_set_transform(sphere2, scaling(0.5, 1, 1));
+	
+	int fd2 = open("files/output/sphere_scaled_x.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd2 >= 0)
+	{
+		render_sphere_silhouette_to_ppm(100, sphere2, fd2);
+		close(fd2);
+		printf("X-scaled sphere saved to files/output/sphere_scaled_x.ppm\n");
+	}
+	
+	// Test 3: Sphere rotated and scaled
+	t_sphere sphere3 = sphere_create();
+	t_matrix transform = mat_mul(rotation_z(M_PI / 4), scaling(0.5, 1, 1));
+	sphere3 = sphere_set_transform(sphere3, transform);
+	
+	int fd3 = open("files/output/sphere_rotated_scaled.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd3 >= 0)
+	{
+		render_sphere_silhouette_to_ppm(100, sphere3, fd3);
+		close(fd3);
+		printf("Rotated and scaled sphere saved to files/output/sphere_rotated_scaled.ppm\n");
+	}
+}
+
 // Main function to run all Chapter 5 tests
 void run_chapter5_tests(void)
 {
@@ -407,6 +496,10 @@ void run_chapter5_tests(void)
 	test_ch5_intersecting_scaled_sphere_with_ray();
 	test_ch5_intersecting_translated_sphere_with_ray();
 	test_ch5_intersecting_translated_sphere_hit();
+	
+	// Chapter 5: Putting It Together - Visual Rendering
+	test_ch5_putting_it_together_sphere_silhouette();
+	test_ch5_putting_it_together_transformed_spheres();
 
 	printf("\n=== Chapter 5 Tests Complete ===\n\n");
 }
