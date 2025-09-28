@@ -76,6 +76,7 @@ double		magnitude_of_vector(t_tuple v);
 t_tuple		normalize_vector(t_tuple v);
 double		dot_product(t_tuple a, t_tuple b);
 t_tuple		cross_product(t_tuple a, t_tuple b);
+t_tuple		reflect(t_tuple in, t_tuple normal);
 
 // Floating-point helpers
 /*absolute EPS compare*/

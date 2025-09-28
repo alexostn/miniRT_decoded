@@ -4,6 +4,9 @@
 #include "image.h"			// for MLX image functions
 #include "matrices.h"
 #include "transformations.h"
+#include "materials.h"
+#include "colors.h"
+#include "lights.h"
 #include <math.h>
 #include <stdio.h>        // For printf
 #include <fcntl.h>        // For open()
@@ -22,22 +25,59 @@ static void ensure_dir(const char *path)
 	}
 }
 
+static t_sphere	make_demo_sphere(t_matrix transform)
+{
+	t_sphere		sphere;
+	t_material	material;
+
+	sphere = sphere_create();
+	material = sphere.material;
+	material.color = color_d(1.0, 0.2, 1.0);
+	sphere = sphere_set_material(sphere, material);
+	sphere = sphere_set_transform(sphere, transform);
+	return (sphere);
+}
+
+static void	render_demo_image(void *mlx, const char *label, const char *path,
+		int size, t_sphere sphere, t_point_light light)
+{
+	t_image	*canvas;
+	int		fd;
+
+	printf("%s\n", label);
+	canvas = image_create(mlx, size, size);
+	if (!canvas)
+	{
+		printf("   ✗ Failed to create canvas\n");
+		return ;
+	}
+	render_sphere_phong(canvas, &sphere, light);
+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd >= 0)
+	{
+		image_to_ppm(canvas, fd);
+		close(fd);
+		printf("   ✓ Saved to %s\n", path);
+	}
+	else
+		printf("   ✗ Failed to open %s\n", path);
+	image_destroy(canvas);
+}
+
 /*
-** This is a demo program to render sphere silhouettes, as described in
-** "The Ray Tracer Challenge" book, Chapter 5 "Putting It Together".
-** It demonstrates the sphere rendering functionality with different
-** transformations: basic sphere, scaled spheres, and rotated spheres.
-** Uses MLX for rendering and saves to PPM files.
+** This demo renders shaded spheres using the Phong lighting model from
+** Chapter 6 "Putting It Together". It showcases different transformations
+** and material tweaks, saving the images as PPM files for inspection.
 */
 int	main(void)
 {
-	int			fd;
 	t_sphere	sphere;
 	void		*mlx;
-	t_image		*canvas;
+	t_point_light	light;
+	t_matrix	transform;
 
-	printf("=== Sphere Render Demo ===\n");
-	printf("Generating sphere silhouettes...\n");
+	printf("=== Sphere Lighting Demo ===\n");
+	printf("Generating Phong-shaded spheres...\n");
 
 	// Initialize MLX
 	mlx = mlx_init();
@@ -51,138 +91,32 @@ int	main(void)
 	ensure_dir("demos");
 	ensure_dir("demos/output");
 
-	// Demo 1: Basic unit sphere
-	printf("1. Rendering basic unit sphere...\n");
-	sphere = sphere_create();
-	canvas = image_create(mlx, 100, 100);
-	if (canvas)
-	{
-		render_sphere_silhouette(canvas, sphere);
-		fd = open("demos/output/sphere_basic.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd >= 0)
-		{
-			image_to_ppm(canvas, fd);
-			close(fd);
-			printf("   ✓ Saved to demos/output/sphere_basic.ppm\n");
-		}
-		else
-		{
-			printf("   ✗ Failed to create sphere_basic.ppm\n");
-		}
-		image_destroy(canvas);
-	}
-	else
-	{
-		printf("   ✗ Failed to create canvas\n");
-	}
+	light = point_light(point(-10, 10, -10), color_d(1, 1, 1));
 
-	// Demo 2: Sphere scaled along Y axis (flattened)
-	printf("2. Rendering Y-scaled sphere (flattened)...\n");
-	sphere = sphere_create();
-	sphere = sphere_set_transform(sphere, scaling(1, 0.5, 1));
-	canvas = image_create(mlx, 100, 100);
-	if (canvas)
-	{
-		render_sphere_silhouette(canvas, sphere);
-		fd = open("demos/output/sphere_y_scaled.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd >= 0)
-		{
-			image_to_ppm(canvas, fd);
-			close(fd);
-			printf("   ✓ Saved to demos/output/sphere_y_scaled.ppm\n");
-		}
-		else
-		{
-			printf("   ✗ Failed to create sphere_y_scaled.ppm\n");
-		}
-		image_destroy(canvas);
-	}
-	else
-	{
-		printf("   ✗ Failed to create canvas\n");
-	}
+	sphere = make_demo_sphere(mat_identity());
+	render_demo_image(mlx, "1. Rendering basic shaded sphere...",
+		"demos/output/sphere_basic_lit.ppm", 100, sphere, light);
 
-	// Demo 3: Sphere scaled along X axis (squashed)
-	printf("3. Rendering X-scaled sphere (squashed)...\n");
-	sphere = sphere_create();
-	sphere = sphere_set_transform(sphere, scaling(0.5, 1, 1));
-	canvas = image_create(mlx, 100, 100);
-	if (canvas)
-	{
-		render_sphere_silhouette(canvas, sphere);
-		fd = open("demos/output/sphere_x_scaled.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd >= 0)
-		{
-			image_to_ppm(canvas, fd);
-			close(fd);
-			printf("   ✓ Saved to demos/output/sphere_x_scaled.ppm\n");
-		}
-		else
-		{
-			printf("   ✗ Failed to create sphere_x_scaled.ppm\n");
-		}
-		image_destroy(canvas);
-	}
-	else
-	{
-		printf("   ✗ Failed to create canvas\n");
-	}
+	sphere = make_demo_sphere(scaling(1, 0.5, 1));
+	render_demo_image(mlx, "2. Rendering Y-scaled shaded sphere...",
+		"demos/output/sphere_y_scaled_lit.ppm", 100, sphere, light);
 
-	// Demo 4: Sphere rotated and scaled
-	printf("4. Rendering rotated and scaled sphere...\n");
-	sphere = sphere_create();
-	t_matrix transform = mat_mul(rotation_z(M_PI / 4), scaling(0.5, 1, 1));
-	sphere = sphere_set_transform(sphere, transform);
-	canvas = image_create(mlx, 100, 100);
-	if (canvas)
-	{
-		render_sphere_silhouette(canvas, sphere);
-		fd = open("demos/output/sphere_rotated_scaled.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd >= 0)
-		{
-			image_to_ppm(canvas, fd);
-			close(fd);
-			printf("   ✓ Saved to demos/output/sphere_rotated_scaled.ppm\n");
-		}
-		else
-		{
-			printf("   ✗ Failed to create sphere_rotated_scaled.ppm\n");
-		}
-		image_destroy(canvas);
-	}
-	else
-	{
-		printf("   ✗ Failed to create canvas\n");
-	}
+	sphere = make_demo_sphere(scaling(0.5, 1, 1));
+	render_demo_image(mlx, "3. Rendering X-scaled shaded sphere...",
+		"demos/output/sphere_x_scaled_lit.ppm", 100, sphere, light);
 
-	// Demo 5: Large sphere for better visibility
-	printf("5. Rendering large sphere (200x200)...\n");
-	sphere = sphere_create();
-	canvas = image_create(mlx, 200, 200);
-	if (canvas)
-	{
-		render_sphere_silhouette(canvas, sphere);
-		fd = open("demos/output/sphere_large.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd >= 0)
-		{
-			image_to_ppm(canvas, fd);
-			close(fd);
-			printf("   ✓ Saved to demos/output/sphere_large.ppm\n");
-		}
-		else
-		{
-			printf("   ✗ Failed to create sphere_large.ppm\n");
-		}
-		image_destroy(canvas);
-	}
-	else
-	{
-		printf("   ✗ Failed to create canvas\n");
-	}
+	transform = mat_mul(rotation_z(M_PI / 4), scaling(0.5, 1, 1));
+	sphere = make_demo_sphere(transform);
+	render_demo_image(mlx, "4. Rendering rotated and scaled shaded sphere...",
+		"demos/output/sphere_rotated_scaled_lit.ppm", 100, sphere, light);
+
+	sphere = make_demo_sphere(mat_identity());
+	render_demo_image(mlx, "5. Rendering large shaded sphere (200x200)...",
+		"demos/output/sphere_large_lit.ppm", 200, sphere, light);
 
 	printf("\n=== Demo Complete ===\n");
-	printf("All sphere silhouettes have been generated in demos/output/\n");
-	printf("You can view the PPM files with any image viewer that supports PPM format.\n");
+	printf("All shaded spheres saved in demos/output/\n");
+	printf("View the PPM files with any PPM-compatible image viewer.\n");
 
 	return (0);
 }

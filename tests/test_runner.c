@@ -6,6 +6,7 @@ void run_chapter2_tests(void);
 void run_chapter3_tests(void);
 void run_chapter4_tests(void);
 void run_chapter5_tests(void);
+void run_chapter6_tests(void);
 
 void print_test_summary(void)
 {
@@ -54,6 +55,8 @@ int main(int argc, char **argv)
 			run_chapter4_tests();
 		else if (chapter == 5)
 			run_chapter5_tests();
+		else if (chapter == 6)
+			run_chapter6_tests();
 		else
 		{
 			printf("Error: Invalid chapter number '%s'. Running all tests.\n\n", argv[1]);
@@ -73,6 +76,7 @@ int main(int argc, char **argv)
 		run_chapter3_tests();
 		run_chapter4_tests();
 		run_chapter5_tests();
+		run_chapter6_tests();
 	}
 
 	// Print final summary

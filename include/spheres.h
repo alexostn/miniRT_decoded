@@ -17,6 +17,8 @@
 # include "matrices.h"
 # include "rays.h"
 # include "image.h"
+# include "materials.h"
+# include "lights.h"
 
 /*
 ** Intersection structure
@@ -45,7 +47,7 @@ typedef struct s_intersections
 typedef struct s_sphere
 {
 	t_matrix	transform;	// transformation matrix (identity by default)
-	void		*material;	// material properties (placeholder for now)
+	t_material	material;
 }	t_sphere;
 
 /*
@@ -59,22 +61,48 @@ typedef struct s_quadratic_coeffs
 	double	c;
 }	t_quadratic_coeffs;
 
-typedef struct s_silhouette_ctx
+/*
+** Sphere render structure
+*/
+typedef struct s_render_grid
 {
-	t_tuple	origin;
+	t_tuple		origin;
 	double		wall_z;
 	double		pixel_size;
 	double		half;
 	int			pixels;
+}	t_render_grid;
+
+typedef struct s_render_job
+{
+	t_image		*canvas;
+	t_sphere	*sphere;
+	t_render_grid	grid;
+	t_point_light	light;
 	int			pixel_color;
-}	t_silhouette_ctx;
+}t_render_job;
+
+typedef struct s_render_pixel
+{
+	double		world_y;
+	int			x;
+	t_ray			ray;
+	t_xs			xs;
+	t_intersection	hit;
+}t_render_pixel;
+
+t_render_grid	render_grid_init(t_image *canvas);
+t_ray			render_grid_ray(t_render_grid *grid, int x, double world_y);
 
 /*
-** Sphere creation and operations
+** Sphere creation and operations 
 */
 t_sphere		sphere_create(void);
 t_sphere		sphere_set_transform(t_sphere s, t_matrix transform);
+t_sphere		sphere_set_material(t_sphere s, t_material material);
 t_xs			sphere_intersect(t_sphere *s, t_ray r);
+t_tuple		transform_point_to_object_space(t_sphere *s,
+				t_tuple world_point);
 t_tuple			sphere_normal_at(t_sphere *s, t_tuple world_point);
 
 /*
@@ -93,5 +121,7 @@ t_intersection	intersections_hit(t_xs xs);
 ** Sphere rendering functions
 */
 void			render_sphere_silhouette(t_image *canvas, t_sphere sphere);
+void			render_sphere_phong(t_image *canvas, t_sphere *sphere,
+				t_point_light light);
 
 #endif

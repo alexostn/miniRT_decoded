@@ -35,6 +35,7 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/tuples/tuple_utils.c \
 	$(SRC_DIR)/tuples/tuple_multiply_divide.c \
 	$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
+	$(SRC_DIR)/tuples/tuple_reflect.c \
 	$(SRC_DIR)/phisics/projectile.c \
 	$(SRC_DIR)/tuples/colors.c \
 	$(SRC_DIR)/tuples/color_converters.c \
@@ -50,12 +51,18 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
 	$(SRC_DIR)/rays/rays.c \
 	$(SRC_DIR)/spheres/spheres.c \
+	$(SRC_DIR)/spheres/sphere_normal.c \
+	$(SRC_DIR)/spheres/sphere_render_grid.c \
+	$(SRC_DIR)/spheres/sphere_render_phong.c \
 	$(SRC_DIR)/spheres/sphere_intersect.c \
 	$(SRC_DIR)/spheres/sphere_render.c \
 	$(SRC_DIR)/intersections/intersections.c \
 	$(SRC_DIR)/intersections/utils.c \
 	$(SRC_DIR)/math/math_utils.c \
-	$(SRC_DIR)/matrices/matrice_rotation.c
+	$(SRC_DIR)/matrices/matrice_rotation.c \
+	$(SRC_DIR)/materials/materials.c \
+	$(SRC_DIR)/materials/lighting.c \
+	$(SRC_DIR)/lights/lights.c
 
 # Test source files
 TEST_SRCS = test_common.c \
@@ -64,7 +71,8 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter2.c \
 	$(CHAPTERS_DIR)/test_chapter3.c \
 	$(CHAPTERS_DIR)/test_chapter4.c \
-	$(CHAPTERS_DIR)/test_chapter5.c
+	$(CHAPTERS_DIR)/test_chapter5.c \
+	$(CHAPTERS_DIR)/test_chapter6.c
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -145,6 +153,9 @@ test-ch4: $(TARGET)
 test-ch5: $(TARGET)
 	./$(TARGET) 5
 
+test-ch6: $(TARGET)
+	./$(TARGET) 6
+
 # Run all tests with Valgrind (Linux only)
 test-all-valgrind: $(TARGET)
 	@echo "🔍 Running ALL tests with Valgrind..."
@@ -169,6 +180,7 @@ help:
 	@echo "  test-ch3         - Run only Chapter 3 tests"
 	@echo "  test-ch4         - Run only Chapter 4 tests"
 	@echo "  test-ch5         - Run only Chapter 5 tests"
+	@echo "  test-ch6         - Run only Chapter 6 tests"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 help

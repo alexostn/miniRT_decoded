@@ -58,6 +58,7 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/tuples/tuple_utils.c \
 			$(SRC_DIR)/tuples/tuple_multiply_divide.c \
 			$(SRC_DIR)/tuples/tuple_magitude_normalize_dot.c \
+			$(SRC_DIR)/tuples/tuple_reflect.c \
 			$(SRC_DIR)/phisics/projectile.c \
 			$(SRC_DIR)/tuples/colors.c \
 			$(SRC_DIR)/tuples/color_converters.c \
@@ -69,9 +70,15 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_inverse.c \
 			$(SRC_DIR)/rays/rays.c \
 			$(SRC_DIR)/spheres/spheres.c \
+			$(SRC_DIR)/spheres/sphere_normal.c \
+			$(SRC_DIR)/spheres/sphere_render_grid.c \
+			$(SRC_DIR)/spheres/sphere_render_phong.c \
 			$(SRC_DIR)/spheres/sphere_intersect.c \
 			$(SRC_DIR)/intersections/intersections.c \
 			$(SRC_DIR)/intersections/utils.c \
+			$(SRC_DIR)/materials/materials.c \
+			$(SRC_DIR)/materials/lighting.c \
+			$(SRC_DIR)/lights/lights.c \
 			$(SRC_DIR)/matrices/matrice_submatrix.c \
 			$(SRC_DIR)/matrices/transformations.c \
 			$(SRC_DIR)/matrices/matrice_determinant_API.c \
@@ -176,32 +183,81 @@ test-ch4:
 test-ch5:
 	cd tests && make test-ch5
 
+test-ch6:
+	cd tests && make test-ch6
+
 # Run all chapter tests
 test-all:
 	@echo "🚀 Running ALL chapter tests..."
 	@echo "=========================================="
-	@$(MAKE) test-ch1
-	@echo ""
-	@$(MAKE) test-ch2
-	@echo ""
-	@$(MAKE) test-ch3
-	@echo ""
-	@$(MAKE) test-ch4
-	@echo ""
-	@$(MAKE) test-ch5
-	@echo ""
-	@echo "=========================================="
-	@echo "📊 FINAL SUMMARY - ALL CHAPTERS"
-	@echo "=========================================="
-	@echo "Chapter 1: 50/50 tests ✅ (100.0%)"
-	@echo "Chapter 2: 32/32 tests ✅ (100.0%)"
-	@echo "Chapter 3: 48/48 tests ✅ (100.0%)"
-	@echo "Chapter 4: 25/25 tests ✅ (100.0%)"
-	@echo "Chapter 5: 45/45 tests ✅ (100.0%)"
-	@echo "----------------------------------------"
-	@echo "TOTAL: 200/200 tests ✅ (100.0%)"
-	@echo "=========================================="
-	@echo "✅ All chapter tests completed!"
+	@ch1_result=0; ch2_result=0; ch3_result=0; ch4_result=0; ch5_result=0; ch6_result=0; \
+	echo "Running Chapter 1 tests..."; \
+	$(MAKE) test-ch1 > /dev/null 2>&1; ch1_result=$$?; \
+	if [ $$ch1_result -eq 0 ]; then \
+		echo "Chapter 1: ✅ PASSED"; \
+	else \
+		echo "Chapter 1: ❌ FAILED"; \
+	fi; \
+	echo ""; \
+	echo "Running Chapter 2 tests..."; \
+	$(MAKE) test-ch2 > /dev/null 2>&1; ch2_result=$$?; \
+	if [ $$ch2_result -eq 0 ]; then \
+		echo "Chapter 2: ✅ PASSED"; \
+	else \
+		echo "Chapter 2: ❌ FAILED"; \
+	fi; \
+	echo ""; \
+	echo "Running Chapter 3 tests..."; \
+	$(MAKE) test-ch3 > /dev/null 2>&1; ch3_result=$$?; \
+	if [ $$ch3_result -eq 0 ]; then \
+		echo "Chapter 3: ✅ PASSED"; \
+	else \
+		echo "Chapter 3: ❌ FAILED"; \
+	fi; \
+	echo ""; \
+	echo "Running Chapter 4 tests..."; \
+	$(MAKE) test-ch4 > /dev/null 2>&1; ch4_result=$$?; \
+	if [ $$ch4_result -eq 0 ]; then \
+		echo "Chapter 4: ✅ PASSED"; \
+	else \
+		echo "Chapter 4: ❌ FAILED"; \
+	fi; \
+	echo ""; \
+	echo "Running Chapter 5 tests..."; \
+	$(MAKE) test-ch5 > /dev/null 2>&1; ch5_result=$$?; \
+	if [ $$ch5_result -eq 0 ]; then \
+		echo "Chapter 5: ✅ PASSED"; \
+	else \
+		echo "Chapter 5: ❌ FAILED"; \
+	fi; \
+	echo ""; \
+	echo "Running Chapter 6 tests..."; \
+	$(MAKE) test-ch6 > /dev/null 2>&1; ch6_result=$$?; \
+	if [ $$ch6_result -eq 0 ]; then \
+		echo "Chapter 6: ✅ PASSED"; \
+	else \
+		echo "Chapter 6: ❌ FAILED"; \
+	fi; \
+	echo ""; \
+	echo "=========================================="; \
+	echo "📊 FINAL SUMMARY - ALL CHAPTERS"; \
+	echo "=========================================="; \
+	total_failed=0; \
+	if [ $$ch1_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	if [ $$ch2_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	if [ $$ch3_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	if [ $$ch4_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	if [ $$ch5_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	if [ $$ch6_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	passed=$$((6 - total_failed)); \
+	if [ $$total_failed -eq 0 ]; then \
+		echo "🎉 ALL CHAPTERS PASSED! ($$passed/6)"; \
+		echo "✅ All chapter tests completed successfully!"; \
+	else \
+		echo "⚠️  $$passed/6 chapters passed, $$total_failed failed"; \
+		echo "❌ Some tests failed. Check individual chapter outputs above."; \
+	fi; \
+	echo "=========================================="
 
 # Run all chapter tests with Valgrind (Linux only)
 test-all-valgrind:
@@ -237,17 +293,18 @@ help:
 	@echo "  all              - Build the main miniRT project"
 	@echo ""
 	@echo "📚 TESTING:"
-	@echo "  test-all         - Run ALL chapter tests (ch1-ch5)"
+	@echo "  test-all         - Run ALL chapter tests (ch1-ch6)"
 	@echo "  test-all-valgrind - Run ALL chapter tests with Valgrind"
 	@echo "  test-ch1         - Run Chapter 1 tests"
 	@echo "  test-ch2         - Run Chapter 2 tests"
 	@echo "  test-ch3         - Run Chapter 3 tests"
 	@echo "  test-ch4         - Run Chapter 4 tests"
 	@echo "  test-ch5         - Run Chapter 5 tests"
+	@echo "  test-ch6         - Run Chapter 6 tests"
 	@echo ""
 	@echo "🎮 DEMOS:"
 	@echo "  clock            - Run clock face demo (Chapter 4)"
-	@echo "  sphere           - Run sphere render demo (Chapter 5)"
+	@echo "  sphere           - Run sphere render demo (Chapter 5 and 6)"
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"
@@ -257,7 +314,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-all test-all-valgrind help clock sphere
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-all test-all-valgrind help clock sphere
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

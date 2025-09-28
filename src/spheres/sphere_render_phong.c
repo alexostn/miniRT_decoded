@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere_render.c                                    :+:      :+:    :+:   */
+/*   sphere_render_phong.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,19 +16,25 @@
 #include "lights.h"
 #include "lighting.h"
 
-/*
-** render_sphere_silhouette()
-** Renders a sphere silhouette by casting rays from a fixed point
-** to each pixel on a virtual wall behind the sphere
-**
-** Parameters:
-** - canvas: pointer to the image canvas to draw on
-** - sphere: the sphere to render
-**
-** Returns:
-** - void
-*/
-static void	render_silhouette_row(t_render_job *job, int y)
+static void	put_phong_pixel(t_render_job *job, t_render_pixel *pixel, int y)
+{
+	t_sphere		*hit_sphere;
+	t_lighting_args	args;
+	t_color			color;
+
+	hit_sphere = (t_sphere *)pixel->hit.object;
+	args.material = hit_sphere->material;
+	args.light = job->light;
+	args.position = ray_position(pixel->ray, pixel->hit.t);
+	args.eyev = negate_tupil(pixel->ray.direction);
+	args.normalv = sphere_normal_at(hit_sphere, args.position);
+	color = tuple_to_color(lighting(args));
+	color.a = 1.0;
+	image_put_pixel(job->canvas, pixel->x, y,
+		color_to_mlx(&color, FORMAT_RGBA));
+}
+
+static void	render_phong_row(t_render_job *job, int y)
 {
 	t_render_pixel	pixel;
 
@@ -39,35 +45,28 @@ static void	render_silhouette_row(t_render_job *job, int y)
 		pixel.ray = render_grid_ray(&job->grid, pixel.x, pixel.world_y);
 		pixel.xs = sphere_intersect(job->sphere, pixel.ray);
 		pixel.hit = intersections_hit(pixel.xs);
-		if (pixel.hit.t >= 0)
-			image_put_pixel(job->canvas, pixel.x, y, job->pixel_color);
+		if (pixel.hit.object)
+			put_phong_pixel(job, &pixel, y);
 		intersections_destroy(&pixel.xs);
 		pixel.x++;
 	}
 }
 
-static void	init_silhouette_job(t_render_job *job, t_image *canvas,
-				t_sphere *sphere)
-{
-	t_color	color;
-
-	job->canvas = canvas;
-	job->sphere = sphere;
-	job->grid = render_grid_init(canvas);
-	color = (t_color){1.0, 0.0, 0.0, 1.0};
-	job->pixel_color = color_to_mlx(&color, FORMAT_RGBA);
-}
-
-void	render_sphere_silhouette(t_image *canvas, t_sphere sphere)
+void	render_sphere_phong(t_image *canvas, t_sphere *sphere,
+			t_point_light light)
 {
 	t_render_job	job;
 	int				y;
 
-	init_silhouette_job(&job, canvas, &sphere);
+	job.canvas = canvas;
+	job.sphere = sphere;
+	job.grid = render_grid_init(canvas);
+	job.light = light;
+	job.pixel_color = 0;
 	y = 0;
 	while (y < job.grid.pixels)
 	{
-		render_silhouette_row(&job, y);
+		render_phong_row(&job, y);
 		y++;
 	}
 }
