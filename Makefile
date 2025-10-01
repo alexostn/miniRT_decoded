@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/09/19 16:24:35 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/01 20:32:41 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,6 @@ ifeq ($(V),1)
 	VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=mlx.supp
 	RUNNER = valgrind $(VALGRIND_FLAGS)
 endif
-# --- END OF VALGRIND ---
 
 # Project variables:
 SRC_DIR = src
@@ -185,12 +184,15 @@ test-ch5:
 
 test-ch6:
 	cd tests && make test-ch6
+	
+test-ch7:
+	cd tests && make test-ch7
 
 # Run all chapter tests
 test-all:
 	@echo "🚀 Running ALL chapter tests..."
 	@echo "=========================================="
-	@ch1_result=0; ch2_result=0; ch3_result=0; ch4_result=0; ch5_result=0; ch6_result=0; \
+	@ch1_result=0; ch2_result=0; ch3_result=0; ch4_result=0; ch5_result=0; ch6_result=0; ch7_result=0; \
 	echo "Running Chapter 1 tests..."; \
 	$(MAKE) test-ch1 > /dev/null 2>&1; ch1_result=$$?; \
 	if [ $$ch1_result -eq 0 ]; then \
@@ -239,6 +241,14 @@ test-all:
 		echo "Chapter 6: ❌ FAILED"; \
 	fi; \
 	echo ""; \
+	echo "Running Chapter 7 tests..."; \
+	$(MAKE) test-ch7 > /dev/null 2>&1; ch7_result=$$?; \
+	if [ $$ch7_result -eq 0 ]; then \
+		echo "Chapter 7: ✅ PASSED"; \
+	else \
+		echo "Chapter 7: ❌ FAILED"; \
+	fi; \
+	echo ""; \
 	echo "=========================================="; \
 	echo "📊 FINAL SUMMARY - ALL CHAPTERS"; \
 	echo "=========================================="; \
@@ -249,12 +259,13 @@ test-all:
 	if [ $$ch4_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
 	if [ $$ch5_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
 	if [ $$ch6_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
-	passed=$$((6 - total_failed)); \
+	if [ $$ch7_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	passed=$$((7 - total_failed)); \
 	if [ $$total_failed -eq 0 ]; then \
-		echo "🎉 ALL CHAPTERS PASSED! ($$passed/6)"; \
+		echo "🎉 ALL CHAPTERS PASSED! ($$passed/7)"; \
 		echo "✅ All chapter tests completed successfully!"; \
 	else \
-		echo "⚠️  $$passed/6 chapters passed, $$total_failed failed"; \
+		echo "⚠️  $$passed/7 chapters passed, $$total_failed failed"; \
 		echo "❌ Some tests failed. Check individual chapter outputs above."; \
 	fi; \
 	echo "=========================================="
@@ -293,14 +304,15 @@ help:
 	@echo "  all              - Build the main miniRT project"
 	@echo ""
 	@echo "📚 TESTING:"
-	@echo "  test-all         - Run ALL chapter tests (ch1-ch6)"
+	@echo "  test-all         - Run ALL chapter tests (ch1-ch7)"
 	@echo "  test-all-valgrind - Run ALL chapter tests with Valgrind"
 	@echo "  test-ch1         - Run Chapter 1 tests"
 	@echo "  test-ch2         - Run Chapter 2 tests"
 	@echo "  test-ch3         - Run Chapter 3 tests"
 	@echo "  test-ch4         - Run Chapter 4 tests"
 	@echo "  test-ch5         - Run Chapter 5 tests"
-	@echo "  test-ch6         - Run Chapter 6 tests"
+	@echo "  test-ch6         - Run Chapter 6 tests"	
+	@echo "  test-ch7         - Run Chapter 7 tests"
 	@echo ""
 	@echo "🎮 DEMOS:"
 	@echo "  clock            - Run clock face demo (Chapter 4)"
@@ -314,7 +326,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-all test-all-valgrind help clock sphere
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-all test-all-valgrind help clock sphere
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

@@ -26,6 +26,14 @@ TEST_DIR = .
 CHAPTERS_DIR = chapters
 OBJ_DIR = obj
 
+# --- VALGRIND SUPPORT ---
+# Usage: make test-ch5 V=1
+RUNNER =
+ifeq ($(V),1)
+	VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=../mlx.supp
+	RUNNER = valgrind $(VALGRIND_FLAGS)
+endif
+
 # Source files for the main project (excluding main.c to avoid conflicts)
 SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/image.c \
@@ -72,7 +80,8 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter3.c \
 	$(CHAPTERS_DIR)/test_chapter4.c \
 	$(CHAPTERS_DIR)/test_chapter5.c \
-	$(CHAPTERS_DIR)/test_chapter6.c
+	$(CHAPTERS_DIR)/test_chapter6.c \
+	$(CHAPTERS_DIR)/test_chapter7.c \
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -139,22 +148,25 @@ re: fclean all
 
 # Individual chapter tests (for debugging)
 test-ch1: $(TARGET)
-	./$(TARGET) 1
+	$(RUNNER) ./$(TARGET) 1
 
 test-ch2: $(TARGET)
-	./$(TARGET) 2
+	$(RUNNER) ./$(TARGET) 2
 
 test-ch3: $(TARGET)
-	./$(TARGET) 3
+	$(RUNNER) ./$(TARGET) 3
 
 test-ch4: $(TARGET)
-	./$(TARGET) 4
+	$(RUNNER) ./$(TARGET) 4
 
 test-ch5: $(TARGET)
-	./$(TARGET) 5
+	$(RUNNER) ./$(TARGET) 5
 
 test-ch6: $(TARGET)
-	./$(TARGET) 6
+	$(RUNNER) ./$(TARGET) 6
+
+test-ch7: $(TARGET)
+	$(RUNNER) ./$(TARGET) 7
 
 # Run all tests with Valgrind (Linux only)
 test-all-valgrind: $(TARGET)
@@ -181,6 +193,7 @@ help:
 	@echo "  test-ch4         - Run only Chapter 4 tests"
 	@echo "  test-ch5         - Run only Chapter 5 tests"
 	@echo "  test-ch6         - Run only Chapter 6 tests"
+	@echo "  test-ch7         - Run only Chapter 7 tests"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 help

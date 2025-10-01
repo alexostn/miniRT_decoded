@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/09/04 16:58:23 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:44:27 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_tuple // tuples.h (vector operations)
 	double	x;
 	double	y;
 	double	z;
-	double	w; // 0.0 for vectors, 1.0 for points
+	double	w; // 0.0 for vectors(transparent), 1.0 for points(solid for color)
 }	t_tuple;
 
 /*

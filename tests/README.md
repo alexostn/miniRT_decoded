@@ -22,11 +22,33 @@ make -f Makefile_mac test-ch4    # Chapter 4: Transformations
 make -f Makefile_mac test-ch5    # Chapter 5: Ray-Sphere Intersections
 ```
 # Run tests for a specific chapter on ubuntu
-make -f Makefile_mac test-ch1    # Chapter 1: Tuples
-make -f Makefile_mac test-ch2    # Chapter 2: Colors
-make -f Makefile_mac test-ch3    # Chapter 3: Matrices
-make -f Makefile_mac test-ch4    # Chapter 4: Transformations
-make -f Makefile_mac test-ch5    # Chapter 5: Ray-Sphere Intersections
+
+make test-ch1    # Chapter 1: Tuples
+make test-ch2    # Chapter 2: Colors
+make test-ch3    # Chapter 3: Matrices
+make test-ch4    # Chapter 4: Transformations
+make test-ch5    # Chapter 5: Ray-Sphere Intersections
+make test-ch1    # Chapter 1: Tuples
+make test-ch2    # Chapter 2: Colors
+make test-ch3    # Chapter 3: Matrices
+make test-ch4    # Chapter 4: Transformations
+make test-ch5    # Chapter 5: Ray-Sphere Intersections
+make test-ch6    # Chapter 6: Light and Shading
+make test-ch7    # Chapter 7: Making a Scene
+
+# Run tests for a specific chapter on ubuntu with Valgrind
+make test-ch1 V=1   # Chapter 1: Tuples
+make test-ch2 V=1   # Chapter 2: Colors
+make test-ch3 V=1   # Chapter 3: Matrices
+make test-ch4 V=1   # Chapter 4: Transformations
+make test-ch5 V=1   # Chapter 5: Ray-Sphere Intersections
+make test-ch1 V=1   # Chapter 1: Tuples
+make test-ch2 V=1   # Chapter 2: Colors
+make test-ch3 V=1   # Chapter 3: Matrices
+make test-ch4 V=1   # Chapter 4: Transformations
+make test-ch5 V=1   # Chapter 5: Ray-Sphere Intersections
+make test-ch6 V=1   # Chapter 6: Light and Shading
+make test-ch7 V=1   # Chapter 7: Making a Scene
 ```
 
 ### Option 2: From the tests directory
@@ -146,7 +168,9 @@ Add a new target to `tests/Makefile`:
 
 ```makefile
 test-chX: $(TARGET)
-    ./$(TARGET) | grep -A 1000 "Chapter X:"
+    $(RUNNER) ./$(TARGET) | grep -A 1000 "Chapter X:"
+# RUNNER enables Valgrind option
+# f.ex.: 'make V=1 test-ch1'
 ```
 
 And update the main Makefiles (`Makefile` and `Makefile_mac`):
