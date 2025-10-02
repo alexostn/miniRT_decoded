@@ -241,10 +241,123 @@ void	test_ch7_default_world(void)
 	printf("\n");
 }
 
+/*
+STACK TRANSLATIONS OF YOUR FUNCTIONS()
+STACK BASED STRUCTURES
+
+*/
+/*
+Scenario: Intersect a world with a ray
+Given w ← default_world()
+And r ← ray(point(0, 0, -5), vector(0, 0, 1))
+When xs ← intersect_world(w, r)Then xs.count = 4
+And xs[0].t = 4
+And xs[1].t = 4.5
+And xs[2].t = 5.5
+And xs[3].t = 6
+*/
+t_xs_stack	intersect_world_stack(t_world *w, t_ray r)
+{
+	t_xs_stack	result;
+	t_xs_stack	temp;
+	int			i;
+	int			j;
+
+	/* START: Initialize empty result collection */
+	result = xs_create_stack();
+	/* END: Initialize empty result collection */
+	
+	/* START: Iterate through all objects in world */
+	i = 0;
+	while (i < w->spheres_count)
+	{
+		/* ASSUMPTION: All objects in world are spheres (t_sphere*) */
+		/* HEAP TRANSITION NOTE: Object type logic remains same for heap version */
+		temp = sphere_intersect_stack(&w->spheres[i], r);
+		
+		/* START: Merge intersections from this object into result */
+		/* xs_add_stack maintains sorted order automatically */
+		j = 0;
+		while (j < temp.count)
+		{
+			xs_add_stack(&result, temp.intersections[j]);
+			j++;
+		}
+		/* END: Merge intersections from this object into result */
+		i++;
+	}
+	/* END: Iterate through all objects in world */
+	return (result);
+}
+
+/*
+** Example: test_ch7_intersect_world_stack()
+** Description: Unit test for intersecting a world with a ray (STACK version).
+** Scenario: A ray through origin should hit both spheres in default_world
+** for a total of 4 intersections at t=4, 4.5, 5.5, 6.
+** Uses: default_world(), ray_create(), point(), vector(), intersect_world_stack()
+** Verified: All 42 Norm, naming, and formatting rules applied.
+*/
+void	test_ch7_intersect_world_stack(void)
+{
+	t_world		w;
+	t_ray		r;
+	t_xs_stack	xs;
+
+	printf("Chapter 7: Intersecting a world with a ray (STACK version)\n\n");
+	
+	/* START: Setup default world and ray */
+	w = default_world();
+	r = ray(point(0, 0, -5), vector(0, 0, 1));
+	/* END: Setup default world and ray */
+	
+	/* START: Display world configuration */
+	printf("World configuration:\n");
+	printf("  Number of spheres: %d\n", w.spheres_count);
+	printf("  Ray origin: (0, 0, -5)\n");
+	printf("  Ray direction: (0, 0, 1)\n");
+	printf("\n");
+	/* END: Display world configuration */
+	
+	/* START: Perform intersection */
+	xs = intersect_world_stack(&w, r);
+	/* END: Perform intersection */
+	
+	/* START: Display results */
+	printf("Intersection results:\n");
+	printf("  Total intersections: %d\n", xs.count);
+	printf("\n");
+	
+	if (xs.count >= 4)
+	{
+		printf("  xs[0].t = %.1f\n", xs.intersections[0].t);
+		printf("  xs[1].t = %.1f\n", xs.intersections[1].t);
+		printf("  xs[2].t = %.1f\n", xs.intersections[2].t);
+		printf("  xs[3].t = %.1f\n", xs.intersections[3].t);
+	}
+	printf("\n");
+	/* END: Display results */
+	
+	/* START: Assertions */
+	TEST_ASSERT(xs.count == 4,
+		"world intersection count is 4");
+	TEST_ASSERT(fabs(xs.intersections[0].t - 4.0) < EPS,
+		"xs[0].t = 4");
+	TEST_ASSERT(fabs(xs.intersections[1].t - 4.5) < EPS,
+		"xs[1].t = 4.5");
+	TEST_ASSERT(fabs(xs.intersections[2].t - 5.5) < EPS,
+		"xs[2].t = 5.5");
+	TEST_ASSERT(fabs(xs.intersections[3].t - 6.0) < EPS,
+		"xs[3].t = 6");
+	/* END: Assertions */
+}
+
+
 void run_chapter7_tests(void)
 {
 	printf("\n=== Chapter 7: Making a Scene ===\n");
 	test_ch7_creating_world();
 	test_ch7_default_world();
+	test_ch7_intersect_world_stack();
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }

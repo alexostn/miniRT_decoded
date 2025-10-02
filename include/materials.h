@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   materials.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 12:05:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/21 12:05:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/02 18:05:15 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,3 @@ typedef struct s_material
 t_material	material_create(void);
 
 #endif
-

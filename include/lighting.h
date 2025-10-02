@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 12:07:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/21 12:07:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/02 18:07:00 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 
 typedef struct s_lighting_args
 {
-	t_material	material;
+	t_material		material;
 	t_point_light	light;
-	t_tuple		position;
-	t_tuple		eyev;
-	t_tuple		normalv;
-}t_lighting_args;
+	t_tuple			position;
+	t_tuple			eyev;
+	t_tuple			normalv;
+}	t_lighting_args;
 
 struct s_light_calc
 {

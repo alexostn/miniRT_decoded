@@ -71,8 +71,7 @@ void	test_ch6_normal_on_nonaxial_point(void)
 	s = sphere_create();
 	inv_sqrt3 = sqrt(3.0) / 3.0;
 	n = sphere_normal_at(&s, point(inv_sqrt3, inv_sqrt3, inv_sqrt3));
-	TEST_ASSERT(tuples_equal(n, vector(inv_sqrt3, inv_sqrt3, inv_sqrt3)),
-		"n = vector(√3/3, √3/3, √3/3)");
+	TEST_ASSERT(tuples_equal(n, vector(inv_sqrt3, inv_sqrt3, inv_sqrt3)), "n = vector(√3/3, √3/3, √3/3)");
 }
 
 void	test_ch6_normal_is_normalized(void)

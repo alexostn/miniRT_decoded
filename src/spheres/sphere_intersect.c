@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_intersect.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/20 17:20:39 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:52:25 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 ** Returns:
 ** - t_xs: updated intersections collection
 */
-static t_xs	add_intersections_sorted(t_xs xs, double t1, double t2, t_sphere *s)
+t_xs	add_intersections_sorted(t_xs xs, double t1, double t2, t_sphere *s)
 {
 	t_intersection	i1;
 	t_intersection	i2;
@@ -59,7 +59,7 @@ static t_xs	add_intersections_sorted(t_xs xs, double t1, double t2, t_sphere *s)
 ** Returns:
 ** - void
 */
-static void	calculate_quadratic_coefficients(t_ray r,
+void	calculate_quadratic_coefficients(t_ray r,
 			double *a, double *b, double *c)
 {
 	t_tuple	sphere_to_ray;
@@ -88,7 +88,7 @@ static void	calculate_quadratic_coefficients(t_ray r,
 ** Returns:
 ** - bool: true if real roots exist, false otherwise
 */
-static bool	solve_quadratic_roots(t_quadratic_coeffs coeffs,
+bool	solve_quadratic_roots(t_quadratic_coeffs coeffs,
 		double *t1, double *t2)
 {
 	double	discriminant;
@@ -113,7 +113,7 @@ static bool	solve_quadratic_roots(t_quadratic_coeffs coeffs,
 ** Returns:
 ** - t_xs: collection of intersections (0, 1, or 2)
 */
-static t_xs	solve_sphere_quadratic(t_ray r, t_sphere *s)
+t_xs	solve_sphere_quadratic(t_ray r, t_sphere *s)
 {
 	t_xs				xs;
 	t_quadratic_coeffs	coeffs;

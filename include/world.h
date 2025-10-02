@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/01 11:34:51 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:37:36 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "objects.h"// for future generic t_object definition
 
 // Maximum number of objects for the STACK-BASED version
-# define MAX_OBJECTS 10
+# define MAX_OBJECTS 32
 // Optional wrapper for the light source.
 // Current design: efficient STACK allocation	(t_light val)
 // Future scaling: change to HEAP allocation	(t_light *val)
@@ -36,14 +36,14 @@ typedef struct s_opt_light
 // World structure containing all scene elements
 // t_object	objects[MAX_OBJECTS]; //STACK-BASED
 // - point to t_sphere and other objects for renderer
-typedef struct s_world
-{
-	t_opt_light	light;		// Optional light source	
-	t_object	objects[MAX_OBJECTS];
-	int			count;		// Current number of objects
-}	t_world;
+// typedef struct s_world
+// {
+// 	t_opt_light	light;		// Optional light source	
+// 	t_sphere	spheres[MAX_OBJECTS];
+// 	int			count;		// Current number of objects
+// }	t_world;
 
-t_world	world_make(void);
+// t_world	world_make(void);
 
 #endif
 
