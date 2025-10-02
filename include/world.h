@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/02 16:37:36 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:05:45 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,42 @@
 # define WORLD_H
 
 # include <stddef.h>
+# include "spheres.h"
 # include "tuples.h"
 # include "matrices.h"
+# include "transformations.h"
 # include "rays.h"
 # include "lights.h"
 # include "objects.h"// for future generic t_object definition
 
-// Maximum number of objects for the STACK-BASED version
 # define MAX_OBJECTS 32
-// Optional wrapper for the light source.
-// Current design: efficient STACK allocation	(t_light val)
-// Future scaling: change to HEAP allocation	(t_light *val)
-// with malloc/free if lights become numerous or large,
-// without changing the external API
+
+//Checks if light is present not just black '0'
 typedef struct s_opt_light
 {
 	bool	present;
 	t_light	val;
 }	t_opt_light;
 
-// World structure containing all scene elements
-// t_object	objects[MAX_OBJECTS]; //STACK-BASED
-// - point to t_sphere and other objects for renderer
-// typedef struct s_world
-// {
-// 	t_opt_light	light;		// Optional light source	
-// 	t_sphere	spheres[MAX_OBJECTS];
-// 	int			count;		// Current number of objects
-// }	t_world;
+/* ======  World Structure with Typed Object Arrays ====== */
+// TODO:
+// t_plane			planes[MAX_OBJECTS];
+// int				planes_count;
+// t_cylinder		cylinders[MAX_OBJECTS];
+// int				cylinders_count;
+// explicit presence flag is for:
+// "0" - is this absence of light or black light?
+typedef struct s_world
+{
+	bool			light_present; // explicit presence flag 
+	t_point_light	light;
+	t_sphere		spheres[MAX_OBJECTS];
+	int				spheres_count;
+}	t_world;
 
-// t_world	world_make(void);
-
+t_world		world_make(void);
+t_world		default_world(void);
+t_xs_stack	intersect_world_stack(t_world *w, t_ray r);
 #endif
 
 //light.present bool could be used like that:
@@ -65,7 +70,7 @@ typedef struct s_world
 	int			capacity;	// Capacity for the dynamic array
 }	t_world;
 
-// HEAP-BASED functions (since we're using dynamic arrays)
+// HEAP-BASED functions (dynamic arrays)
 t_world	*world_create(int initial_capacity);
 t_world	*default_world_create(void);
 void	world_destroy(t_world *w);

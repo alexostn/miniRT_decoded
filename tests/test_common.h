@@ -2,6 +2,7 @@
 # define TEST_COMMON_H
 
 // Common includes for all test files
+#include "world.h"
 #include "math_utils.h"
 #include "matrices.h"
 #include "transformations.h"
@@ -31,14 +32,26 @@ extern int g_tests_failed;
 extern char g_failed_tests[1000][100];
 
 // Common test utility functions
+
+// Checkers
+bool	file_ends_with_newline(const char *filename);
+int		is_canvas_black(t_image *canvas);
+
+// Printing utils
 void	print_tuple(t_tuple pt);
 void	print_color(t_color pc);
 void	print_ray(t_ray r);
 void	print_intersections(t_xs xs);
 void	print_matrix(t_matrix m);
+void	print_light(const t_point_light *light, const char *label);
+void	print_material(t_material mat);
+void	print_sphere(const char *name, t_sphere s);
+
+//Equality utils
 int		compare_files(const char *f1, const char *f2);
-bool	file_ends_with_newline(const char *filename);
-int		is_canvas_black(t_image *canvas);
+bool	lights_equal(t_point_light a, t_point_light b);
+bool	material_equal(t_material a, t_material b);
+bool	spheres_equal(t_sphere a, t_sphere b);
 
 // Override TEST_ASSERT to count tests
 # undef TEST_ASSERT

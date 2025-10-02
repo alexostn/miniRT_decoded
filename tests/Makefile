@@ -72,7 +72,8 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/materials/lighting.c \
 	$(SRC_DIR)/lights/lights.c \
 	$(SRC_DIR)/spheres/spheres_intersect_stack.c \
-	$(SRC_DIR)/spheres/intersects_collection_stack.c
+	$(SRC_DIR)/spheres/intersects_collection_stack.c \
+	$(SRC_DIR)/world/world.c
 
 # Test source files
 TEST_SRCS = test_common.c \
