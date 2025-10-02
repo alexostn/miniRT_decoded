@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:23:53 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/03 01:37:26 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/03 01:50:18 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,16 @@ t_comps	prepare_computations_sphere(t_intersection i, t_ray r, t_sphere s)
 	else
 		comps.inside_hit = 0;
 	return (comps);
+}
+
+t_tuple	shade_hit(t_world world, t_comps comps)
+{
+	t_lighting_args	args;
+
+	args.material = comps.sphere.material;
+	args.light = world.light;
+	args.position = comps.point;
+	args.eyev = comps.eyev;
+	args.normalv = comps.normalv;
+	return (lighting(args));
 }

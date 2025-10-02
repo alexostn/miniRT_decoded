@@ -173,22 +173,6 @@ void test_ch7_prepare_computations(void)
 	print_tuple(comps.normalv);
 }
 
-static t_tuple shade_hit(t_world world, t_comps comps)
-{
-	t_lighting_args	args;
-	// t_tuple			surface_color;
-
-	args.material = comps.sphere.material;
-	args.light = world.light;
-	args.position = comps.point;
-	args.eyev = comps.eyev;
-	args.normalv = comps.normalv;
-
-	// surface_color = lighting(args);
-	return (lighting(args));
-	// return (surface_color);
-}
-
 void test_ch7_shade_hit_outside(void)
 {
 	printf("\n Test: Shade hit outside the sphere\n");

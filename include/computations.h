@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 01:37:39 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/03 01:40:30 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/03 01:50:12 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ typedef struct s_comps
 }				t_comps;
 
 t_comps	prepare_computations_sphere(t_intersection i, t_ray r, t_sphere s);
+t_tuple	shade_hit(t_world world, t_comps comps);
 
 #endif
