@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 12:07:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/02 18:07:00 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:36:51 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "materials.h"
 # include "lights.h"
+# include "spheres.h"
+# include "world.h"
 
 typedef struct s_lighting_args
 {

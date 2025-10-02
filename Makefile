@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/02 18:43:49 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/02 22:25:49 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,8 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_rotation.c \
 			$(SRC_DIR)/spheres/spheres_intersect_stack.c \
 			$(SRC_DIR)/spheres/intersects_collection_stack.c \
-			$(SRC_DIR)/world/world.c
+			$(SRC_DIR)/world/world.c \
+			$(SRC_DIR)/computations/computations.c
 
 
 OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))

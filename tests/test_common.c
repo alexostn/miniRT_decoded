@@ -20,7 +20,7 @@ void	print_color(t_color	pc)
 
 void	print_ray(t_ray r)
 {
-	printf("Ray origin: ");
+	printf("Ray origin:    ");
 	print_tuple(r.origin);
 	printf("Ray direction: ");
 	print_tuple(r.direction);
@@ -85,6 +85,8 @@ void	print_sphere(const char *name, t_sphere s)
 	printf("Material:\n");
 	print_material(s.material);
 }
+
+//TODO: print_world()?
 
 //Equality utils
 bool	lights_equal(t_point_light a, t_point_light b)

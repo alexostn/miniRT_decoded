@@ -2,6 +2,7 @@
 # define TEST_COMMON_H
 
 // Common includes for all test files
+#include "computations.h"
 #include "world.h"
 #include "math_utils.h"
 #include "matrices.h"

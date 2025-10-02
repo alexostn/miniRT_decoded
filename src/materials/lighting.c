@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 12:10:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/21 12:10:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/03 01:37:01 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static t_tuple	accumulate_diffuse(t_material material,
 ** Returns:
 ** - t_tuple: final color after applying all lighting components
 */
-t_tuple	lighting(t_lighting_args args)
+static t_tuple	lighting_internal(t_lighting_args args)
 {
 	struct s_light_calc	calc;
 	t_tuple				reflectv;
@@ -107,4 +107,20 @@ t_tuple	lighting(t_lighting_args args)
 				args.eyev, reflectv);
 	}
 	return (add(add(calc.ambient, calc.diffuse), calc.specular));
+}
+
+/*
+Wrapper to ensure w component is 0.0 for valid RGB colors
+Example: (1.0, 0.5, 0.2, 0.7) -> (1.0, 0.5, 0.2, 0.0)
+Use color_convertors.c to normalize tuple through t_color type
+*/
+t_tuple	lighting(t_lighting_args args)
+{
+	t_tuple	result;
+	t_color	color;
+
+	result = lighting_internal(args);
+	color = tuple_to_color(result);
+	result = color_to_tuple(color);
+	return (result);
 }

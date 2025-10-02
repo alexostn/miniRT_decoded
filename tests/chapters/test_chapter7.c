@@ -99,28 +99,23 @@ void	test_ch7_intersect_world_stack(void)
 
 	printf("Chapter 7: Intersecting a world with a ray (STACK version)\n\n");
 	
-	/* START: Setup default world and ray */
+	/* Setup default world and ray */
 	w = default_world();
 	r = ray(point(0, 0, -5), vector(0, 0, 1));
-	/* END: Setup default world and ray */
-	
-	/* START: Display world configuration */
+
+	/* Display world configuration */
 	printf("World configuration:\n");
 	printf("  Number of spheres: %d\n", w.spheres_count);
-	printf("  Ray origin: (0, 0, -5)\n");
-	printf("  Ray direction: (0, 0, 1)\n");
+	print_ray(r);
 	printf("\n");
-	/* END: Display world configuration */
-	
-	/* START: Perform intersection */
+
+	/* Perform intersection */
 	xs = intersect_world_stack(&w, r);
-	/* END: Perform intersection */
-	
-	/* START: Display results */
+
+	/* Display results */
 	printf("Intersection results:\n");
 	printf("  Total intersections: %d\n", xs.count);
 	printf("\n");
-	
 	if (xs.count >= 4)
 	{
 		printf("  xs[0].t = %.1f\n", xs.intersections[0].t);
@@ -129,9 +124,8 @@ void	test_ch7_intersect_world_stack(void)
 		printf("  xs[3].t = %.1f\n", xs.intersections[3].t);
 	}
 	printf("\n");
-	/* END: Display results */
 	
-	/* START: Assertions */
+	/* Assertions */
 	TEST_ASSERT(xs.count == 4,
 		"world intersection count is 4");
 	TEST_ASSERT(fabs(xs.intersections[0].t - 4.0) < EPS,
@@ -142,7 +136,93 @@ void	test_ch7_intersect_world_stack(void)
 		"xs[2].t = 5.5");
 	TEST_ASSERT(fabs(xs.intersections[3].t - 6.0) < EPS,
 		"xs[3].t = 6");
-	/* END: Assertions */
+}
+
+/*
+** test_ch7_prepare_computations()
+** Checks that prepare_computations_sphere() correctly computes
+** the intersection point, eye vector, and normal for a sphere.
+*/
+void test_ch7_prepare_computations(void)
+{
+	t_ray           r;
+	t_sphere        s;
+	t_intersection  i;
+	t_comps         comps;
+
+	printf("\n\nTest: Precomputing the state of an intersection (sphere)\n");
+	/* Setup ray and sphere */
+	r = ray(point(0, 0, -5), vector(0, 0, 1));
+	s = sphere_create();
+
+	/* Create intersection */
+	i = intersection_create(4, NULL); // object not needed as sphere is inside comps
+
+	/* Call the computation preparation function */
+	comps = prepare_computations_sphere(i, r, s);
+
+	/* Check results */
+	TEST_ASSERT(fabs(comps.t - i.t) < EPS, "t matches intersection distance");
+	/* other objects will come later */
+
+	TEST_ASSERT(tuples_equal(comps.point, point(0, 0, -1)), "\n point of intersection is correct:");
+	print_tuple(comps.point);
+	TEST_ASSERT(tuples_equal(comps.eyev, vector(0, 0, -1)), "\n eye vector points to camera:");
+	print_tuple(comps.eyev);
+	TEST_ASSERT(tuples_equal(comps.normalv, vector(0, 0, -1)), "\n normal vector is correct:");
+	print_tuple(comps.normalv);
+}
+
+static t_tuple shade_hit(t_world world, t_comps comps)
+{
+	t_lighting_args	args;
+	// t_tuple			surface_color;
+
+	args.material = comps.sphere.material;
+	args.light = world.light;
+	args.position = comps.point;
+	args.eyev = comps.eyev;
+	args.normalv = comps.normalv;
+
+	// surface_color = lighting(args);
+	return (lighting(args));
+	// return (surface_color);
+}
+
+void test_ch7_shade_hit_outside(void)
+{
+	printf("\n Test: Shade hit outside the sphere\n");
+    t_world w = default_world();
+    t_ray r = ray(point(0, 0, -5), vector(0, 0, 1));
+    t_sphere *shape = &w.spheres[0];
+    t_intersection i = intersection_create(4, shape);
+    t_comps comps = prepare_computations_sphere(i, r, *shape);
+    t_tuple c = shade_hit(w, comps);
+	printf("outcome:\n");
+    print_tuple(c);
+    t_tuple expected = color_d(0.38066, 0.47583, 0.2855);
+    print_tuple(expected);
+    TEST_ASSERT(tuples_equal(c, expected), "shade_hit outside object returns correct color");
+}
+
+void test_ch7_shade_hit_inside(void)
+{
+	printf("\n Test: Shade hit inside the sphere\n");
+	t_world w = default_world();
+
+    /* Modify light position */
+    w.light = point_light(point(0, 0.25, 0), color_d(1, 1, 1));
+
+    t_ray r = ray(point(0, 0, 0), vector(0, 0, 1));
+    t_sphere *shape = &w.spheres[1];
+    t_intersection i = intersection_create(0.5, shape);
+    t_comps comps = prepare_computations_sphere(i, r, *shape);
+    t_tuple c = shade_hit(w, comps);
+	printf("outcome:\n");
+    print_tuple(c);
+    t_tuple expected = color_d(0.90498, 0.90498, 0.90498);
+    print_tuple(expected);
+    TEST_ASSERT(tuples_equal(c, expected), "shade_hit inside object returns correct color");
 }
 
 
@@ -152,5 +232,9 @@ void run_chapter7_tests(void)
 	test_ch7_creating_world();
 	test_ch7_default_world();
 	test_ch7_intersect_world_stack();
+	test_ch7_prepare_computations();
+	test_ch7_shade_hit_outside();
+	test_ch7_shade_hit_inside();
+
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }
