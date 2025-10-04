@@ -12,7 +12,7 @@
 
 #include "world.h"
 
-// --------------- STACK VERSION ----------------
+// --------------- STATIC MEMORY VERSION ----------------
 // Note: w.light.val doesn't need initialization when present=false
 // Note: spheres array doesn't need initialization for empty world
 // TODO:
@@ -57,24 +57,26 @@ t_world	default_world(void)
 }
 
 //TODO: Iterate through all objects in world
-t_xs_stack	intersect_world_stack(t_world *w, t_ray r)
+t_xs	intersect_world(t_world *w, t_ray r)
 {
-	t_xs_stack	result;
-	t_xs_stack	temp;
+	t_xs	result;
+	t_xs	temp;
 	int			i;
 	int			j;
 
-	result = xs_create_stack();
+	result = xs_create();
 	i = 0;
 	while (i < w->spheres_count)
 	{
-		temp = sphere_intersect_stack(&w->spheres[i], r);
+		temp = sphere_intersect(&w->spheres[i], r);
 		j = 0;
 		while (j < temp.count)
 		{
-			xs_add_stack(&result, temp.intersections[j]);
+			result = intersections_add(result,
+				temp.intersections[j]);
 			j++;
 		}
+		intersections_destroy(&temp);
 		i++;
 	}
 	return (result);

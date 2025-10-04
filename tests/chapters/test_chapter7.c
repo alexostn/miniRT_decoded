@@ -91,13 +91,13 @@ And xs[1].t = 4.5
 And xs[2].t = 5.5
 And xs[3].t = 6
 */
-void	test_ch7_intersect_world_stack(void)
+void	test_ch7_intersect_world(void)
 {
-	t_world		w;
-	t_ray		r;
-	t_xs_stack	xs;
+	t_world	w;
+	t_ray	r;
+	t_xs	xs;
 
-	printf("Chapter 7: Intersecting a world with a ray (STACK version)\n\n");
+	printf("Chapter 7: Intersecting a world with a ray\n\n");
 	
 	/* Setup default world and ray */
 	w = default_world();
@@ -110,7 +110,7 @@ void	test_ch7_intersect_world_stack(void)
 	printf("\n");
 
 	/* Perform intersection */
-	xs = intersect_world_stack(&w, r);
+	xs = intersect_world(&w, r);
 
 	/* Display results */
 	printf("Intersection results:\n");
@@ -215,7 +215,7 @@ void run_chapter7_tests(void)
 	printf("\n=== Chapter 7: Making a Scene ===\n");
 	test_ch7_creating_world();
 	test_ch7_default_world();
-	test_ch7_intersect_world_stack();
+	test_ch7_intersect_world();
 	test_ch7_prepare_computations();
 	test_ch7_shade_hit_outside();
 	test_ch7_shade_hit_inside();

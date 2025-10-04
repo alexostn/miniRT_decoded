@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "spheres.h"
-#include <stdlib.h>
+#include <stddef.h>
 
 /*
 ** intersection_create()
@@ -35,26 +35,17 @@ t_intersection	intersection_create(double t, void *obj)
 
 /*
 ** xs_create()
-** Creates a new intersections collection
-**
-** Parameters:
-** - count: initial number of intersections
+** Creates an empty intersections collection using static storage
 **
 ** Returns:
 ** - t_xs: new intersections collection
 */
-t_xs	xs_create(int count)
+t_xs	xs_create(void)
 {
 	t_xs	xs;
 
 	xs.count = 0;
-	xs.intersections = NULL;
-	if (count > 0)
-	{
-		xs.intersections = malloc(count * sizeof(t_intersection));
-		if (xs.intersections)
-			xs.count = count;
-	}
+	xs.capacity = MAX_INTERSECTIONS;
 	return (xs);
 }
 
@@ -67,12 +58,9 @@ t_xs	xs_create(int count)
 */
 void	intersections_destroy(t_xs *xs)
 {
-	if (xs && xs->intersections)
-	{
-		free(xs->intersections);
-		xs->intersections = NULL;
-		xs->count = 0;
-	}
+	if (!xs)
+		return ;
+	xs->count = 0;
 }
 
 /*

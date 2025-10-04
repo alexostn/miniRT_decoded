@@ -49,7 +49,7 @@ typedef struct s_world
 
 t_world		world_make(void);
 t_world		default_world(void);
-t_xs_stack	intersect_world_stack(t_world *w, t_ray r);
+t_xs		intersect_world(t_world *w, t_ray r);
 #endif
 
 //light.present bool could be used like that:

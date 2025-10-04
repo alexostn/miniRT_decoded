@@ -84,8 +84,6 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_determinant_recursive.c \
 			$(SRC_DIR)/math/math_utils.c \
 			$(SRC_DIR)/matrices/matrice_rotation.c \
-			$(SRC_DIR)/spheres/spheres_intersect_stack.c \
-			$(SRC_DIR)/spheres/intersects_collection_stack.c \
 			$(SRC_DIR)/world/world.c \
 			$(SRC_DIR)/computations/computations.c
 

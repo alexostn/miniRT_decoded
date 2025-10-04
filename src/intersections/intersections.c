@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "spheres.h"
-#include <stdlib.h>
+#include <stddef.h>
 
 /*
 ** find_insertion_position()
@@ -49,25 +49,18 @@ static int	find_insertion_position(t_xs xs, t_intersection i)
 ** Returns:
 ** - void
 */
-static void	create_sorted_intersections_array(t_xs xs,
-		t_intersection *new_intersections,
-		t_intersection i, int insert_pos)
+static void	insert_intersection(t_xs *xs, t_intersection i, int insert_pos)
 {
 	int	j;
 
-	j = 0;
-	while (j < insert_pos)
+	j = xs->count;
+	while (j > insert_pos)
 	{
-		new_intersections[j] = xs.intersections[j];
-		j++;
+		xs->intersections[j] = xs->intersections[j - 1];
+		j--;
 	}
-	new_intersections[insert_pos] = i;
-	j = insert_pos;
-	while (j < xs.count)
-	{
-		new_intersections[j + 1] = xs.intersections[j];
-		j++;
-	}
+	xs->intersections[insert_pos] = i;
+	xs->count++;
 }
 
 /*
@@ -83,22 +76,13 @@ static void	create_sorted_intersections_array(t_xs xs,
 */
 t_xs	intersections_add(t_xs xs, t_intersection i)
 {
-	t_xs			new_xs;
-	t_intersection	*new_intersections;
-	int				new_count;
 	int				insert_pos;
 
-	new_count = xs.count + 1;
-	new_intersections = malloc(new_count * sizeof(t_intersection));
-	if (!new_intersections)
+	if (xs.count >= xs.capacity)
 		return (xs);
 	insert_pos = find_insertion_position(xs, i);
-	create_sorted_intersections_array(xs, new_intersections, i, insert_pos);
-	if (xs.intersections)
-		free(xs.intersections);
-	new_xs.count = new_count;
-	new_xs.intersections = new_intersections;
-	return (new_xs);
+	insert_intersection(&xs, i, insert_pos);
+	return (xs);
 }
 
 /*

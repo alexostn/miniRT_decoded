@@ -199,7 +199,7 @@ void	test_ch5_aggregating_intersections(void)
 	t_sphere		s = sphere_create();
 	t_intersection	i1 = intersection_create(1, &s);
 	t_intersection	i2 = intersection_create(2, &s);
-	t_xs			xs = xs_create(0);
+	t_xs			xs = xs_create();
 
 	xs = intersections_add(xs, i1);
 	xs = intersections_add(xs, i2);
@@ -231,7 +231,7 @@ void	test_ch5_hit_when_all_intersections_have_positive_t(void)
 	t_sphere		s = sphere_create();
 	t_intersection	i1 = intersection_create(1, &s);
 	t_intersection	i2 = intersection_create(2, &s);
-	t_xs			xs = xs_create(0);
+	t_xs			xs = xs_create();
 
 	xs = intersections_add(xs, i2);  // Add in reverse order
 	xs = intersections_add(xs, i1);
@@ -249,7 +249,7 @@ void	test_ch5_hit_when_some_intersections_have_negative_t(void)
 	t_sphere		s = sphere_create();
 	t_intersection	i1 = intersection_create(-1, &s);
 	t_intersection	i2 = intersection_create(1, &s);
-	t_xs			xs = xs_create(0);
+	t_xs			xs = xs_create();
 
 	xs = intersections_add(xs, i2);  // Add in reverse order
 	xs = intersections_add(xs, i1);
@@ -267,7 +267,7 @@ void	test_ch5_hit_when_all_intersections_have_negative_t(void)
 	t_sphere		s = sphere_create();
 	t_intersection	i1 = intersection_create(-2, &s);
 	t_intersection	i2 = intersection_create(-1, &s);
-	t_xs			xs = xs_create(0);
+	t_xs			xs = xs_create();
 
 	xs = intersections_add(xs, i2);  // Add in reverse order
 	xs = intersections_add(xs, i1);
@@ -287,7 +287,7 @@ void	test_ch5_hit_is_always_lowest_nonnegative_intersection(void)
 	t_intersection	i2 = intersection_create(7, &s);
 	t_intersection	i3 = intersection_create(-3, &s);
 	t_intersection	i4 = intersection_create(2, &s);
-	t_xs			xs = xs_create(0);
+	t_xs			xs = xs_create();
 
 	// Add in random order to test sorting
 	xs = intersections_add(xs, i1);
