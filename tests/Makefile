@@ -128,6 +128,7 @@ $(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a ../mlx-linux/libmlx_Linux.a
 else
 $(TARGET): $(OBJS) $(TEST_OBJS) ../libft/libft.a ../minilibx-mms/libmlx.dylib
 	$(CC) $(OBJS) $(TEST_OBJS) -o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
+	@cp ../minilibx-mms/libmlx.dylib ./libmlx.dylib
 endif
 
 # Run all tests
@@ -141,6 +142,7 @@ vtest: $(TARGET)
 # Clean up
 clean:
 	rm -rf $(OBJ_DIR)
+	rm -f libmlx.dylib
 
 fclean: clean
 	rm -f $(TARGET)
