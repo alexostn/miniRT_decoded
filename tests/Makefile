@@ -84,6 +84,7 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter5.c \
 	$(CHAPTERS_DIR)/test_chapter6.c \
 	$(CHAPTERS_DIR)/test_chapter7.c \
+	$(CHAPTERS_DIR)/test_chapter8.c \
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -170,6 +171,9 @@ test-ch6: $(TARGET)
 test-ch7: $(TARGET)
 	$(RUNNER) ./$(TARGET) 7
 
+test-ch8: $(TARGET)
+	$(RUNNER) ./$(TARGET) 8
+
 # Run all tests with Valgrind (Linux only)
 test-all-valgrind: $(TARGET)
 	@echo "🔍 Running ALL tests with Valgrind..."
@@ -196,6 +200,7 @@ help:
 	@echo "  test-ch5         - Run only Chapter 5 tests"
 	@echo "  test-ch6         - Run only Chapter 6 tests"
 	@echo "  test-ch7         - Run only Chapter 7 tests"
+	@echo "  test-ch8         - Run only Chapter 8 tests"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 help
