@@ -314,7 +314,7 @@ $(SHADOW_EXEC): $(SHADOW_SRC) $(SHADOW_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
 	@echo "🔨 Compiling shadow demo: $(SHADOW_EXEC)"
 	$(CC) $(CFLAGS) -o $(SHADOW_EXEC) $(SHADOW_SRC) $(SHADOW_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
 
-# --- END of DEMOS ---
+# --- END of DEMOS! ---
 
 # Help target
 help:
