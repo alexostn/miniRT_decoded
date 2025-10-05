@@ -13,6 +13,7 @@
 #ifndef LIGHTING_H
 # define LIGHTING_H
 
+# include <stdbool.h>
 # include "materials.h"
 # include "lights.h"
 # include "spheres.h"
@@ -25,6 +26,7 @@ typedef struct s_lighting_args
 	t_tuple			position;
 	t_tuple			eyev;
 	t_tuple			normalv;
+	bool			in_shadow;
 }	t_lighting_args;
 
 struct s_light_calc

@@ -27,6 +27,7 @@ typedef struct s_comps
 	double		t;
 	t_sphere	sphere;
 	t_tuple		point;
+	t_tuple		over_point;
 	t_tuple		eyev;
 	t_tuple		normalv;
 	bool		inside_hit;

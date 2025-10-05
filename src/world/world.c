@@ -61,8 +61,8 @@ t_xs	intersect_world(t_world *w, t_ray r)
 {
 	t_xs	result;
 	t_xs	temp;
-	int			i;
-	int			j;
+	int		i;
+	int		j;
 
 	result = xs_create();
 	i = 0;
@@ -73,11 +73,29 @@ t_xs	intersect_world(t_world *w, t_ray r)
 		while (j < temp.count)
 		{
 			result = intersections_add(result,
-				temp.intersections[j]);
+					temp.intersections[j]);
 			j++;
 		}
 		intersections_destroy(&temp);
 		i++;
 	}
 	return (result);
+}
+
+bool	is_shadowed(t_world world, t_tuple point)
+{
+	t_shadow_check	calc;
+	bool			shadowed;
+
+	if (!world.light_present)
+		return (false);
+	calc.vector_to_light = substract_tuples(world.light.position, point);
+	calc.distance = magnitude_of_vector(calc.vector_to_light);
+	calc.direction = normalize_vector(calc.vector_to_light);
+	calc.shadow_ray = ray(point, calc.direction);
+	calc.intersections = intersect_world(&world, calc.shadow_ray);
+	calc.hit = intersections_hit(calc.intersections);
+	shadowed = (calc.hit.object != NULL && calc.hit.t < calc.distance);
+	intersections_destroy(&calc.intersections);
+	return (shadowed);
 }

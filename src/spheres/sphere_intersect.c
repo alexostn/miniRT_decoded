@@ -120,7 +120,7 @@ t_xs	solve_sphere_quadratic(t_ray r, t_sphere *s)
 	double				t1;
 	double				t2;
 
-    xs = xs_create();
+	xs = xs_create();
 	calculate_quadratic_coefficients(r, &coeffs.a, &coeffs.b, &coeffs.c);
 	if (!solve_quadratic_roots(coeffs, &t1, &t2))
 		return (xs);
@@ -145,7 +145,7 @@ t_xs	sphere_intersect(t_sphere *s, t_ray r)
 	t_matrix	inv_transform;
 	bool		ok;
 
-    xs = xs_create();
+	xs = xs_create();
 	if (!mat_equal(s->transform, mat_identity()))
 	{
 		inv_transform = mat_inverse(s->transform, &ok);

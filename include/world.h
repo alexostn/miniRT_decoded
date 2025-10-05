@@ -31,6 +31,16 @@ typedef struct s_opt_light
 	t_light	val;
 }	t_opt_light;
 
+typedef struct s_shadow_check
+{
+	t_tuple			vector_to_light;
+	double			distance;
+	t_tuple			direction;
+	t_ray			shadow_ray;
+	t_xs			intersections;
+	t_intersection	hit;
+}	t_shadow_check;
+
 /* ======  World Structure with Typed Object Arrays ====== */
 // TODO:
 // t_plane			planes[MAX_OBJECTS];
@@ -50,6 +60,7 @@ typedef struct s_world
 t_world		world_make(void);
 t_world		default_world(void);
 t_xs		intersect_world(t_world *w, t_ray r);
+bool		is_shadowed(t_world world, t_tuple point);
 #endif
 
 //light.present bool could be used like that:

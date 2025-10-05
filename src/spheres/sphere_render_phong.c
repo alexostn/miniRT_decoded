@@ -28,6 +28,7 @@ static void	put_phong_pixel(t_render_job *job, t_render_pixel *pixel, int y)
 	args.position = ray_position(pixel->ray, pixel->hit.t);
 	args.eyev = negate_tupil(pixel->ray.direction);
 	args.normalv = sphere_normal_at(hit_sphere, args.position);
+	args.in_shadow = false;
 	color = tuple_to_color(lighting(args));
 	color.a = 1.0;
 	image_put_pixel(job->canvas, pixel->x, y,

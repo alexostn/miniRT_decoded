@@ -38,17 +38,24 @@ t_comps	prepare_computations_sphere(t_intersection i, t_ray r, t_sphere s)
 	}
 	else
 		comps.inside_hit = 0;
+	comps.over_point = add(comps.point,
+			multiply_tuple_scalar(comps.normalv, EPS));
 	return (comps);
 }
 
 t_tuple	shade_hit(t_world world, t_comps comps)
 {
 	t_lighting_args	args;
+	bool			in_shadow;
 
 	args.material = comps.sphere.material;
 	args.light = world.light;
-	args.position = comps.point;
+	args.position = comps.over_point;
 	args.eyev = comps.eyev;
 	args.normalv = comps.normalv;
+	in_shadow = false;
+	if (world.light_present)
+		in_shadow = is_shadowed(world, comps.over_point);
+	args.in_shadow = in_shadow;
 	return (lighting(args));
 }

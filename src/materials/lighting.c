@@ -14,17 +14,40 @@
 #include "colors.h"
 #include <math.h>
 
+/*
+** accumulate_specular()
+** Calculates the specular (shininess) component of lighting
+**
+** Specular reflection creates shiny highlights on surfaces, simulating how
+** smooth surfaces reflect light like mirrors. The highlight intensity depends
+** on the angle between the reflected light vector and the eye vector.
+**
+** The calculation uses the Phong reflection model: the brightness follows
+** a power function based on the shininess exponent. Higher shininess values
+** create smaller, more concentrated highlights (like polished metal),
+** while lower values create larger, softer highlights.
+**
+** Parameters:
+** - material: surface material properties (specular coefficient and shininess)
+** - light: light source (position and intensity)
+** - eyev: normalized vector from surface to viewer's eye
+** - reflectv: normalized reflected light vector
+**
+** Returns:
+** - t_tuple: specular color contribution
+*/
 static t_tuple	accumulate_specular(t_material material, t_point_light light,
 			t_tuple eyev, t_tuple reflectv)
 {
 	double	reflect_dot_eye;
-	double	factor;
+	double	highlight_intensity;
 
 	reflect_dot_eye = dot_product(reflectv, eyev);
 	if (reflect_dot_eye <= 0.0)
 		return (color_d(0.0, 0.0, 0.0));
-	factor = pow(reflect_dot_eye, material.shininess);
-	return (multiply_tuple_scalar(light.intensity, material.specular * factor));
+	highlight_intensity = material.specular
+		* pow(reflect_dot_eye, material.shininess);
+	return (multiply_tuple_scalar(light.intensity, highlight_intensity));
 }
 
 /*
@@ -36,7 +59,7 @@ static t_tuple	accumulate_specular(t_material material, t_point_light light,
 ** surface normal - surfaces facing the light appear brighter.
 **
 ** The calculation uses Lambert's law: the brightness is proportional to
-** the cosine of the angle between light and normal (dot product).
+** the cosine of the angle between light and normal (dot product). 
 ** This creates the smooth shading we see on matte surfaces.
 **
 ** Parameters:
@@ -80,10 +103,23 @@ static t_tuple	accumulate_diffuse(t_material material,
 ** Returns:
 ** - t_tuple: final color after applying all lighting components
 */
+
+static void	compute_diffuse_specular(struct s_light_calc *calc,
+										t_lighting_args args)
+{
+	t_tuple	reflectv;
+
+	calc->diffuse = accumulate_diffuse(args.material,
+			calc->effective_color, calc->light_dot_normal);
+	reflectv = reflect(multiply_tuple_scalar(calc->lightv, -1.0),
+			args.normalv);
+	calc->specular = accumulate_specular(args.material, args.light,
+			args.eyev, reflectv);
+}
+
 static t_tuple	lighting_internal(t_lighting_args args)
 {
 	struct s_light_calc	calc;
-	t_tuple				reflectv;
 
 	calc.effective_color = multiply_tuples(args.material.color,
 			args.light.intensity);
@@ -91,21 +127,14 @@ static t_tuple	lighting_internal(t_lighting_args args)
 				args.position));
 	calc.ambient = multiply_tuple_scalar(calc.effective_color,
 			args.material.ambient);
+	if (args.in_shadow)
+		return (calc.ambient);
+	calc.diffuse = color_d(0.0, 0.0, 0.0);
+	calc.specular = color_d(0.0, 0.0, 0.0);
 	calc.light_dot_normal = dot_product(calc.lightv, args.normalv);
 	if (calc.light_dot_normal < 0.0)
-	{
-		calc.diffuse = color_d(0.0, 0.0, 0.0);
-		calc.specular = color_d(0.0, 0.0, 0.0);
-	}
-	else
-	{
-		calc.diffuse = accumulate_diffuse(args.material, calc.effective_color,
-				calc.light_dot_normal);
-		reflectv = reflect(multiply_tuple_scalar(calc.lightv, -1.0),
-				args.normalv);
-		calc.specular = accumulate_specular(args.material, args.light,
-				args.eyev, reflectv);
-	}
+		return (calc.ambient);
+	compute_diffuse_specular(&calc, args);
 	return (add(add(calc.ambient, calc.diffuse), calc.specular));
 }
 
