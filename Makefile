@@ -319,7 +319,7 @@ $(SHADOW_EXEC): $(SHADOW_SRC) $(SHADOW_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
 # Help target
 help:
 	@echo "Available targets:"
-	@echo "  all              - Build the main miniRT project"
+	@echo "  all              - Build the main miniRT project!"
 	@echo ""
 	@echo "📚 TESTING:"
 	@echo "  test-all         - Run ALL chapter tests (ch1-ch8)"
