@@ -176,17 +176,17 @@ void test_ch7_prepare_computations(void)
 void test_ch7_shade_hit_outside(void)
 {
 	printf("\n Test: Shade hit outside the sphere\n");
-    t_world w = default_world();
-    t_ray r = ray(point(0, 0, -5), vector(0, 0, 1));
-    t_sphere *shape = &w.spheres[0];
-    t_intersection i = intersection_create(4, shape);
-    t_comps comps = prepare_computations_sphere(i, r, *shape);
-    t_tuple c = shade_hit(w, comps);
+	t_world w = default_world();
+	t_ray r = ray(point(0, 0, -5), vector(0, 0, 1));
+	t_sphere *shape = &w.spheres[0];
+	t_intersection i = intersection_create(4, shape);
+	t_comps comps = prepare_computations_sphere(i, r, *shape);
+	t_tuple c = shade_hit(w, comps);
 	printf("outcome:\n");
-    print_tuple(c);
-    t_tuple expected = color_d(0.38066, 0.47583, 0.2855);
-    print_tuple(expected);
-    TEST_ASSERT(tuples_equal(c, expected), "shade_hit outside object returns correct color");
+	print_tuple(c);
+	t_tuple expected = color_d(0.38066, 0.47583, 0.2855);
+	print_tuple(expected);
+	TEST_ASSERT(tuples_equal(c, expected), "shade_hit outside object returns correct color");
 }
 
 void test_ch7_shade_hit_inside(void)
@@ -194,23 +194,68 @@ void test_ch7_shade_hit_inside(void)
 	printf("\n Test: Shade hit inside the sphere\n");
 	t_world w = default_world();
 
-    /* Modify light position */
-    w.light = point_light(point(0, 0.25, 0), color_d(1, 1, 1));
+	/* Modify light position */
+	w.light = point_light(point(0, 0.25, 0), color_d(1, 1, 1));
 
-    t_ray r = ray(point(0, 0, 0), vector(0, 0, 1));
-    t_sphere *shape = &w.spheres[1];
-    t_intersection i = intersection_create(0.5, shape);
-    t_comps comps = prepare_computations_sphere(i, r, *shape);
-    t_tuple c = shade_hit(w, comps);
+	t_ray r = ray(point(0, 0, 0), vector(0, 0, 1));
+	t_sphere *shape = &w.spheres[1];
+	t_intersection i = intersection_create(0.5, shape);
+	t_comps comps = prepare_computations_sphere(i, r, *shape);
+	t_tuple c = shade_hit(w, comps);
 	printf("outcome:\n");
-    print_tuple(c);
-    t_tuple expected = color_d(0.90498, 0.90498, 0.90498);
-    print_tuple(expected);
-    TEST_ASSERT(tuples_equal(c, expected), "shade_hit inside object returns correct color");
+	print_tuple(c);
+	t_tuple expected = color_d(0.90498, 0.90498, 0.90498);
+	print_tuple(expected);
+	TEST_ASSERT(tuples_equal(c, expected), "shade_hit inside object returns correct color");
 }
 
+void	test_ch7_hit_outside_inside(void)
+{
+	t_ray           r;
+	t_sphere        s;
+	t_intersection  i;
+	t_comps         comps;
 
-void run_chapter7_tests(void)
+	printf("\n=== Test: Hit Outside vs Inside ===\n");
+
+	/* Test 1: Hit occurs on the outside */
+	printf("\nScenario: The hit, when an intersection occurs on the outside\n");
+	r = ray(point(0, 0, -5), vector(0, 0, 1));
+	s = sphere_create();
+	i = intersection_create(4, &s);
+	comps = prepare_computations_sphere(i, r, s);
+	
+	TEST_ASSERT(comps.inside_hit == false, "intersection should be outside");
+	if (comps.inside_hit)
+		printf("comps.inside_hit = true\n");
+	else
+		printf("comps.inside_hit = false\n");
+
+	/* Test 2: Hit occurs on the inside */
+	printf("\nScenario: The hit, when an intersection occurs on the inside\n");
+	r = ray(point(0, 0, 0), vector(0, 0, 1));
+	s = sphere_create();
+	i = intersection_create(1, &s);
+	comps = prepare_computations_sphere(i, r, s);
+
+	printf("comps.point:\n");
+	print_tuple(comps.point);
+	printf("comps.eyev:\n");
+	print_tuple(comps.eyev);
+	printf("comps.normalv (should be inverted):\n");
+	print_tuple(comps.normalv);
+
+	TEST_ASSERT(tuples_equal(comps.point, point(0, 0, 1)), 
+				"point of intersection is correct");
+	TEST_ASSERT(tuples_equal(comps.eyev, vector(0, 0, -1)), 
+				"eye vector is correct");
+	TEST_ASSERT(comps.inside_hit == true, "intersection should be inside");
+	TEST_ASSERT(tuples_equal(comps.normalv, vector(0, 0, -1)), 
+				"normal vector should be inverted when inside");
+	printf("\n");
+}
+
+void	run_chapter7_tests(void)
 {
 	printf("\n=== Chapter 7: Making a Scene ===\n");
 	test_ch7_creating_world();
@@ -219,6 +264,7 @@ void run_chapter7_tests(void)
 	test_ch7_prepare_computations();
 	test_ch7_shade_hit_outside();
 	test_ch7_shade_hit_inside();
+	test_ch7_hit_outside_inside();
 
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }
