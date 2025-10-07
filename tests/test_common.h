@@ -2,6 +2,10 @@
 # define TEST_COMMON_H
 
 // Common includes for all test files
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdbool.h>
+#include <assert.h>
 #include "computations.h"
 #include "world.h"
 #include "math_utils.h"
@@ -17,10 +21,8 @@
 #include "image.h"
 #include "rays.h"
 #include "spheres.h"
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdbool.h>
-#include <assert.h>
+#include "camera.h"
+
 
 // ANSI color codes for test output
 # define ANSI_COLOR_RED     "\x1b[31m"

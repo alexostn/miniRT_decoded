@@ -3,7 +3,7 @@
 // TEST FUNCTIONS ONLY
 void	test_ch7_creating_world(void)
 {
-	printf("Chapter 7: Creating a world\n\n");
+	printf("\n\nChapter 7: Creating a world\n\n");
 	t_world w;
 
 	w = world_make();
@@ -33,7 +33,7 @@ And w contains s2
 */
 void	test_ch7_default_world(void)
 {
-	printf("Chapter 7: The default world\n\n");
+	printf("\n\nChapter 7: The default world\n\n");
 	t_world			w;
 	t_point_light	expected_light;
 	t_sphere		s1;
@@ -97,7 +97,7 @@ void	test_ch7_intersect_world(void)
 	t_ray	r;
 	t_xs	xs;
 
-	printf("Chapter 7: Intersecting a world with a ray\n\n");
+	printf("\n\nChapter 7: Intersecting a world with a ray\n\n");
 	
 	/* Setup default world and ray */
 	w = default_world();
@@ -150,7 +150,7 @@ void test_ch7_prepare_computations(void)
 	t_intersection  i;
 	t_comps         comps;
 
-	printf("\n\nTest: Precomputing the state of an intersection (sphere)\n");
+	printf("\n\nChapter 7: Precomputing the state of an intersection (sphere)\n");
 	/* Setup ray and sphere */
 	r = ray(point(0, 0, -5), vector(0, 0, 1));
 	s = sphere_create();
@@ -175,7 +175,7 @@ void test_ch7_prepare_computations(void)
 
 void test_ch7_shade_hit_outside(void)
 {
-	printf("\n Test: Shade hit outside the sphere\n");
+	printf("\n\nChapter 7: Shade hit outside the sphere\n");
 	t_world w = default_world();
 	t_ray r = ray(point(0, 0, -5), vector(0, 0, 1));
 	t_sphere *shape = &w.spheres[0];
@@ -191,7 +191,7 @@ void test_ch7_shade_hit_outside(void)
 
 void test_ch7_shade_hit_inside(void)
 {
-	printf("\n Test: Shade hit inside the sphere\n");
+	printf("\n\nChapter 7: Shade hit inside the sphere\n");
 	t_world w = default_world();
 
 	/* Modify light position */
@@ -216,7 +216,7 @@ void	test_ch7_hit_outside_inside(void)
 	t_intersection  i;
 	t_comps         comps;
 
-	printf("\n=== Test: Hit Outside vs Inside ===\n");
+	printf("\n\nChapter 7: Hit Outside vs Inside ===\n");
 
 	/* Test 1: Hit occurs on the outside */
 	printf("\nScenario: The hit, when an intersection occurs on the outside\n");
@@ -268,7 +268,7 @@ void test_ch7_color_at_miss(void)
 	t_ray	r;
 	t_tuple	c;
 
-	printf("\n=== Test: Color when ray misses ===\n");
+	printf("\n\nChapter 7: Color when ray misses ===\n");
 	w = default_world();
 	r = ray(point(0, 0, -5), vector(0, 1, 0));
 
@@ -281,7 +281,7 @@ void test_ch7_color_at_miss(void)
 	printf("\nit is black color or tuple:\n");
 	print_tuple(color_d(0, 0, 0));
 	/* hint to run demo to see black screen:)*/
-	printf("\n💡 For visualization of black screen, run: make world\n");
+	printf("💡 For visualization of black screen, run: make world\n");
 }
 
 /*
@@ -298,7 +298,7 @@ void test_ch7_color_when_ray_hits(void)
 	t_tuple	c;
 	t_tuple	expected_c;
 
-	printf("\n=== Test: Color when when a ray hits ===\n");
+	printf("\n\nChapter 7: Color when when a ray hits ===\n");
 	w = default_world();
 	r = ray(point(0, 0, -5), vector(0, 0, 1));
 
@@ -311,7 +311,7 @@ void test_ch7_color_when_ray_hits(void)
 	printf("\nthe same as expected color/tuple:\n");
 	print_tuple(expected_c);
 	/* hint to run demo */
-	printf("\n💡 For visualization, run: make world\n");
+	printf("💡 For visualization, run: make world\n");
 }
 
 void test_ch7_color_at_behind_ray(void)
@@ -322,7 +322,7 @@ void test_ch7_color_at_behind_ray(void)
 	t_material  m;
 	t_tuple     expected;
 
-	printf("\n=== Test: Color With Intersection Behind Ray ===\n");
+	printf("\n\nChapter 7: Color With Intersection Behind Ray ===\n");
 	printf("Scenario: The color with an intersection behind the ray\n\n");
 
 	w = default_world();
@@ -343,7 +343,7 @@ void test_ch7_color_at_behind_ray(void)
 	c = color_at(&w, r);
 	expected = w.spheres[1].material.color;
 
-	printf("Expected: color of inner sphere = ");
+	printf("Expected color of inner sphere:\n");
 	print_tuple(expected);
 	printf("Actual:   ");
 	print_tuple(c);
@@ -351,6 +351,40 @@ void test_ch7_color_at_behind_ray(void)
 
 	TEST_ASSERT(tuples_equal(c, expected), 
 				"color_at should return inner sphere color");
+	/* hint to run demo */
+	printf("💡 For visualization, run: make world\n");
+}
+
+void test_ch7_view_transform_default(void)
+{
+	t_tuple		from;
+	t_tuple		to;
+	t_tuple		up;
+	t_matrix	t;
+	t_matrix	identity;
+
+	printf("\n\nChapter 7: View Transform Default Orientation ===\n");
+	printf("Scenario: The transformation matrix for default orientation\n\n");
+
+	/* Setup default view parameters */
+	from = point(0, 0, 0);
+	to = point(0, 0, -1);
+	up = vector(0, 1, 0);
+
+	/* Compute view transformation */
+	t = view_transform(from, to, up);
+	identity = mat_identity();
+
+	/* Display matrices */
+	printf("Expected: identity matrix\n");
+	print_matrix(identity);
+	printf("\nActual:\n");
+	print_matrix(t);
+	printf("\n");
+
+	/* Assertion */
+	TEST_ASSERT(mat_equal(t, identity), 
+				"default orientation should equal identity matrix");
 }
 
 void	run_chapter7_tests(void)
@@ -366,6 +400,8 @@ void	run_chapter7_tests(void)
 	test_ch7_color_at_miss();
 	test_ch7_color_when_ray_hits();
 	test_ch7_color_at_behind_ray();
-	
+	/*Camera tests:*/
+	test_ch7_view_transform_default();
+
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }
