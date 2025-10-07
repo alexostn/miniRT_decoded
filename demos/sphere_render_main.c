@@ -1,17 +1,15 @@
-#include <sys/stat.h>		// for ensure_dir
-#include <sys/types.h>		// for ensure_dir
-#include "spheres.h"
-#include "image.h"			// for MLX image functions
-#include "matrices.h"
-#include "transformations.h"
-#include "materials.h"
-#include "colors.h"
-#include "lights.h"
-#include "math_utils.h"
-#include <math.h>
-#include <stdio.h>        // For printf
-#include <fcntl.h>        // For open()
-#include <unistd.h>       // For close()
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sphere_render_main.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/07 21:41:27 by oostapen          #+#    #+#             */
+/*   Updated: 2025/10/07 21:41:28 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "demo_utils.h"
 
 static t_sphere	make_demo_sphere(t_matrix transform)

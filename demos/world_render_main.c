@@ -1,12 +1,17 @@
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   world_render_main.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/07 21:42:43 by oostapen          #+#    #+#             */
+/*   Updated: 2025/10/07 21:49:30 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "demo_utils.h"
-#include "world.h"
-#include "image.h"
-#include "spheres.h"
-#include "lights.h"
-#include "colors.h"
+
 
 /*
 ** render_world_miss_rays - Render world showing rays that miss
@@ -135,19 +140,28 @@ static void	render_world_first_sphere(t_world *w, const char *output_path)
 */
 int	main(void)
 {
-	t_world	world_miss;
-	t_world	world;
+	t_world world_miss;
+	t_world world;
+	char	filename_miss[256];
+	char	filename_sphere[256];
 
 	printf("=== World Render Demo (Chapter 7) ===\n");
 	printf("Rendering default world's first sphere...\n");
 	ensure_demo_dirs();
+	
 	world_miss = default_world();
 	world = default_world();
-	render_world_miss_rays(&world_miss,
-		"demos/output/world_miss_rays.ppm");
-	render_world_first_sphere(&world,
-		"demos/output/world_default_sphere.ppm");
+	
+	/* Generate unique filenames */
+	get_next_filename("demos/output/world_miss_rays", ".ppm", filename_miss);
+	get_next_filename("demos/output/world_default_sphere", ".ppm", filename_sphere);
+	
+	render_world_miss_rays(&world_miss, filename_miss);
+	render_world_first_sphere(&world, filename_sphere);
+	
 	printf("\n=== Demo Complete ===\n");
-	printf("View demos/output/world_default_sphere.ppm\n");
+	printf("View:\n");
+	printf("  %s\n", filename_miss);
+	printf("  %s\n", filename_sphere);
 	return (0);
 }

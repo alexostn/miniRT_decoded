@@ -6,24 +6,10 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 19:55:12 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/07 20:08:24 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/07 21:39:10 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <math.h>
-#include "math_utils.h"
-#include "world.h"
-#include "computations.h"
-#include "materials.h"
-#include "transformations.h"
-#include "matrices.h"
-#include "lights.h"
-#include "colors.h"
 #include "demo_utils.h"
 
 static void	world_add_sphere(t_world *world, t_sphere sphere)

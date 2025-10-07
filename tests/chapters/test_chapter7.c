@@ -280,15 +280,10 @@ void test_ch7_color_at_miss(void)
 	print_tuple(c);
 	printf("\nit is black color or tuple:\n");
 	print_tuple(color_d(0, 0, 0));
+	/* hint to run demo to see black screen:)*/
+	printf("\n💡 For visualization of black screen, run: make world\n");
 }
 
-/*
-Scenario: The color when a ray misses
-Given w ← default_world()
-And r ← ray(point(0, 0, -5), vector(0, 1, 0))
-When c ← color_at(w, r)
-Then c = color(0, 0, 0)
-*/
 /*
 Scenario: The color when a ray hits
 Given w ← default_world()
@@ -319,6 +314,45 @@ void test_ch7_color_when_ray_hits(void)
 	printf("\n💡 For visualization, run: make world\n");
 }
 
+void test_ch7_color_at_behind_ray(void)
+{
+	t_world     w;
+	t_ray       r;
+	t_tuple     c;
+	t_material  m;
+	t_tuple     expected;
+
+	printf("\n=== Test: Color With Intersection Behind Ray ===\n");
+	printf("Scenario: The color with an intersection behind the ray\n\n");
+
+	w = default_world();
+	
+	/* Set ambient to 1 for outer sphere (first object) */
+	m = w.spheres[0].material;
+	m.ambient = 1.0;
+	w.spheres[0].material = m;
+
+	/* Set ambient to 1 for inner sphere (second object) */
+	m = w.spheres[1].material;
+	m.ambient = 1.0;
+	w.spheres[1].material = m;
+
+	/* Ray starts inside outer sphere, pointing at inner sphere */
+	r = ray(point(0, 0, 0.75), vector(0, 0, -1));
+
+	c = color_at(&w, r);
+	expected = w.spheres[1].material.color;
+
+	printf("Expected: color of inner sphere = ");
+	print_tuple(expected);
+	printf("Actual:   ");
+	print_tuple(c);
+	printf("\n");
+
+	TEST_ASSERT(tuples_equal(c, expected), 
+				"color_at should return inner sphere color");
+}
+
 void	run_chapter7_tests(void)
 {
 	printf("\n=== Chapter 7: Making a Scene ===\n");
@@ -331,6 +365,7 @@ void	run_chapter7_tests(void)
 	test_ch7_hit_outside_inside();
 	test_ch7_color_at_miss();
 	test_ch7_color_when_ray_hits();
-
+	test_ch7_color_at_behind_ray();
+	
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }
