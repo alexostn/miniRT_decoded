@@ -255,6 +255,67 @@ void	test_ch7_hit_outside_inside(void)
 	printf("\n");
 }
 
+/*
+Scenario: The color when a ray misses
+Given w ← default_world()
+And r ← ray(point(0, 0, -5), vector(0, 1, 0))
+When c ← color_at(w, r)
+Then c = color(0, 0, 0)
+*/
+void test_ch7_color_at_miss(void)
+{
+	t_world	w;
+	t_ray	r;
+	t_tuple	c;
+
+	printf("\n=== Test: Color when ray misses ===\n");
+	w = default_world();
+	r = ray(point(0, 0, -5), vector(0, 1, 0));
+
+	c = color_at(&w, r);
+	
+	TEST_ASSERT(tuples_equal(c, color_d(0, 0, 0)), 
+				"color_at should return black when ray misses");
+	printf("color_at returns color:\n");
+	print_tuple(c);
+	printf("\nit is black color or tuple:\n");
+	print_tuple(color_d(0, 0, 0));
+}
+/*
+Scenario: The color when a ray misses
+Given w ← default_world()
+And r ← ray(point(0, 0, -5), vector(0, 1, 0))
+When c ← color_at(w, r)
+Then c = color(0, 0, 0)
+*/
+/*
+Scenario: The color when a ray hits
+Given w ← default_world()
+And r ← ray(point(0, 0, -5), vector(0, 0, 1))
+When c ← color_at(w, r)
+Then c = color(0.38066, 0.47583, 0.2855)
+*/
+void test_ch7_color_when_ray_hits(void)
+{
+	t_world	w;
+	t_ray	r;
+	t_tuple	c;
+	t_tuple	expected_c;
+
+	printf("\n=== Test: Color when when a ray hits ===\n");
+	w = default_world();
+	r = ray(point(0, 0, -5), vector(0, 0, 1));
+
+	c = color_at(&w, r);
+	expected_c = color_d(0.38066, 0.47583, 0.2855);
+	TEST_ASSERT(tuples_equal(c, expected_c), 
+				"color_at should return black when ray misses");
+	printf("color_at returns color:\n");
+	print_tuple(c);
+	printf("\nthe same as expected color/tuple:\n");
+	print_tuple(expected_c);
+}
+
 void	run_chapter7_tests(void)
 {
 	printf("\n=== Chapter 7: Making a Scene ===\n");
@@ -265,6 +326,8 @@ void	run_chapter7_tests(void)
 	test_ch7_shade_hit_outside();
 	test_ch7_shade_hit_inside();
 	test_ch7_hit_outside_inside();
+	test_ch7_color_at_miss();
+	test_ch7_color_when_ray_hits();
 
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }

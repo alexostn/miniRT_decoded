@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 01:37:39 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/03 01:50:12 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:28:11 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include "spheres.h"
 # include "rays.h"
 # include "lighting.h"
+# include "world.h"
 
+typedef struct s_world	t_world;
 /*
 ** Structure storing precomputed data about an intersection for shading
 where t_sphere	sphere; is copy of sphere

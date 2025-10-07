@@ -7,6 +7,7 @@
 #include "materials.h"
 #include "colors.h"
 #include "lights.h"
+#include "math_utils.h"
 #include <math.h>
 #include <stdio.h>        // For printf
 #include <fcntl.h>        // For open()

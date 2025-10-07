@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:29:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/06 21:54:29 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:31:14 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "world.h"
+#include "computations.h"
 
 // --------------- STATIC MEMORY VERSION ----------------
 // Note: w.light.val doesn't need initialization when present=false
@@ -98,4 +99,34 @@ bool	is_shadowed(t_world world, t_tuple point)
 	shadowed = (calc.hit.object != NULL && calc.hit.t < calc.distance);
 	intersections_destroy(&calc.intersections);
 	return (shadowed);
+}
+
+/*
+**   - w: pointer to world (stack or heap)
+**   - r: ray to trace
+** Returns: color tuple (with w=0.0 for valid RGB)
+** Note: This is the public API used by render() and tests.
+**       Internally calls shade_hit() with shadow calculations.
+** HEAP_READY: Works with both stack (world_make) and heap (world_create)
+*/
+t_tuple	color_at(t_world *w, t_ray r)
+{
+	t_xs			xs;
+	t_intersection	hit;
+	t_tuple			result;
+	t_sphere		*object;
+	t_comps			comps;
+
+	xs = intersect_world(w, r);
+	hit = intersections_hit(xs);
+	if (!hit.object)
+	{
+		intersections_destroy(&xs);
+		return (color_d(0.0, 0.0, 0.0));
+	}
+	object = (t_sphere *)hit.object;
+	comps = prepare_computations_sphere(hit, r, *object);
+	result = shade_hit(*w, comps);
+	intersections_destroy(&xs);
+	return (result);
 }

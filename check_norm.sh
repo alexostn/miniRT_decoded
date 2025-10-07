@@ -44,21 +44,68 @@ echo "-------------------------------------"
 echo "Running norminette on the project..."
 echo "-------------------------------------"
 
-norminette .
+# Save norminette output to a temporary file for parsing
+NORM_OUTPUT=$(norminette .)
+echo "$NORM_OUTPUT"
 
 echo "-------------------------------------"
+# Count files with "OK!" status
+PASSED_COUNT=$(echo "$NORM_OUTPUT" | grep -c ": OK!")
 
+# Count files with "Error" status
+ERROR_COUNT=$(echo "$NORM_OUTPUT" | grep -c ": Error!")
+
+# Display summary
+echo ""
+echo "======================================"
+echo "           NORMINETTE SUMMARY         "
+echo "======================================"
+echo "Files PASSED:  $PASSED_COUNT"
+
+
+if [ "$ERROR_COUNT" -gt 0 ]; then
+	echo "Files with ERRORS: $ERROR_COUNT"
+	echo ""
+	# Extract and display files with errors
+	echo "Files with errors:"
+	echo "$NORM_OUTPUT" | grep "Error!" | sed 's/: Error!//' | while read -r line; do
+		echo "  - $line"
+	done
+	echo ""
+else
+	echo "Files with ERRORS: 0"
+	echo ""
+fi
+
+
+if [ "$ERROR_COUNT" -gt 0 ]; then
+	echo "Files with ERRORS: $ERROR_COUNT"
+	echo ""
+	echo "Status: ❌ FAILED - Please fix the errors above"
+else
+	echo "Files with ERRORS: 0"
+	echo ""
+	echo "Status: ✅ ALL CHECKS PASSED"
+fi
+echo "======================================"
 
 # --- 3. Restoring and Cleaning Up ---
 # If the temporary archive exists, extract it and then delete it.
 if [ -f "$TMP_ARCHIVE" ]; then
-    echo "-> Restoring items to their original locations..."
-    # tar -x (extract) -f (from file)
-    # The files will be restored to their original paths.
-    tar -xf "$TMP_ARCHIVE"
-    # Remove the archive file itself.
-    rm "$TMP_ARCHIVE"
-    echo "Done."
+	echo "-> Restoring items to their original locations..."
+	# tar -x (extract) -f (from file)
+	# The files will be restored to their original paths.
+	tar -xf "$TMP_ARCHIVE"
+	# Remove the archive file itself.
+	rm "$TMP_ARCHIVE"
+	echo "Done."
 else
-    echo "-> No archive found to restore from."
+	echo "-> No archive found to restore from."
+fi
+
+# Exit with error code if there were norminette errors
+if [ "$ERROR_COUNT" -gt 0 ]; then
+	exit 1
+else
+	exit 0
 fi

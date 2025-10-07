@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:23:53 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/03 01:50:18 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:29:50 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "computations.h"
+#include "world.h"
 /*
 ** prepare_computations()
 ** Precompute useful data for shading an intersection

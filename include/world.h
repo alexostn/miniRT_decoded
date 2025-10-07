@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/02 19:05:45 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:15:46 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "tuples.h"
 # include "matrices.h"
 # include "transformations.h"
+# include "computations.h"
 # include "rays.h"
 # include "lights.h"
 # include "objects.h"// for future generic t_object definition
@@ -61,6 +62,8 @@ t_world		world_make(void);
 t_world		default_world(void);
 t_xs		intersect_world(t_world *w, t_ray r);
 bool		is_shadowed(t_world world, t_tuple point);
+
+t_tuple		color_at(t_world *w, t_ray r);
 #endif
 
 //light.present bool could be used like that:
