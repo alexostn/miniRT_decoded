@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 19:55:12 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/06 21:38:11 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/07 20:08:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,7 @@
 #include "matrices.h"
 #include "lights.h"
 #include "colors.h"
-
-static void	ensure_dir(const char *path)
-{
-	struct stat	st;
-
-	if (stat(path, &st) == -1)
-		mkdir(path, 0775);
-}
+#include "demo_utils.h"
 
 static void	world_add_sphere(t_world *world, t_sphere sphere)
 {
@@ -191,8 +184,7 @@ int	main(void)
 {
 	printf("=== Shadow Casting Demo (Chapter 8) ===\n");
 	printf("Rendering spheres with hard shadows...\n");
-	ensure_dir("demos");
-	ensure_dir("demos/output");
+	ensure_demo_dirs();
 	render_shadow_scene();
 	printf("\nDemo complete. Inspect demos/output/shadow_scene.ppm to view the result.\n");
 	printf("Try experimenting with sphere transforms in shadow_demo_main.c to play with shadows!\n");

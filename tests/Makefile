@@ -144,6 +144,8 @@ vtest: $(TARGET)
 clean:
 	rm -rf $(OBJ_DIR)
 	rm -f libmlx.dylib
+	rm -f *.ppm
+	rm -rf ../demos/output/*.ppm
 
 fclean: clean
 	rm -f $(TARGET)

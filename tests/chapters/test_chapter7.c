@@ -281,6 +281,7 @@ void test_ch7_color_at_miss(void)
 	printf("\nit is black color or tuple:\n");
 	print_tuple(color_d(0, 0, 0));
 }
+
 /*
 Scenario: The color when a ray misses
 Given w ← default_world()
@@ -314,6 +315,8 @@ void test_ch7_color_when_ray_hits(void)
 	print_tuple(c);
 	printf("\nthe same as expected color/tuple:\n");
 	print_tuple(expected_c);
+	/* hint to run demo */
+	printf("\n💡 For visualization, run: make world\n");
 }
 
 void	run_chapter7_tests(void)

@@ -10,19 +10,7 @@
 #include <stdio.h>        // For printf
 #include <fcntl.h>        // For open()
 #include <unistd.h>       // For close()
-
-/*
-** Create directory if it does not exist to prevent open() from failing.
-*/
-static void ensure_dir(const char *path)
-{
-	struct stat st = {0};
-
-	if (stat(path, &st) == -1)
-	{
-		mkdir(path, 0775);
-	}
-}
+#include "demo_utils.h"
 
 /*
 ** This is a demo program to render a clock face, as described in
@@ -42,6 +30,7 @@ int	main(void)
 	const t_tuple	twelve_o_clock = point(0, 0, 1);
 	int				i;
 	int				fd;
+
 
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
@@ -77,8 +66,7 @@ int	main(void)
 		i++;
 	}
 
-	ensure_dir("demos");
-	ensure_dir("demos/output");
+	ensure_demo_dirs();
 
 	// Open a file to get a file descriptor for your image_to_ppm function
 	fd = open("demos/output/clock.ppm", O_WRONLY | O_CREAT | O_TRUNC, 0644);

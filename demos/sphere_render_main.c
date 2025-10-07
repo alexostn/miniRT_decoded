@@ -12,19 +12,7 @@
 #include <stdio.h>        // For printf
 #include <fcntl.h>        // For open()
 #include <unistd.h>       // For close()
-
-/*
-** Create directory if it does not exist to prevent open() from failing.
-*/
-static void ensure_dir(const char *path)
-{
-	struct stat st = {0};
-
-	if (stat(path, &st) == -1)
-	{
-		mkdir(path, 0775);
-	}
-}
+#include "demo_utils.h"
 
 static t_sphere	make_demo_sphere(t_matrix transform)
 {
@@ -88,9 +76,8 @@ int	main(void)
 		return (1);
 	}
 
-	// Ensure output directory exists
-	ensure_dir("demos");
-	ensure_dir("demos/output");
+	// Ensure output directory exists moved to demo_utils.c
+	ensure_demo_dirs();
 
 	light = point_light(point(-10, 10, -10), color_d(1, 1, 1));
 

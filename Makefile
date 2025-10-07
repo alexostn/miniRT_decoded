@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/02 22:25:49 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/07 20:54:25 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -147,8 +147,20 @@ SPHERE_OBJS     = $(filter-out $(OBJ_DIR)/main.o, $(OBJS)) $(OBJ_DIR)/spheres/sp
 SHADOW_SRC      = demos/shadow_demo_main.c
 SHADOW_EXEC     = shadow_demo
 SHADOW_OBJS     = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
+WORLD_SRC       = demos/world_render_main.c
+WORLD_EXEC      = world_demo
+WORLD_OBJS      = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
+# Demo utilities - shared by all demos
+DEMO_UTILS_SRC  = demos/demo_utils.c
+DEMO_UTILS_OBJ  = $(OBJ_DIR)/demos/demo_utils.o
+
+$(DEMO_UTILS_OBJ): $(DEMO_UTILS_SRC)
+	@mkdir -p $(OBJ_DIR)/demos
+	$(CC) $(CFLAGS) -c $(DEMO_UTILS_SRC) -o $(DEMO_UTILS_OBJ)
 # --- END OF DEMOS ---
-	
+
 # clean rules:
 clean:
 	@make -s -C $(LIBFT_DIR) clean
@@ -166,7 +178,8 @@ fclean: clean
 	rm -f $(MLX_CLEAN_TARGET)
 	rm -rf $(CLOCK_EXEC)
 	rm -rf $(SPHERE_EXEC)
-	rm -rf $(SHADOW_EXEC)
+	rm -rf $(SHADOW_EXEC)	
+	rm -rf $(WORLD_EXEC)
 	rm -rf demos/output
 
 re: fclean all
@@ -304,25 +317,32 @@ clock: $(CLOCK_EXEC)
 	@echo "🕐 Running clock demo..."
 	$(RUNNER) ./$(CLOCK_EXEC)
 
-$(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
-	@echo "🔨 Compiling clock demo: $(CLOCK_EXEC)"
-	$(CC) $(CFLAGS) -o $(CLOCK_EXEC) $(CLOCK_SRC) $(CLOCK_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
+$(CLOCK_EXEC): $(CLOCK_SRC) $(CLOCK_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(CLOCK_EXEC) $(CLOCK_SRC) $(CLOCK_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
+
 
 sphere: $(SPHERE_EXEC)
 	@echo "🔴 Running sphere render demo..."
 	$(RUNNER) ./$(SPHERE_EXEC)
 
-$(SPHERE_EXEC): $(SPHERE_SRC) $(SPHERE_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
-	@echo "🔨 Compiling sphere demo: $(SPHERE_EXEC)"
-	$(CC) $(CFLAGS) -o $(SPHERE_EXEC) $(SPHERE_SRC) $(SPHERE_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
+$(SPHERE_EXEC): $(SPHERE_SRC) $(SPHERE_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(SPHERE_EXEC) $(SPHERE_SRC) $(SPHERE_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
+
 
 shadow: $(SHADOW_EXEC)
 	@echo "🌒 Rendering shadow demo..."
 	$(RUNNER) ./$(SHADOW_EXEC)
 
-$(SHADOW_EXEC): $(SHADOW_SRC) $(SHADOW_OBJS) $(LIBFT_LIB) $(MLX_TARGET)
-	@echo "🔨 Compiling shadow demo: $(SHADOW_EXEC)"
-	$(CC) $(CFLAGS) -o $(SHADOW_EXEC) $(SHADOW_SRC) $(SHADOW_OBJS) $(LIBFT_FLAGS) $(MLX_LIB)
+$(SHADOW_EXEC): $(SHADOW_SRC) $(SHADOW_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(SHADOW_EXEC) $(SHADOW_SRC) $(SHADOW_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
+
+world: $(WORLD_EXEC)
+	@echo "🌒 Rendering world demo..."
+	$(RUNNER) ./$(WORLD_EXEC)
+
+$(WORLD_EXEC): $(WORLD_SRC) $(WORLD_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(WORLD_EXEC) $(WORLD_SRC) $(WORLD_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
+
 
 # --- END of DEMOS! ---
 
@@ -346,6 +366,7 @@ help:
 	@echo "🎮 DEMOS:"
 	@echo "  clock            - Run clock face demo (Chapter 4)"
 	@echo "  sphere           - Run sphere render demo (Chapter 5 and 6)"
+	@echo "  world           - Render Chapter 7 world demo"
 	@echo "  shadow           - Render Chapter 8 shadow demo"
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
@@ -356,7 +377,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-all test-all-valgrind help clock sphere shadow
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-all test-all-valgrind help clock sphere world shadow
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later
