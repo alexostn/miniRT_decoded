@@ -6,10 +6,11 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:28:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/02 20:29:40 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 22:53:37 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "window.h"
 
 /*

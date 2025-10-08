@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 21:40:54 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/07 21:40:55 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 17:15:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,5 @@ void	get_next_filename(const char *base_path, const char *extension, char *outpu
 	/* Fallback if counter reaches 1000 */
 	snprintf(output, 256, "%s_overflow%s", base_path, extension);
 }
-
 
 void	render_world_visualization(t_world *w, const char *output_path);

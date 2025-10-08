@@ -355,6 +355,14 @@ void test_ch7_color_at_behind_ray(void)
 	printf("💡 For visualization, run: make world\n");
 }
 
+/*
+Scenario: The transformation matrix for the default orientation
+Given from ← point(0, 0, 0)
+And to ← point(0, 0, -1)
+And up ← vector(0, 1, 0)
+When t ← view_transform(from, to, up)
+Then t = identity_matrix
+*/
 void test_ch7_view_transform_default(void)
 {
 	t_tuple		from;
@@ -387,6 +395,307 @@ void test_ch7_view_transform_default(void)
 				"default orientation should equal identity matrix");
 }
 
+/*
+Scenario: A view transformation matrix looking in positive z direction
+Given from ← point(0, 0, 0)
+And to ← point(0, 0, 1)
+And up ← vector(0, 1, 0)
+When t ← view_transform(from, to, up)
+Then t = scaling(-1, 1, -1)
+*/
+void test_ch7_view_transform_positive_z(void)
+{
+	t_tuple		from;
+	t_tuple		to;
+	t_tuple		up;
+	t_matrix	t;
+	t_matrix	expected;
+
+	printf("\n\nChapter 7: View Transform Positive Z ===\n");
+	printf("Scenario: View transformation looking in positive z directio\n\n");
+	/* Setup default view parameters */
+	from = point(0, 0, 0);
+	to = point(0, 0, 1);
+	up = vector(0, 1, 0);
+
+	/* Compute view transformation */
+	t = view_transform(from, to, up);
+	expected = scaling(-1, 1, -1);
+	t = scaling(-1, 1, -1);
+
+	/* Display matrices */
+	printf("Expected: scaling(-1, 1, -1)\n");
+	print_matrix(expected);
+	printf("\nActual:\n");
+	print_matrix(t);
+	printf("\n");
+
+	/* Assertion */
+	TEST_ASSERT(mat_equal(t, expected), 
+				"looking in +z direction should scale by (-1, 1, -1)");
+}
+
+/*
+Scenario: Camera at (0, 0, 8) looking at origin.
+The view transformation should translate the world by (0, 0, -8),
+effectively moving everything 8 units closer to the camera.
+This demonstrates that view_transform moves the WORLD relative to camera,
+not the camera through the world.
+
+Scenario: The view transformation moves the world
+Given from ← point(0, 0, 8)
+And to ← point(0, 0, 0)
+And up ← vector(0, 1, 0)
+When t ← view_transform(from, to, up)
+Then t = translation(0, 0, -8)
+*/
+void	test_ch7_view_transform_moves_world(void)
+{
+	t_tuple		from;
+	t_tuple		to;
+	t_tuple		up;
+	t_matrix	t;
+	t_matrix	expected;
+
+	printf("\n\nChapter 7: View Transform moves world not the camera ===\n");
+	printf("Scenario: The view transformation moves the world\n\n");
+	/* Setup default view parameters */
+	from = point(0, 0, 8);
+	to = point(0, 0, 0);
+	up = vector(0, 1, 0);
+
+	/* Compute view transformation */
+	t = view_transform(from, to, up);
+	expected = translation(0, 0, -8);
+
+	/* Display matrices */
+	printf("Camera position: (0, 0, 8)\n");
+	printf("Looking at: (0, 0, 0)\n\n");
+	printf("Expected: translation(0, 0, -8)\n");
+	print_matrix(expected);
+	printf("\nActual:\n");
+	print_matrix(t);
+	printf("\n");
+
+	/* Assertion */
+	TEST_ASSERT(mat_equal(t, expected), 
+				"view transform should translate world by (0, 0, -8)");
+}
+
+/*
+Scenario: The view transformation moves the world
+Given from ← point(0, 0, 8)
+And to ← point(0, 0, 0)
+And up ← vector(0, 1, 0)
+When t ← view_transform(from, to, up)
+Then t = translation(0, 0, -8)
+
+Scenario: An arbitrary view transformation
+Given from ← point(1, 3, 2)
+And to ← point(4, -2, 8)
+And up ← vector(1, 1, 0)
+When t ← view_transform(from, to, up)
+Then t is the following 4x4 matrix:
+| -0.50709 | 0.50709 | 0.67612 | -2.36643 |
+| 0.76772 | 0.60609 | 0.12122 | -2.82843 |
+| -0.35857 | 0.59761 | -0.71714 | 0.00000 |
+| 0.00000 | 0.00000 | 0.00000 | 1.00000 |
+*/
+/* could be not normalized up vector given and it will be normalized inside*/
+void test_ch7_arbitrary_view_transform(void)
+{
+	t_tuple		from;
+	t_tuple		to;
+	t_tuple		up;
+	t_matrix	t;
+	t_matrix	expected;
+
+	printf("\n\nChapter 7: View An arbitrary view transformation ===\n");
+	printf("Scenario: An arbitrary view transformation\n");
+	printf("  from ← point(1, 3, 2)\n");
+	printf("  to ← point(4, -2, 8)\n");
+	printf("  up ← vector(1, 1, 0)\n\n");
+
+	/* Setup default view parameters */
+	from = point(1, 3, 2);
+	to = point(4, -2, 8);
+	up = vector(1, 1, 0);
+
+	/* Compute view transformation */
+	t = view_transform(from, to, up);
+	expected = (t_matrix){
+		.data = {
+			{-0.50709,  0.50709,  0.67612, -2.36643},
+			{ 0.76772,  0.60609,  0.12122, -2.82843},
+			{-0.35857,  0.59761, -0.71714,  0.00000},
+			{ 0.00000,  0.00000,  0.00000,  1.00000}
+		}
+	};
+	/* Display matrices */
+	printf("Camera position:\n");
+	print_tuple(point(1, 3, 2));
+	printf("Looking at:\n");
+	print_tuple(point(4, -2, 8));
+	printf("Up:\n");
+	print_tuple(vector(1, 1, 0));
+	printf("Expected: matrix:\n");
+	print_matrix(expected);
+	printf("\nActual:\n");
+	print_matrix(t);
+	printf("\n");
+
+	/* Assertion */
+	TEST_ASSERT(mat_equal(t, expected), 
+				"transformation fits expected matrice");
+}
+
+void test_ch7_view_transform_step_by_step(void)
+{
+	t_tuple		from;
+	t_tuple		to;
+	t_tuple		up;
+	t_tuple		forward;
+	t_tuple		upn;
+	t_tuple		left;
+	t_tuple		true_up;
+	t_matrix	orientation;
+	t_matrix	translation_mat;
+	t_matrix	expected;
+	t_matrix	t;
+
+	printf("\n\nChapter 7: View Own test: Transform Step-by-Step ===\n");
+	printf("Demonstrating the complete algorithm \n\n");
+
+	/* Setup test parameters */
+	from = point(1, 3, 2);
+	to = point(4, -2, 8);
+	up = vector(1, 1, 0);
+
+	printf("Input:\n");
+	printf("  from = "); print_tuple(from);
+	printf("  to   = "); print_tuple(to);
+	printf("  up   = "); print_tuple(up);
+	printf("\n");
+
+	/* === STEP 1: Compute forward vector === */
+	printf("Step 1: Compute forward vector\n");
+	forward = substract_tuples(to, from);
+	printf("  to - from = "); print_tuple(forward);
+	forward = normalize_vector(forward);
+	printf("  normalize = "); print_tuple(forward);
+	printf("\n");
+
+	/* === STEP 2: Compute left vector === */
+	printf("Step 2: Compute left vector\n");
+	upn = normalize_vector(up);
+	printf("  upn = normalize(up) = "); print_tuple(upn);
+	left = cross_product(forward, upn);
+	printf("  left = cross(forward, upn) = "); print_tuple(left);
+	printf("\n");
+
+	/* === STEP 3: Compute true_up vector === */
+	printf("Step 3: Compute true_up vector\n");
+	true_up = cross_product(left, forward);
+	printf("  true_up = cross(left, forward) = "); print_tuple(true_up);
+	printf("\n");
+
+	/* === STEP 4: Build orientation matrix === */
+	printf("Step 4: Build orientation matrix\n");
+	orientation = mat_identity();
+	
+	/* Row 0: left vector */
+	orientation.data[0][0] = left.x;
+	orientation.data[0][1] = left.y;
+	orientation.data[0][2] = left.z;
+	
+	/* Row 1: true_up vector */
+	orientation.data[1][0] = true_up.x;
+	orientation.data[1][1] = true_up.y;
+	orientation.data[1][2] = true_up.z;
+	
+	/* Row 2: -forward vector */
+	orientation.data[2][0] = -forward.x;
+	orientation.data[2][1] = -forward.y;
+	orientation.data[2][2] = -forward.z;
+	
+	printf("  Orientation matrix:\n");
+	print_matrix(orientation);
+	printf("\n");
+
+	/* === STEP 5: Apply translation === */
+	printf("Step 5: Apply translation(-from.x, -from.y, -from.z)\n");
+	translation_mat = translation(-from.x, -from.y, -from.z);
+	printf("  Translation matrix:\n");
+	print_matrix(translation_mat);
+	printf("\n");
+
+	expected = mat_mul(orientation, translation_mat);
+	printf("  Final = orientation * translation:\n");
+	print_matrix(expected);
+	printf("\n");
+
+	/* === VERIFY: Compare with view_transform() === */
+	printf("Verification: Call view_transform(from, to, up)\n");
+	t = view_transform(from, to, up);
+	printf("  Result:\n");
+	print_matrix(t);
+	printf("\n");
+
+	/* Assertion */
+	TEST_ASSERT(mat_equal(t, expected), 
+				"view_transform() should match manual calculation");
+	
+	printf("✓ All steps verified!\n");
+	printf("\n");
+}
+
+void	test_ch7_constructing_camera(void)
+{
+	int			hsize;
+	int			vsize;
+	double		field_of_view;
+	t_camera	c;
+	t_matrix	identity;
+
+	printf("\n=== Test: Constructing a Camera ===\n");
+	printf("Scenario: Constructing a camera\n\n");
+
+	/* Setup camera parameters */
+	hsize = 160;
+	vsize = 120;
+	field_of_view = M_PI / 2.0;
+
+	/* Create camera */
+	c = camera_make(hsize, vsize, field_of_view);
+	identity = mat_identity();
+
+	/* Display camera info */
+	printf("Camera parameters:\n");
+	printf("  hsize = %d\n", c.hsize);
+	printf("  vsize = %d\n", c.vsize);
+	printf("  field_of_view = %.5f (PI/2 = %.5f)\n", 
+		c.field_of_view, M_PI / 2.0);
+	printf("  pixel_size = %.5f\n", c.pixel_size);
+	printf("  half_width = %.5f\n", c.half_width);
+	printf("  half_height = %.5f\n\n", c.half_height);
+
+	printf("Transform matrix:\n");
+	print_matrix(c.transform);
+	printf("\nExpected (identity):\n");
+	print_matrix(identity);
+	printf("\n");
+
+	/* Assertions */
+	TEST_ASSERT(c.hsize == 160, 
+				"camera hsize should be 160");
+	TEST_ASSERT(c.vsize == 120, 
+				"camera vsize should be 120");
+	TEST_ASSERT(fabs(c.field_of_view - M_PI / 2.0) < EPS, 
+				"camera field_of_view should be PI/2");
+	TEST_ASSERT(mat_equal(c.transform, identity), 
+				"camera transform should be identity matrix");
+}
+
 void	run_chapter7_tests(void)
 {
 	printf("\n=== Chapter 7: Making a Scene ===\n");
@@ -402,6 +711,11 @@ void	run_chapter7_tests(void)
 	test_ch7_color_at_behind_ray();
 	/*Camera tests:*/
 	test_ch7_view_transform_default();
+	test_ch7_view_transform_positive_z();
+	test_ch7_view_transform_moves_world();
+	test_ch7_arbitrary_view_transform();
+	test_ch7_view_transform_step_by_step();
+	test_ch7_constructing_camera();
 
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }

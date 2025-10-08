@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 22:23:43 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/07 22:40:17 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 23:03:14 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,6 @@
 #include "tuples.h"
 #include "matrices.h"
 #include "transformations.h"
-
-/*
-** view_transform()
-** Description: Computes the view transformation matrix that orients the world
-** relative to the camera's position and viewing direction.
-**
-** Parameters:
-** - from: camera position (eye point)
-** - to: point at which the camera is looking
-** - up: approximate "up" direction vector (doesn't need to be exact)
-**
-** Returns: 4x4 transformation matrix that orients the world for rendering
-**
-** Algorithm:
-** 1. Compute forward vector (normalized direction from 'from' to 'to')
-** 2. Compute left vector (cross product of forward and normalized up)
-** 3. Compute true_up vector (cross product of left and forward)
-** 4. Build orientation matrix from these three vectors
-** 5. Multiply by translation to move world relative to camera */
-/* Step 1: Compute forward vector (direction camera is looking) */
-/* Step 2: Normalize the up vector */
-/* Step 3: Compute left vector (perpendicular to forward and up) */
-/* Step 4: Compute true up vector (perpendicular to left and forward) */
-/* Step 5: Build orientation matrix from the three basis vectors */
-/* Row 0: left vector */
-/* Row 1: true_up vector */
-/* Row 2: negative forward vector (camera looks down -Z axis) */
-/* Step 6: Apply translation to move world relative to camera position */
 
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
@@ -67,4 +39,34 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	orientation.data[2][1] = -forward.y;
 	orientation.data[2][2] = -forward.z;
 	return (mat_mul(orientation, translation(-from.x, -from.y, -from.z)));
+}
+
+/* Set default transform to identity matrix */
+/* Compute pixel size and canvas dimensions in world space */
+/* Determine canvas dimensions based on aspect ratio */
+/* Compute pixel size in world units */
+t_camera	camera_make(int hsize, int vsize, double fov)
+{
+	t_camera	cam;
+	double		half_view;
+	double		aspect;
+
+	cam.hsize = hsize;
+	cam.vsize = vsize;
+	cam.field_of_view = fov;
+	cam.transform = mat_identity();
+	half_view = tan(fov / 2.0);
+	aspect = (double)hsize / (double)vsize;
+	if (aspect >= 1.0)
+	{
+		cam.half_width = half_view;
+		cam.half_height = half_view / aspect;
+	}
+	else
+	{
+		cam.half_width = half_view * aspect;
+		cam.half_height = half_view;
+	}
+	cam.pixel_size = (cam.half_width * 2.0) / (double)hsize;
+	return (cam);
 }

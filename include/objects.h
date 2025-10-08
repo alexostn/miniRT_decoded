@@ -6,14 +6,14 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 00:37:17 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/01 14:11:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 22:48:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OBJECTS_H
 # define OBJECTS_H
 
-# include "minirt.h"
+// # include "world.h"
 
 // struct s_sphere
 // {

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/07 17:15:46 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 23:08:50 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 # define MAX_OBJECTS 32
 
 //Checks if light is present not just black '0'
-typedef struct s_opt_light
-{
-	bool	present;
-	t_light	val;
-}	t_opt_light;
+// typedef struct s_opt_light
+// {
+// 	bool	present;
+// 	t_light	val;
+// }	t_opt_light;
 
 typedef struct s_shadow_check
 {
@@ -64,10 +64,10 @@ t_xs		intersect_world(t_world *w, t_ray r);
 bool		is_shadowed(t_world world, t_tuple point);
 
 t_tuple		color_at(t_world *w, t_ray r);
-#endif
 
-//light.present bool could be used like that:
-//TEST_ASSERT(!w.light.present, "world has no light")
+typedef struct s_world	t_scene;
+
+#endif
 
 /*
 ** --- HEAP EXPANSION SCENARIO ---

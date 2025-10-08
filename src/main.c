@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 22:57:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/02 20:32:19 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 22:52:53 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "window.h"
+#include "minirt.h"
 /*
 	init_scene(&scene); // Initializing the scene structure
 	vars.scene = &scene; // Linking the scene to the window

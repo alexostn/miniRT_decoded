@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 21:42:43 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/07 22:13:41 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/08 17:10:50 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static void	render_world_miss_rays(t_world *w, const char *output_path)
 	int		y;
 	t_ray	r;
 	t_tuple	pixel_color;
-	int		color_int;
+	t_color		color;
+	uint32_t	color_mlx;
 
 	mlx = mlx_init();
 	if (!mlx)
@@ -63,13 +64,12 @@ static void	render_world_miss_rays(t_world *w, const char *output_path)
 			/* Get color from world */
 			pixel_color = color_at(w, r);
 			
-			/* Convert to int color for MLX */
-			color_int = ((int)(pixel_color.x * 255) << 16) |
-						((int)(pixel_color.y * 255) << 8) |
-						((int)(pixel_color.z * 255));
-			
+			/* Convert tuple to color, then to MLX format */
+			color = tuple_to_color(pixel_color);
+			color_mlx = color_to_mlx(&color, FORMAT_ARGB);
+
 			/* Put pixel using MLX */
-			image_put_pixel(canvas, x, y, color_int);
+			image_put_pixel(canvas, x, y, color_mlx);
 			x++;
 		}
 		y++;
@@ -196,7 +196,6 @@ static void render_world_behind_ray(t_world *w, const char *output_path)
 		{
 			double world_x;
 			double world_y;
-
 			/* Map pixel to ray origin inside outer sphere */
 			/* Start at z=0.75 (inside outer sphere) */
 			world_x = (x - 100) / 100.0;  /* -1 to 1 */
