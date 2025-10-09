@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:40:08 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/12 21:47:45 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 22:10:41 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 // that works with t_image, if it has already included image.h.
 # include "mlx.h" // For void *mlx_ptr, void *img_ptr and MLX functions
 # include "tuples.h"
+
+typedef struct s_pixel
+{
+	int	x;
+	int	y;
+}	t_pixel;
 
 /*image is canvas, coherent with mlx:*/
 typedef struct s_image

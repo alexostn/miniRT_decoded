@@ -104,16 +104,16 @@ void test_ch2_writing_pixels(void)
 	TEST_ASSERT(canvas, "canvas created");
 
 	t_color red = {1.0, 0.0, 0.0, 1.0};
-	t_color_format cf = { red, FORMAT_RGBA };
+	t_color_format cf = { red, FORMAT_ARGB };
 	write_pixel(canvas, 2, 3, cf);
 
 	t_color pixel_color = read_pixel(canvas, 2, 3);
 	print_color(pixel_color);
 	printf("\n");
 
-	unsigned int pixel = color_to_mlx(&pixel_color, FORMAT_RGBA);
+	unsigned int pixel = color_to_mlx(&pixel_color, FORMAT_ARGB);
 	printf("red pixel : 0x%08X\n", pixel);
-	TEST_ASSERT(pixel == 0xFF0000FF, "Pixel (2,3) is red");
+	TEST_ASSERT(pixel == 0xFFFF0000, "Pixel (2,3) is red");
 
 	image_destroy(canvas);
 	#ifdef __linux__

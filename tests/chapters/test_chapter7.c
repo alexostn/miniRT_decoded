@@ -696,6 +696,314 @@ void	test_ch7_constructing_camera(void)
 				"camera transform should be identity matrix");
 }
 
+void	test_ch7_pixel_size_horizontal(void)
+{
+	t_camera	c;
+
+	printf("\n\nChapter 7: Camera pixel size (horizontal canvas)\n\n");
+	printf("Scenario: The pixel size for a horizontal canvas\n");
+	printf("  Given c ← camera(200, 125, PI/2)\n");
+	printf("  Then c.pixel_size = 0.01\n\n");
+	
+	c = camera_make(200, 125, M_PI / 2.0);
+	
+	printf("Calculated pixel_size: %.5f\n", c.pixel_size);
+	printf("Expected pixel_size:   0.01000\n\n");
+
+	TEST_ASSERT(fabs(c.pixel_size - 0.01) < EPS,
+		"pixel size for horizontal canvas is correct");
+}
+
+void	test_ch7_pixel_size_vertical(void)
+{
+	t_camera	c;
+
+	printf("\n\nChapter 7: Camera pixel size (vertical canvas)\n\n");
+	printf("Scenario: The pixel size for a vertical canvas\n");
+	printf("  Given c ← camera(125, 200, π/2)\n");
+	printf("  Then c.pixel_size = 0.01\n\n");
+	c = camera_make(125, 200, M_PI / 2.0);
+	printf("Calculated pixel_size: %.5f\n", c.pixel_size);
+	printf("Expected pixel_size:   0.01000\n\n");
+	TEST_ASSERT(fabs(c.pixel_size - 0.01) < EPS,
+		"pixel size for vertical canvas is correct");
+}
+
+void	test_ch7_ray_for_pixel_center(void)
+{
+	t_camera	c;
+	t_ray		r;
+
+	printf("\n\nChapter 7: Constructing a ray through the center\n\n");
+	c = camera_make(201, 101, M_PI / 2.0);
+	r = ray_for_pixel(&c, 100, 50);
+
+	printf("Ray origin:\n");
+	print_tuple(r.origin);
+	printf("Expected origin: point(0, 0, 0)\n\n");
+
+	printf("Ray direction:\n");
+	print_tuple(r.direction);
+	printf("Expected direction: vector(0, 0, -1)\n\n");
+
+	TEST_ASSERT(tuples_equal(r.origin, point(0, 0, 0)),
+		"ray origin is correct for center pixel");
+	TEST_ASSERT(tuples_equal(r.direction, vector(0, 0, -1)),
+		"ray direction is correct for center pixel");
+}
+
+void	test_ch7_ray_for_pixel_corner(void)
+{
+	t_camera	c;
+	t_ray		r;
+	t_tuple		expected_direction;
+
+	printf("\n\nChapter 7: Constructing a ray through a corner\n\n");
+	c = camera_make(201, 101, M_PI / 2.0);
+	r = ray_for_pixel(&c, 0, 0);
+	expected_direction = vector(0.66519, 0.33259, -0.66851);
+	
+	printf("Ray origin:\n");
+	print_tuple(r.origin);
+	printf("Expected origin: point(0, 0, 0)\n\n");
+
+	printf("Ray direction:\n");
+	print_tuple(r.direction);
+	printf("Expected direction:\n");
+	print_tuple(expected_direction);
+	printf("\n");
+
+	TEST_ASSERT(tuples_equal(r.origin, point(0, 0, 0)),
+		"ray origin is correct for corner pixel");
+	TEST_ASSERT(tuples_equal(r.direction, expected_direction),
+		"ray direction is correct for corner pixel");
+}
+
+void	test_ch7_ray_for_pixel_transformed(void)
+{
+	t_camera	c;
+	t_ray		r;
+	t_tuple		expected_origin;
+	t_tuple		expected_direction;
+
+	printf("\n\nChapter 7: Ray with a transformed camera\n\n");
+	c = camera_make(201, 101, M_PI / 2.0);
+	c.transform = mat_mul(rotation_y(M_PI / 4.0), translation(0, -2, 5));
+	r = ray_for_pixel(&c, 100, 50);
+
+	expected_origin = point(0, 2, -5);
+	expected_direction = vector(sqrt(2) / 2.0, 0, -sqrt(2) / 2.0);
+
+	printf("Ray origin:\n");
+	print_tuple(r.origin);
+	printf("Expected origin:\n");
+	print_tuple(expected_origin);
+	printf("\n");
+
+	printf("Ray direction:\n");
+	print_tuple(r.direction);
+	printf("Expected direction:\n");
+	print_tuple(expected_direction);
+	printf("\n");
+
+	TEST_ASSERT(tuples_equal(r.origin, expected_origin),
+		"ray origin is correct for transformed camera");
+	TEST_ASSERT(tuples_equal(r.direction, expected_direction),
+		"ray direction is correct for transformed camera");
+}
+
+void	test_ch7_ray_through_canvas_center(void)
+{
+	t_camera	c;
+	t_ray		r;
+
+	printf("\n\nChapter 7: Ray through canvas center\n\n");
+	printf("Scenario: Constructing a ray through the center of the canvas\n");
+	printf("  Given c ← camera(201, 101, PI/2)\n");
+	printf("  When r ← ray_for_pixel(c, 100, 50)\n");
+	printf("  Then r.origin = point(0, 0, 0)\n");
+	printf("  And r.direction = vector(0, 0, -1)\n\n");
+
+	c = camera_make(201, 101, M_PI / 2.0);
+	r = ray_for_pixel(&c, 100, 50);
+
+	printf("Ray origin:\n");
+	print_tuple(r.origin);
+	printf("Expected: point(0, 0, 0)\n\n");
+
+	printf("Ray direction:\n");
+	print_tuple(r.direction);
+	printf("Expected: vector(0, 0, -1)\n\n");
+
+	TEST_ASSERT(tuples_equal(r.origin, point(0, 0, 0)),
+		"ray origin is at camera position");
+	TEST_ASSERT(tuples_equal(r.direction, vector(0, 0, -1)),
+		"ray direction points straight forward through center");
+}
+
+void	test_ch7_ray_through_canvas_corner(void)
+{
+	t_camera	c;
+	t_ray		r;
+	t_tuple		expected_dir;
+
+	printf("\n\nChapter 7: Ray through canvas corner\n\n");
+	printf("Scenario: Constructing a ray through a corner of the canvas\n");
+	printf("  Given c ← camera(201, 101, π/2)\n");
+	printf("  When r ← ray_for_pixel(c, 0, 0)\n");
+	printf("  Then r.origin = point(0, 0, 0)\n");
+	printf("  And r.direction = vector(0.66519, 0.33259, -0.66851)\n\n");
+
+	c = camera_make(201, 101, M_PI / 2.0);
+	r = ray_for_pixel(&c, 0, 0);
+	expected_dir = vector(0.66519, 0.33259, -0.66851);
+
+	printf("Ray origin:\n");
+	print_tuple(r.origin);
+	printf("Expected: point(0, 0, 0)\n\n");
+
+	printf("Ray direction:\n");
+	print_tuple(r.direction);
+	printf("Expected direction:\n");
+	print_tuple(expected_dir);
+	printf("\n");
+
+	TEST_ASSERT(tuples_equal(r.origin, point(0, 0, 0)),
+		"ray origin is at camera position");
+	TEST_ASSERT(tuples_equal(r.direction, expected_dir),
+		"ray direction points toward top-left corner");
+}
+
+void	test_ch7_ray_with_transformed_camera(void)
+{
+	t_camera	c;
+	t_ray		r;
+	t_tuple		expected_origin;
+	t_tuple		expected_dir;
+
+	printf("\n\nChapter 7: Ray with transformed camera\n\n");
+	printf("Scenario: Constructing a ray when the camera is transformed\n");
+	printf("  Given c ← camera(201, 101, π/2)\n");
+	printf("  When c.transform ← rotation_y(π/4) * translation(0, -2, 5)\n");
+	printf("  And r ← ray_for_pixel(c, 100, 50)\n");
+	printf("  Then r.origin = point(0, 2, -5)\n");
+	printf("  And r.direction = vector(√2/2, 0, -√2/2)\n\n");
+
+	c = camera_make(201, 101, M_PI / 2.0);
+	c.transform = mat_mul(rotation_y(M_PI / 4.0), translation(0, -2, 5));
+	r = ray_for_pixel(&c, 100, 50);
+	expected_origin = point(0, 2, -5);
+	expected_dir = vector(sqrt(2.0) / 2.0, 0, -sqrt(2.0) / 2.0);
+
+	printf("Camera transform:\n");
+	print_matrix(c.transform);
+	printf("\n");
+
+	printf("Ray origin:\n");
+	print_tuple(r.origin);
+	printf("Expected origin:\n");
+	print_tuple(expected_origin);
+	printf("\n");
+
+	printf("Ray direction:\n");
+	print_tuple(r.direction);
+	printf("Expected direction:\n");
+	print_tuple(expected_dir);
+	printf("\n");
+
+	TEST_ASSERT(tuples_equal(r.origin, expected_origin),
+		"ray origin is transformed correctly");
+	TEST_ASSERT(tuples_equal(r.direction, expected_dir),
+		"ray direction is transformed correctly");
+}
+
+void	test_ch7_rendering_world_with_camera(void)
+{
+	t_world		w;
+	t_camera	c;
+	t_tuple		from;
+	t_tuple		to;
+	t_tuple		up;
+	t_image		*image;
+	t_color		pixel_color;
+	t_tuple		expected_color;
+	void		*mlx;
+
+	printf("\n\nChapter 7: Rendering a world with a camera\n\n");
+	printf("Scenario: Rendering a world with a camera\n");
+	printf("  Given w ← default_world()\n");
+	printf("  And c ← camera(11, 11, π/2)\n");
+	printf("  And from ← point(0, 0, -5)\n");
+	printf("  And to ← point(0, 0, 0)\n");
+	printf("  And up ← vector(0, 1, 0)\n");
+	printf("  And c.transform ← view_transform(from, to, up)\n");
+	printf("  When image ← render(c, w)\n");
+	printf("  Then pixel_at(image, 5, 5) = color(0.38066, 0.47583, 0.2855)\n\n");
+
+	mlx = mlx_init();
+	if (!mlx)
+	{
+		printf("✗ Failed to initialize MLX\n");
+		TEST_ASSERT(0, "MLX initialization failed");
+		return ;
+	}
+	w = default_world();
+	c = camera_make(11, 11, M_PI / 2.0);
+	from = point(0, 0, -5);
+	to = point(0, 0, 0);
+	up = vector(0, 1, 0);
+	c.transform = view_transform(from, to, up);
+
+	printf("Rendering world with camera...\n");
+	printf("Camera resolution: %dx%d\n", c.hsize, c.vsize);
+	printf("Camera position: ");
+	print_tuple(from);
+	printf("Looking at: ");
+	print_tuple(to);
+	printf("\n");
+
+	image = render(mlx, c, &w);
+	if (!image)
+	{
+		printf("✗ Failed to render image\n");
+		TEST_ASSERT(0, "render() returned NULL");
+		return ;
+	}
+	pixel_color = read_pixel(image, 5, 5);
+	expected_color = color_d(0.38066, 0.47583, 0.2855);
+
+	printf("Pixel at (5, 5): r=%.5f g=%.5f b=%.5f\n",
+		pixel_color.r, pixel_color.g, pixel_color.b);
+	printf("Expected color:  r=%.5f g=%.5f b=%.5f\n",
+		expected_color.x, expected_color.y, expected_color.z);
+	
+	/* Calculate differences */
+	double diff_r = fabs(pixel_color.r - expected_color.x);
+	double diff_g = fabs(pixel_color.g - expected_color.y);
+	double diff_b = fabs(pixel_color.b - expected_color.z);
+	
+	printf("Differences: r=%.5f g=%.5f b=%.5f\n", diff_r, diff_g, diff_b);
+	printf("\n");
+
+	/* 
+	** Use larger tolerance for pixel comparison due to:
+	** 1. Quantization error when converting double [0.0, 1.0] to uint8_t [0-255]
+	** 2. Loss of precision in write_pixel() -> read_pixel() cycle
+	** 
+	** Acceptable error: ~1/255 ≈ 0.004 (one color step)
+	*/
+	#define PIXEL_TOLERANCE 0.01  /* Allow ~2-3 color steps of error */
+	
+	TEST_ASSERT(diff_r < PIXEL_TOLERANCE &&
+				diff_g < PIXEL_TOLERANCE &&
+				diff_b < PIXEL_TOLERANCE,
+		"center pixel has correct color after rendering");
+
+	image_destroy(image);
+	printf("💡 For visualization, run: make world_demo\n");
+}
+
+
 void	run_chapter7_tests(void)
 {
 	printf("\n=== Chapter 7: Making a Scene ===\n");
@@ -709,13 +1017,24 @@ void	run_chapter7_tests(void)
 	test_ch7_color_at_miss();
 	test_ch7_color_when_ray_hits();
 	test_ch7_color_at_behind_ray();
-	/*Camera tests:*/
+	/*View transform tests*/
 	test_ch7_view_transform_default();
 	test_ch7_view_transform_positive_z();
 	test_ch7_view_transform_moves_world();
 	test_ch7_arbitrary_view_transform();
 	test_ch7_view_transform_step_by_step();
+	/*Camera construction and pixel size tests*/
 	test_ch7_constructing_camera();
+	test_ch7_pixel_size_horizontal();
+	test_ch7_pixel_size_vertical();
+	/*Ray generation tests*/
+	test_ch7_ray_for_pixel_center();
+	test_ch7_ray_for_pixel_corner();
+	test_ch7_ray_for_pixel_transformed();
+	test_ch7_ray_through_canvas_center();
+	test_ch7_ray_through_canvas_corner();
+	test_ch7_ray_with_transformed_camera();
+	test_ch7_rendering_world_with_camera();
 
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }

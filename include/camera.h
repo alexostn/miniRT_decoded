@@ -6,16 +6,19 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 22:22:50 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/08 21:17:55 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 21:58:17 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_H
 # define CAMERA_H
 
+# include <math.h>
+# include "math_utils.h" // For angle conversions
 # include "tuples.h"
 # include "matrices.h"
 # include "rays.h"
+# include "world.h"
 
 /*
 ** - hsize: horizontal resolution in pixels
@@ -41,6 +44,7 @@ typedef struct s_camera
 }				t_camera;
 
 t_camera	camera_make(int hsize, int vsize, double fov);
+t_ray		ray_for_pixel(t_camera *camera, int px, int py);
 
 /*
 forward = normalize(to - from) = (0, 0, -1)// Look direction
@@ -58,5 +62,13 @@ identity matrix
 [0         0         0         1]
 */
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up);
+
+// Renders the world as seen from the camera 
+// MLX instance pointer (for image_create)
+// Returns:
+// - Pointer to t_image containing the rendered scene
+// - NULL on allocation failure
+// NB: Returned image must be freed with image_destroy() when done
+t_image		*render(void *mlx, t_camera camera, t_world *world);
 
 #endif

@@ -73,7 +73,8 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/lights/lights.c \
 	$(SRC_DIR)/world/world.c \
 	$(SRC_DIR)/computations/computations.c \
-	$(SRC_DIR)/camera/camera.c
+	$(SRC_DIR)/camera/camera.c \
+	$(SRC_DIR)/render/render.c
 
 # Test source files
 TEST_SRCS = test_common.c \

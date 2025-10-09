@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:47:48 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/01 14:44:27 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:55:29 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define TUPLES_H
 
 # include "defines.h"
-
 # include <math.h> // for fabs, pow, sqr
 
 // Homogeneous 4D tuple (can be a point or a vector)
