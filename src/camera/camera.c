@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 22:23:43 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/08 23:03:14 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 13:53:42 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 #include "matrices.h"
 #include "transformations.h"
 
+/*
+Camera X Y Z and `view_transform();
+
+forward is local −Z, 
+left is local    +X, 
+true_up is local +Y;
+they are not “equal” to the world X/Y/Z
+*/
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
 	t_tuple		forward;

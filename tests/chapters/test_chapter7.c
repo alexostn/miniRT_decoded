@@ -578,7 +578,7 @@ void test_ch7_view_transform_step_by_step(void)
 	printf("\n");
 
 	/* === STEP 1: Compute forward vector === */
-	printf("Step 1: Compute forward vector\n");
+	printf("Step 1: Compute forward vector local −Z\n");
 	forward = substract_tuples(to, from);
 	printf("  to - from = "); print_tuple(forward);
 	forward = normalize_vector(forward);
@@ -586,15 +586,15 @@ void test_ch7_view_transform_step_by_step(void)
 	printf("\n");
 
 	/* === STEP 2: Compute left vector === */
-	printf("Step 2: Compute left vector\n");
+	printf("Step 2: Compute left vector local +X\n");
 	upn = normalize_vector(up);
 	printf("  upn = normalize(up) = "); print_tuple(upn);
 	left = cross_product(forward, upn);
 	printf("  left = cross(forward, upn) = "); print_tuple(left);
 	printf("\n");
 
-	/* === STEP 3: Compute true_up vector === */
-	printf("Step 3: Compute true_up vector\n");
+	/* === STEP 3: Compute true_up vector local +Y === */
+	printf("Step 3: Compute true_up vector local +Y\n");
 	true_up = cross_product(left, forward);
 	printf("  true_up = cross(left, forward) = "); print_tuple(true_up);
 	printf("\n");
@@ -603,17 +603,17 @@ void test_ch7_view_transform_step_by_step(void)
 	printf("Step 4: Build orientation matrix\n");
 	orientation = mat_identity();
 	
-	/* Row 0: left vector */
+	/* Row 0: left vector local +X */
 	orientation.data[0][0] = left.x;
 	orientation.data[0][1] = left.y;
 	orientation.data[0][2] = left.z;
 	
-	/* Row 1: true_up vector */
+	/* Row 1: true_up vector local +Y */
 	orientation.data[1][0] = true_up.x;
 	orientation.data[1][1] = true_up.y;
 	orientation.data[1][2] = true_up.z;
 	
-	/* Row 2: -forward vector */
+	/* Row 2: -forward vector local -Z */
 	orientation.data[2][0] = -forward.x;
 	orientation.data[2][1] = -forward.y;
 	orientation.data[2][2] = -forward.z;

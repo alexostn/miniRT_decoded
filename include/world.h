@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/08 23:08:50 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 14:53:55 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@
 # include "tuples.h"
 # include "matrices.h"
 # include "transformations.h"
-# include "computations.h"
 # include "rays.h"
 # include "lights.h"
-# include "objects.h"// for future generic t_object definition
 
 # define MAX_OBJECTS 32
 
