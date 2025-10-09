@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:29:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/07 18:31:14 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:52:52 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "world.h"
+#include "intersect.h"
 #include "computations.h"
 
 // --------------- STATIC MEMORY VERSION ----------------

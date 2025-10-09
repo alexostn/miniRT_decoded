@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/09 14:53:55 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:06:12 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "transformations.h"
 # include "rays.h"
 # include "lights.h"
+# include "intersect.h"
 
 # define MAX_OBJECTS 32
 

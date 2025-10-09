@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_render_grid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 14:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/21 14:00:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:09:06 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "spheres.h"
+#include "render_sphere.h"
+#include "intersect.h"
 
 static t_render_grid	grid_defaults(t_image *canvas)
 {

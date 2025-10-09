@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_render_phong.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/09/21 12:15:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:52:25 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "spheres.h"
-#include "image.h"
+#include "render_sphere.h"
+#include "intersect.h"
 #include "colors.h"
-#include "lights.h"
 #include "lighting.h"
 
 static void	put_phong_pixel(t_render_job *job, t_render_pixel *pixel, int y)
