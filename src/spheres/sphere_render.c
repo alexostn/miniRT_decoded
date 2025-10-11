@@ -10,11 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "spheres.h"
-#include "image.h"
+#include "render_sphere.h"
 #include "colors.h"
-#include "lights.h"
-#include "lighting.h"
 
 /*
 ** render_sphere_silhouette()

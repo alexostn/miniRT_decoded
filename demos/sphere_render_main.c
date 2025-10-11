@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "demo_utils.h"
+#include "render_sphere.h"
 
 static t_sphere	make_demo_sphere(t_matrix transform)
 {
