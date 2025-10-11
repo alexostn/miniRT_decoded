@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "demo_utils.h"
+#include "render_sphere.h"
 
 static void	world_add_sphere(t_world *world, t_sphere sphere)
 {
