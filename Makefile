@@ -87,7 +87,9 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/world/world.c \
 			$(SRC_DIR)/computations/computations.c \
 			$(SRC_DIR)/camera/camera.c \
-			$(SRC_DIR)/render/render.c
+			$(SRC_DIR)/render/render.c \
+			$(SRC_DIR)/shapes/shapes.c \
+			$(SRC_DIR)/planes/planes.c
 
 
 OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -154,6 +156,11 @@ WORLD_SRC       = demos/world_render_main.c
 WORLD_EXEC      = world_demo
 WORLD_OBJS      = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 
+# Planes demo (Chapter 9)
+PLANES_SRC      = demos/planes_demo_main.c
+PLANES_EXEC     = planes_demo
+PLANES_OBJS     = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
 # Demo utilities - shared by all demos
 DEMO_UTILS_SRC  = demos/demo_utils.c
 DEMO_UTILS_OBJ  = $(OBJ_DIR)/demos/demo_utils.o
@@ -182,6 +189,7 @@ fclean: clean
 	rm -rf $(SPHERE_EXEC)
 	rm -rf $(SHADOW_EXEC)	
 	rm -rf $(WORLD_EXEC)
+	rm -rf $(PLANES_EXEC)
 	rm -rf demos/output
 
 re: fclean all
@@ -213,6 +221,9 @@ test-ch7:
 
 test-ch8:
 	cd tests && make test-ch8
+
+test-ch9:
+	cd tests && make test-ch9
 
 # Run all chapter tests
 test-all:
@@ -283,6 +294,14 @@ test-all:
 		echo "Chapter 8: ❌ FAILED"; \
 	fi; \
 	echo ""; \
+	echo "Running Chapter 9 tests..."; \
+	$(MAKE) test-ch9 > /dev/null 2>&1; ch9_result=$$?; \
+	if [ $$ch9_result -eq 0 ]; then \
+		echo "Chapter 9: ✅ PASSED"; \
+	else \
+		echo "Chapter 9: ❌ FAILED"; \
+	fi; \
+	echo ""; \
 	echo "=========================================="; \
 	echo "📊 FINAL SUMMARY - ALL CHAPTERS"; \
 	echo "=========================================="; \
@@ -295,12 +314,13 @@ test-all:
 	if [ $$ch6_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
 	if [ $$ch7_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
 	if [ $$ch8_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
-	passed=$$((8 - total_failed)); \
+	if [ $$ch9_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	passed=$$((9 - total_failed)); \
 	if [ $$total_failed -eq 0 ]; then \
 		echo "🎉 ALL CHAPTERS PASSED! ($$passed/8)"; \
 		echo "✅ All chapter tests completed successfully!"; \
 	else \
-		echo "⚠️  $$passed/8 chapters passed, $$total_failed failed"; \
+		echo "⚠️  $$passed/9 chapters passed, $$total_failed failed"; \
 		echo "❌ Some tests failed. Check individual chapter outputs above."; \
 	fi; \
 	echo "=========================================="
@@ -346,6 +366,13 @@ $(WORLD_EXEC): $(WORLD_SRC) $(WORLD_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_T
 	$(CC) $(CFLAGS) -o $(WORLD_EXEC) $(WORLD_SRC) $(WORLD_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
 
 
+planes: $(PLANES_EXEC)
+	@echo "🟫 Rendering planes demo..."
+	$(RUNNER) ./$(PLANES_EXEC)
+
+$(PLANES_EXEC): $(PLANES_SRC) $(PLANES_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(PLANES_EXEC) $(PLANES_SRC) $(PLANES_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
+
 # --- END of DEMOS! ---
 
 # Help target
@@ -354,7 +381,7 @@ help:
 	@echo "  all              - Build the main miniRT project!"
 	@echo ""
 	@echo "📚 TESTING:"
-	@echo "  test-all         - Run ALL chapter tests (ch1-ch8)"
+	@echo "  test-all         - Run ALL chapter tests (ch1-ch9)"
 	@echo "  test-all-valgrind - Run ALL chapter tests with Valgrind"
 	@echo "  test-ch1         - Run Chapter 1 tests"
 	@echo "  test-ch2         - Run Chapter 2 tests"
@@ -364,12 +391,14 @@ help:
 	@echo "  test-ch6         - Run Chapter 6 tests"	
 	@echo "  test-ch7         - Run Chapter 7 tests"
 	@echo "  test-ch8         - Run Chapter 8 tests"
+	@echo "  test-ch9         - Run Chapter 9 tests"
 	@echo ""
 	@echo "🎮 DEMOS:"
 	@echo "  clock            - Run clock face demo (Chapter 4)"
 	@echo "  sphere           - Run sphere render demo (Chapter 5 and 6)"
-	@echo "  world           - Render Chapter 7 world demo"
+	@echo "  world            - Render Chapter 7 world demo"
 	@echo "  shadow           - Render Chapter 8 shadow demo"
+	@echo "  planes           - Render Chapter 9 planes demo"
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"
@@ -379,7 +408,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-all test-all-valgrind help clock sphere world shadow
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-all test-all-valgrind help clock sphere world shadow planes
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

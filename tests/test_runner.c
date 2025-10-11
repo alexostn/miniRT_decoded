@@ -9,6 +9,7 @@ void run_chapter5_tests(void);
 void run_chapter6_tests(void);
 void run_chapter7_tests(void);
 void run_chapter8_tests(void);
+void run_chapter9_tests(void);
 
 void print_test_summary(void)
 {
@@ -59,37 +60,29 @@ int main(int argc, char **argv)
 			run_chapter5_tests();
 		else if (chapter == 6)
 			run_chapter6_tests();
-		else if (chapter == 7)
-			run_chapter7_tests();
-		else if (chapter == 7)
-			run_chapter7_tests();
-		else if (chapter == 8)
-			run_chapter8_tests();
+        else if (chapter == 7)
+            run_chapter7_tests();
+        else if (chapter == 8)
+            run_chapter8_tests();
+        else if (chapter == 9)
+            run_chapter9_tests();
 		else
 		{
-			printf("Error: Invalid chapter number '%s'. Running all tests.\n\n", argv[1]);
-			// Fallback to running all tests
-			run_chapter1_tests();
-			run_chapter2_tests();
-			run_chapter3_tests();
-			run_chapter4_tests();
-			run_chapter5_tests();
-			run_chapter6_tests();
-			run_chapter7_tests();
-			run_chapter8_tests();
-		}
+			printf("Error: Invalid chapter number '%s'. Running all tests.\n\n", argv[1]);		}
 	}
 	else
 	{
 		// If no argument is given, run all tests in order
-		run_chapter1_tests();
-		run_chapter2_tests();
-		run_chapter3_tests();
-		run_chapter4_tests();
-		run_chapter5_tests();
-		run_chapter6_tests();
-		run_chapter7_tests();
-		run_chapter8_tests();
+        run_chapter1_tests();
+        run_chapter2_tests();
+        run_chapter3_tests();
+        run_chapter4_tests();
+        run_chapter5_tests();
+        run_chapter6_tests();
+        run_chapter7_tests();
+        run_chapter8_tests();
+        run_chapter9_tests();
+        run_chapter9_tests();
 	}
 
 	// Print final summary
@@ -100,28 +93,3 @@ int main(int argc, char **argv)
 	// Return exit code based on test results (your existing logic)
 	return (g_tests_failed > 0);
 }
-
-// int main(void)
-// {
-// 	printf("Starting The Raytracer Challenge Book Tests\n");
-// 	printf("========================================\n");
-	
-// 	// Initialize test counters
-// 	g_tests_run = 0;
-// 	g_tests_failed = 0;
-	
-// 	// Run all chapter tests in order
-// 	run_chapter1_tests();
-// 	run_chapter2_tests();
-// 	run_chapter3_tests();
-// 	run_chapter4_tests();
-// 	run_chapter5_tests();
-	
-// 	// Print final summary
-// 	print_test_summary();
-	
-// 	printf("\n--- All book tests finished. ---\n");
-	
-// 	// Return exit code based on test results
-// 	return (g_tests_failed > 0) ? 1 : 0;
-// }

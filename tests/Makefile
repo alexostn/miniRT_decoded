@@ -74,7 +74,9 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/world/world.c \
 	$(SRC_DIR)/computations/computations.c \
 	$(SRC_DIR)/camera/camera.c \
-	$(SRC_DIR)/render/render.c
+	$(SRC_DIR)/render/render.c \
+	$(SRC_DIR)/shapes/shapes.c \
+	$(SRC_DIR)/planes/planes.c
 
 # Test source files
 TEST_SRCS = test_common.c \
@@ -87,6 +89,7 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter6.c \
 	$(CHAPTERS_DIR)/test_chapter7.c \
 	$(CHAPTERS_DIR)/test_chapter8.c \
+	$(CHAPTERS_DIR)/test_chapter9.c \
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -177,6 +180,9 @@ test-ch6: $(TARGET)
 test-ch7: $(TARGET)
 	$(RUNNER) ./$(TARGET) 7
 
+test-ch9: $(TARGET)
+	$(RUNNER) ./$(TARGET) 9
+
 test-ch8: $(TARGET)
 	$(RUNNER) ./$(TARGET) 8
 
@@ -207,6 +213,7 @@ help:
 	@echo "  test-ch6         - Run only Chapter 6 tests"
 	@echo "  test-ch7         - Run only Chapter 7 tests"
 	@echo "  test-ch8         - Run only Chapter 8 tests"
+	@echo "  test-ch9         - Run only Chapter 9 tests"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 help
