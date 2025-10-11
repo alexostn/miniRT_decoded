@@ -76,7 +76,9 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/camera/camera.c \
 	$(SRC_DIR)/render/render.c \
 	$(SRC_DIR)/shapes/shapes.c \
-	$(SRC_DIR)/planes/planes.c
+	$(SRC_DIR)/planes/planes.c \
+	$(SRC_DIR)/cylinders/cylinders.c \
+	$(SRC_DIR)/cones/cones.c
 
 # Test source files
 TEST_SRCS = test_common.c \
@@ -89,6 +91,7 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter6.c \
 	$(CHAPTERS_DIR)/test_chapter7.c \
 	$(CHAPTERS_DIR)/test_chapter8.c \
+	$(CHAPTERS_DIR)/test_chapter13.c \
 	$(CHAPTERS_DIR)/test_chapter9.c \
 
 # Object files
@@ -186,6 +189,9 @@ test-ch9: $(TARGET)
 test-ch8: $(TARGET)
 	$(RUNNER) ./$(TARGET) 8
 
+test-ch13: $(TARGET)
+	$(RUNNER) ./$(TARGET) 13
+
 # Run all tests with Valgrind (Linux only)
 test-all-valgrind: $(TARGET)
 	@echo "🔍 Running ALL tests with Valgrind..."
@@ -214,6 +220,7 @@ help:
 	@echo "  test-ch7         - Run only Chapter 7 tests"
 	@echo "  test-ch8         - Run only Chapter 8 tests"
 	@echo "  test-ch9         - Run only Chapter 9 tests"
+	@echo "  test-ch13        - Run only Chapter 13 tests"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 help

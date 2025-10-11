@@ -89,7 +89,9 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/camera/camera.c \
 			$(SRC_DIR)/render/render.c \
 			$(SRC_DIR)/shapes/shapes.c \
-			$(SRC_DIR)/planes/planes.c
+			$(SRC_DIR)/planes/planes.c \
+			$(SRC_DIR)/cylinders/cylinders.c \
+			$(SRC_DIR)/cones/cones.c
 
 
 OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -161,6 +163,11 @@ PLANES_SRC      = demos/planes_demo_main.c
 PLANES_EXEC     = planes_demo
 PLANES_OBJS     = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 
+# Cylinders demo (Chapter 13)
+CYLINDERS_SRC   = demos/cylinders_demo_main.c
+CYLINDERS_EXEC  = cylinders_demo
+CYLINDERS_OBJS  = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
 # Demo utilities - shared by all demos
 DEMO_UTILS_SRC  = demos/demo_utils.c
 DEMO_UTILS_OBJ  = $(OBJ_DIR)/demos/demo_utils.o
@@ -190,6 +197,7 @@ fclean: clean
 	rm -rf $(SHADOW_EXEC)	
 	rm -rf $(WORLD_EXEC)
 	rm -rf $(PLANES_EXEC)
+	rm -rf $(CYLINDERS_EXEC)
 	rm -rf demos/output
 
 re: fclean all
@@ -224,6 +232,9 @@ test-ch8:
 
 test-ch9:
 	cd tests && make test-ch9
+
+test-ch13:
+	cd tests && make test-ch13
 
 # Run all chapter tests
 test-all:
@@ -302,6 +313,14 @@ test-all:
 		echo "Chapter 9: ❌ FAILED"; \
 	fi; \
 	echo ""; \
+	echo "Running Chapter 13 tests..."; \
+	$(MAKE) test-ch13 > /dev/null 2>&1; ch13_result=$$?; \
+	if [ $$ch13_result -eq 0 ]; then \
+		echo "Chapter 13: ✅ PASSED"; \
+	else \
+		echo "Chapter 13: ❌ FAILED"; \
+	fi; \
+	echo ""; \
 	echo "=========================================="; \
 	echo "📊 FINAL SUMMARY - ALL CHAPTERS"; \
 	echo "=========================================="; \
@@ -315,12 +334,13 @@ test-all:
 	if [ $$ch7_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
 	if [ $$ch8_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
 	if [ $$ch9_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
-	passed=$$((9 - total_failed)); \
+	if [ $$ch13_result -ne 0 ]; then total_failed=$$((total_failed + 1)); fi; \
+	passed=$$((10 - total_failed)); \
 	if [ $$total_failed -eq 0 ]; then \
-		echo "🎉 ALL CHAPTERS PASSED! ($$passed/8)"; \
+		echo "🎉 ALL CHAPTERS PASSED! ($$passed/10)"; \
 		echo "✅ All chapter tests completed successfully!"; \
 	else \
-		echo "⚠️  $$passed/9 chapters passed, $$total_failed failed"; \
+		echo "⚠️  $$passed/10 chapters passed, $$total_failed failed"; \
 		echo "❌ Some tests failed. Check individual chapter outputs above."; \
 	fi; \
 	echo "=========================================="
@@ -373,6 +393,14 @@ planes: $(PLANES_EXEC)
 $(PLANES_EXEC): $(PLANES_SRC) $(PLANES_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
 	$(CC) $(CFLAGS) -o $(PLANES_EXEC) $(PLANES_SRC) $(PLANES_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
 
+# Cylinders demo
+cylinders: $(CYLINDERS_EXEC)
+	@echo "🧱 Rendering cylinders demo..."
+	$(RUNNER) ./$(CYLINDERS_EXEC)
+
+$(CYLINDERS_EXEC): $(CYLINDERS_SRC) $(CYLINDERS_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(CYLINDERS_EXEC) $(CYLINDERS_SRC) $(CYLINDERS_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
+
 # --- END of DEMOS! ---
 
 # Help target
@@ -392,6 +420,7 @@ help:
 	@echo "  test-ch7         - Run Chapter 7 tests"
 	@echo "  test-ch8         - Run Chapter 8 tests"
 	@echo "  test-ch9         - Run Chapter 9 tests"
+	@echo "  test-ch13        - Run Chapter 13 tests"
 	@echo ""
 	@echo "🎮 DEMOS:"
 	@echo "  clock            - Run clock face demo (Chapter 4)"
@@ -399,6 +428,7 @@ help:
 	@echo "  world            - Render Chapter 7 world demo"
 	@echo "  shadow           - Render Chapter 8 shadow demo"
 	@echo "  planes           - Render Chapter 9 planes demo"
+	@echo "  cylinders        - Render Chapter 13 cylinders demo (PPM)"
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"
@@ -408,7 +438,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-all test-all-valgrind help clock sphere world shadow planes
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-all test-all-valgrind help clock sphere world shadow planes cylinders
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later
