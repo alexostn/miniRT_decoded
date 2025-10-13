@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 18:24:18 by oostapen          #+#    #+#             */
-/*   Updated: 2024/12/01 22:20:54 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/14 00:49:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		node = ft_lstnew(f(lst->content));
 		if (node == NULL)
 		{
-			ft_lstclear(&node, (*del));
+			ft_lstclear(&new_list, (*del));
 			return (NULL);
 		}
 		ft_lstadd_back(&new_list, node);
