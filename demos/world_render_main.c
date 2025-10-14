@@ -254,6 +254,7 @@ int	main(void)
 	
 	world_miss = default_world();
 	world = default_world();
+	world.light.intensity = tuple(0, 1, 0, 0.7); //to change color uncomment №next picture
 	world_behind = default_world();
 	
 	/* Generate unique filenames */
