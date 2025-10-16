@@ -6,12 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:13:14 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/17 00:42:57 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:47:38 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tuples.h"
-#include <math.h> // Make sure to include math.h for sqrt and pow
+#include <math.h>
 
 double	magnitude_of_vector(t_tuple v)
 {
@@ -24,12 +24,9 @@ t_tuple	normalize_vector(t_tuple v)
 	t_tuple	normalized;
 
 	magnitude = magnitude_of_vector(v);
-	if (magnitude == 0) // Avoid division by zero
+	if (magnitude == 0)
 	{
-		normalized.x = 0;
-		normalized.y = 0;
-		normalized.z = 0;
-		normalized.w = 0;
+		normalized = (t_tuple){0, 0, 0, 0};
 		return (normalized);
 	}
 	normalized.x = v.x / magnitude;
