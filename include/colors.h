@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:49:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/12 22:19:40 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 13:19:34 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef enum e_forma
 }	t_format;
 
 /***Color format ***/
-typedef struct s_color_forma
+typedef struct s_color_format
 {
 	t_color		color;
 	t_format	format;
