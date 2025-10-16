@@ -6,10 +6,11 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:15:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 23:47:25 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:33:51 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "parser.h"
 #include "get_next_line.h"
 #include "libft.h"
@@ -18,19 +19,28 @@ static bool	parse_single_line(char *line, t_scene *sc, t_parse_state *st)
 {
 	char	*trimmed;
 	bool	result;
-	
+
+	printf("DEBUG parse_single_line: raw='%s'\n", line);
 	trimmed = ft_strtrim(line, " \t\n");
 	if (!trimmed)
-	return (false);
+	{
+		printf("DEBUG: ft_strtrim failed!\n");
+		return (false);
+	}
+	printf("DEBUG: trimmed='%s'\n", trimmed);
 	if (!*trimmed)
 	{
+		printf("DEBUG: Empty line, skipping\n");
 		free(trimmed);
 		return (true);
 	}
+	printf("DEBUG: Calling dispatch_element\n");
 	result = dispatch_element(trimmed, sc, st);
+	printf("DEBUG: dispatch returned %d\n", result);
 	free(trimmed);
 	return (result);
 }
+
 
 /*
 line = get_next_line_bonus(fd);  // ⚠️ HEAP - malloc and free(line);

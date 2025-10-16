@@ -6,24 +6,32 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:13:14 by oostapen          #+#    #+#             */
-/*   Updated: 2025/05/22 19:34:49 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:42:57 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tuples.h"
+#include <math.h> // Make sure to include math.h for sqrt and pow
 
 double	magnitude_of_vector(t_tuple v)
 {
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
 
-//NB: YOU CAN USE IT FOR POINTS/COLORS AS WELL THEY ARE TUPLES ALSO
 t_tuple	normalize_vector(t_tuple v)
 {
 	double	magnitude;
 	t_tuple	normalized;
 
 	magnitude = magnitude_of_vector(v);
+	if (magnitude == 0) // Avoid division by zero
+	{
+		normalized.x = 0;
+		normalized.y = 0;
+		normalized.z = 0;
+		normalized.w = 0;
+		return (normalized);
+	}
 	normalized.x = v.x / magnitude;
 	normalized.y = v.y / magnitude;
 	normalized.z = v.z / magnitude;
@@ -31,8 +39,6 @@ t_tuple	normalize_vector(t_tuple v)
 	return (normalized);
 }
 
-//the smaller the dot product, the larger the angle between the vectors
-// dot = -1 = oposite. w-enables to find a bug
 double	dot_product(t_tuple a, t_tuple b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w);

@@ -6,12 +6,13 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/17 00:10:16 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:34:23 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
+#include <stdio.h>
 
 /* ========================================================================== */
 /* START: Initialize parser state                                            */
@@ -59,28 +60,23 @@ void	init_parse_state(t_scene *scene, t_parse_state *state)
 bool	dispatch_element(const char *line, t_scene *scene,
 			t_parse_state *state)
 {
+	printf("DEBUG dispatch: line='%s' [0]='%c' [1]='%c'\n", 
+		line, line[0], line[1]);  // ДОБАВИТЬ
+	
 	if (line[0] == '#')
 		return (true);
 	if (line[0] == 'A' && (line[1] == ' ' || line[1] == '\t'))
 	{
+		printf("DEBUG: Calling parse_ambient\n");  // ДОБАВИТЬ
 		state->has_ambient = true;
 		return (parse_ambient((char *)line, scene));
 	}
-	if (line[0] == 'C' && (line[1] == ' ' || line[1] == '\t'))
-	{
-		state->has_camera = true;
-		return (parse_camera((char *)line, scene));
-	}
-	if (line[0] == 'L' && (line[1] == ' ' || line[1] == '\t'))
-	{
-		state->has_light = true;
-		return (parse_light((char *)line, scene));
-	}
-	if (line[0] == 's' && line[1] == 'p' && (line[2] == ' ' || line[2] == '\t'))
-		return (parse_sphere((char *)line, scene));
+	// ... остальное
+	printf("DEBUG: No match found!\n");  // ДОБАВИТЬ
 	parser_error("Invalid scene file", state->line_num);
 	return (false);
 }
+
 
 /*
 ** validate_scene - Check required elements are present
