@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/16 15:42:43 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/16 21:22:11 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,6 @@ OBJ_DIR = obj
 SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/window.c \
 			$(SRC_DIR)/image.c \
-			$(SRC_DIR)/init.c \
 			$(SRC_DIR)/tuples/tuple_creation.c \
 			$(SRC_DIR)/tuples/tuple_predicates.c \
 			$(SRC_DIR)/tuples/tuple_utils.c \
@@ -85,14 +84,15 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/math/math_utils.c \
 			$(SRC_DIR)/matrices/matrice_rotation.c \
 			$(SRC_DIR)/world/world.c \
+			$(SRC_DIR)/world/world_add_object.c \
 			$(SRC_DIR)/computations/computations.c \
 			$(SRC_DIR)/camera/camera.c \
 			$(SRC_DIR)/render/render.c \
 			$(SRC_DIR)/shapes/shapes.c \
 			$(SRC_DIR)/planes/planes.c \
 			$(SRC_DIR)/cylinders/cylinders.c \
-			$(SRC_DIR)/cones/cones.c
-
+			$(SRC_DIR)/cones/cones.c \
+			$(SRC_DIR)/scene/init_scene.c \
 
 OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 

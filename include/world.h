@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 11:48:32 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 19:33:25 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,17 @@ bool		is_shadowed(t_world world, t_tuple point);
 
 t_tuple		color_at(t_world *w, t_ray r);
 
-typedef struct s_world	t_scene;
+// typedef struct s_world	t_scene;
+
+/*
+** STACK VERSION (current):
+**   Returns false if MAX_OBJECTS reached
+**
+** HEAP VERSION (future):
+**   Reallocates array if capacity reached
+**   Returns false only on malloc failure
+*/
+bool	world_add_sphere(t_world *world, t_sphere sphere);
 
 #endif
 
@@ -73,8 +83,7 @@ typedef struct s_world	t_scene;
 ** int			capacity;
 ** t_object		**objects_ptr;
 ** When the scene becomes dynamic (e.g., objects added/removed at runtime)
-*/
-/*
+**
 typedef struct s_world
 {
 	t_opt_light	light;		// Optional light source

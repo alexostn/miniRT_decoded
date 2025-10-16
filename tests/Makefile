@@ -37,7 +37,6 @@ endif
 # Source files for the main project (excluding main.c to avoid conflicts)
 SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/image.c \
-	$(SRC_DIR)/init.c \
 	$(SRC_DIR)/tuples/tuple_creation.c \
 	$(SRC_DIR)/tuples/tuple_predicates.c \
 	$(SRC_DIR)/tuples/tuple_utils.c \
@@ -72,13 +71,17 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/materials/lighting.c \
 	$(SRC_DIR)/lights/lights.c \
 	$(SRC_DIR)/world/world.c \
+	$(SRC_DIR)/world/world_add_object.c \
 	$(SRC_DIR)/computations/computations.c \
 	$(SRC_DIR)/camera/camera.c \
 	$(SRC_DIR)/render/render.c \
 	$(SRC_DIR)/shapes/shapes.c \
 	$(SRC_DIR)/planes/planes.c \
 	$(SRC_DIR)/cylinders/cylinders.c \
-	$(SRC_DIR)/cones/cones.c
+	$(SRC_DIR)/cones/cones.c \
+	$(SRC_DIR)/scene/init_scene.c \
+
+
 
 # Test source files
 TEST_SRCS = test_common.c \
@@ -91,8 +94,8 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter6.c \
 	$(CHAPTERS_DIR)/test_chapter7.c \
 	$(CHAPTERS_DIR)/test_chapter8.c \
-	$(CHAPTERS_DIR)/test_chapter13.c \
 	$(CHAPTERS_DIR)/test_chapter9.c \
+	$(CHAPTERS_DIR)/test_chapter13.c
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

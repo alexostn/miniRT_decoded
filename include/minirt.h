@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:36:19 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/08 23:07:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 19:35:48 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define MINIRT_H
 # include <stdlib.h> // For NULL macro
 # include "colors.h"
-# include "world.h"
-# include "camera.h"
-# include "lights.h"
+# include "scene.h"
+# include "camera.h"// ?
+# include "lights.h"// ?
 
 // ----------------------
 // Basic type definitions
