@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:44:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/06/12 22:11:58 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:39:14 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_tuple	color_to_tuple(t_color color)
 	return (tuple(color.r, color.g, color.b, color.a));
 }
 
+/* Rendering: 0-1 → 0-255 */
 uint8_t	clamp_channel(double value)
 {
 	if (value < 0.0)
@@ -30,6 +31,16 @@ uint8_t	clamp_channel(double value)
 	else if (value > 1.0)
 		value = 1.0;
 	return ((uint8_t)(value * 255.0 + 0.5));
+}
+
+/* Parsing: 0-255 → 0-1 */
+double normalize_rgb_channel(double value)
+{
+	if (value < 0.0)
+		return (0.0);
+	if (value > 255.0)
+		return (1.0);
+	return (value / 255.0);
 }
 
 uint32_t	color_to_mlx(t_color *c, t_format fmt)

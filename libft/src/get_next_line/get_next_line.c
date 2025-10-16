@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 16:04:00 by oostapen          #+#    #+#             */
-/*   Updated: 2024/12/02 16:04:02 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:56:39 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,9 @@ char	*get_next_line(int fd)
 	if (!stash[fd])
 		stash[fd] = ft_strdup("");
 	return (get_next_line_helper(&stash[fd], fd));
+}
+
+char	*get_next_line_bonus(int fd)
+{
+	return (get_next_line(fd));
 }

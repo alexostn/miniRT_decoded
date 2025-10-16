@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/16 21:22:11 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/16 23:44:54 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -241,6 +241,9 @@ test-ch9:
 test-ch13:
 	cd tests && make test-ch13
 
+test-parser: $(MLX_TARGET)
+	cd tests && make test-parser
+
 # Run all chapter tests
 test-all:
 	@echo "🚀 Running ALL chapter tests..."
@@ -433,6 +436,7 @@ help:
 	@echo "  test-ch8         - Run Chapter 8 tests"
 	@echo "  test-ch9         - Run Chapter 9 tests"
 	@echo "  test-ch13        - Run Chapter 13 tests"
+	@echo "  test-parser      - Run parser test"
 	@echo ""
 	@echo "  test-ch1 V=1     - Run Chapter 1 tests with Valgrind"
 	@echo "  test-ch2 V=1     - Run Chapter 2 tests with Valgrind"
@@ -471,7 +475,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-all test-all-valgrind help clock sphere world shadow planes cylinders
+.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 test-parser test-all test-all-valgrind help clock sphere world shadow planes cylinders
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later

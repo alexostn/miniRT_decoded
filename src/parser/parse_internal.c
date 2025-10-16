@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 21:18:07 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:10:16 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,24 @@ bool	dispatch_element(const char *line, t_scene *scene,
 {
 	if (line[0] == '#')
 		return (true);
-	if (line[0] == 'A' && line[1] == ' ')
+	if (line[0] == 'A' && (line[1] == ' ' || line[1] == '\t'))
 	{
 		state->has_ambient = true;
 		return (parse_ambient((char *)line, scene));
 	}
-	if (line[0] == 'C' && line[1] == ' ')
+	if (line[0] == 'C' && (line[1] == ' ' || line[1] == '\t'))
 	{
 		state->has_camera = true;
 		return (parse_camera((char *)line, scene));
 	}
-	if (line[0] == 'L' && line[1] == ' ')
+	if (line[0] == 'L' && (line[1] == ' ' || line[1] == '\t'))
 	{
 		state->has_light = true;
 		return (parse_light((char *)line, scene));
 	}
-	if (line[0] == 's' && line[1] == 'p' && line[2] == ' ')
+	if (line[0] == 's' && line[1] == 'p' && (line[2] == ' ' || line[2] == '\t'))
 		return (parse_sphere((char *)line, scene));
+	parser_error("Invalid scene file", state->line_num);
 	return (false);
 }
 
@@ -111,19 +112,19 @@ void	parser_error(const char *msg, int line_num)
 {
 	char	*line_str;
 
-	write(2, "Error\n", 6);
+	ft_putstr_fd("Error\n", 2);
 	if (line_num > 0)
 	{
-		write(2, "Line ", 5);
+		ft_putstr_fd("Line ", 2);
 		line_str = ft_itoa(line_num);
 		if (line_str)
 		{
-			write(2, line_str, ft_strlen(line_str));
-			write(2, ": ", 2);
+			ft_putstr_fd(line_str, 2);
+			ft_putstr_fd(": ", 2);
 			free(line_str);
 		}
 	}
-	write(2, msg, ft_strlen(msg));
-	write(2, "\n", 1);
+	ft_putstr_fd((char *)msg, 2);
+	ft_putstr_fd("\n", 2);
 	exit(1);
 }

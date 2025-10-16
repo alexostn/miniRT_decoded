@@ -6,12 +6,13 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:15:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 21:37:07 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:47:25 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "get_next_line.h"
+#include "libft.h"
 
 static bool	parse_single_line(char *line, t_scene *sc, t_parse_state *st)
 {
@@ -32,7 +33,7 @@ static bool	parse_single_line(char *line, t_scene *sc, t_parse_state *st)
 }
 
 /*
-** read_scene_file - Read and parse all lines
+line = get_next_line_bonus(fd);  // ⚠️ HEAP - malloc and free(line);
 */
 static bool	read_scene_file(int fd, t_scene *sc, t_parse_state *st)
 {

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:49:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 13:19:34 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:41:46 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ t_tuple		color_to_tuple(t_color color);
 
 /*** Convert color to uint32_t in the required format: ***/
 uint8_t		clamp_channel(double value);
+/* Normalize RGB channel (for parser) */
+double		normalize_rgb_channel(double value);
 uint32_t	color_to_mlx(t_color *c, t_format fmt);
 
 /*** Pixel write and read: ***/

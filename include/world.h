@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 19:33:25 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:35:59 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ t_tuple		color_at(t_world *w, t_ray r);
 **   Returns false only on malloc failure
 */
 bool	world_add_sphere(t_world *world, t_sphere sphere);
+
+/* Alias for parser compatibility (calls world_add_sphere) */
+bool	world_add_object(t_world *world, t_sphere sphere);
 
 #endif
 

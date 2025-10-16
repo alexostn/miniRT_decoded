@@ -73,7 +73,7 @@ FTPRINTF_DIR	=	$(SRC_DIR)ft_printf/ft_printf.c \
 					$(SRC_DIR)ft_printf/ft_handle_percent.c \
 					$(SRC_DIR)ft_printf/ft_printf_utils.c
 
-GNL_DIR			=	$(SRC_DIR)get_next_line/get_next_line.c 
+GNL_DIR			=	$(SRC_DIR)get_next_line/get_next_line.c \
 
 # Concatenate all source files
 SRC 			= $(FTIS_DIR) $(FTMEM_DIR) $(FTPUT_DIR) $(FTTO_DIR) $(FTTO_DIR) $(FTSTR_DIR) $(FTLST_DIR) $(FTPRINTF_DIR) $(GNL_DIR)

@@ -80,8 +80,14 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/cylinders/cylinders.c \
 	$(SRC_DIR)/cones/cones.c \
 	$(SRC_DIR)/scene/init_scene.c \
-
-
+	$(SRC_DIR)/parser/parse_scene.c \
+	$(SRC_DIR)/parser/parse_internal.c \
+	$(SRC_DIR)/parser/parse_ambient.c \
+	$(SRC_DIR)/parser/parse_camera.c \
+	$(SRC_DIR)/parser/parse_light.c \
+	$(SRC_DIR)/parser/parse_sphere.c \
+	$(SRC_DIR)/parser/parse_helpers.c \
+	$(SRC_DIR)/parser/parse_validate.c
 
 # Test source files
 TEST_SRCS = test_common.c \
@@ -95,7 +101,8 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter7.c \
 	$(CHAPTERS_DIR)/test_chapter8.c \
 	$(CHAPTERS_DIR)/test_chapter9.c \
-	$(CHAPTERS_DIR)/test_chapter13.c
+	$(CHAPTERS_DIR)/test_chapter13.c \
+	test_parser_simple.c
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -157,6 +164,7 @@ clean:
 	rm -f libmlx.dylib
 	rm -f *.ppm
 	rm -rf ../demos/output/*.ppm
+	rm -f test_parser_simple
 
 fclean: clean
 	rm -f $(TARGET)
@@ -195,6 +203,14 @@ test-ch8: $(TARGET)
 test-ch13: $(TARGET)
 	$(RUNNER) ./$(TARGET) 13
 
+test-parser: test_parser_simple
+	$(RUNNER) ./test_parser_simple
+
+# Standalone parser test executable
+test_parser_simple: test_parser_simple.c $(OBJS) ../libft/libft.a
+	$(CC) $(CFLAGS) $(INCLUDES) test_parser_simple.c $(OBJS) \
+		-o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
+
 # Run all tests with Valgrind (Linux only)
 test-all-valgrind: $(TARGET)
 	@echo "🔍 Running ALL tests with Valgrind..."
@@ -224,6 +240,7 @@ help:
 	@echo "  test-ch8         - Run only Chapter 8 tests"
 	@echo "  test-ch9         - Run only Chapter 9 tests"
 	@echo "  test-ch13        - Run only Chapter 13 tests"
+	@echo "  test-parser      - Run parser test"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 test-parser help
