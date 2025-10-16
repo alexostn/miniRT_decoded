@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/09 20:13:56 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/16 15:42:43 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -158,6 +158,10 @@ WORLD_SRC       = demos/world_render_main.c
 WORLD_EXEC      = world_demo
 WORLD_OBJS      = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 
+SCENE_SRC       = demos/scene_main.c
+SCENE_EXEC      = scene_demo
+SCENE_OBJS      = $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
 # Planes demo (Chapter 9)
 PLANES_SRC      = demos/planes_demo_main.c
 PLANES_EXEC     = planes_demo
@@ -196,6 +200,7 @@ fclean: clean
 	rm -rf $(SPHERE_EXEC)
 	rm -rf $(SHADOW_EXEC)	
 	rm -rf $(WORLD_EXEC)
+	rm -rf $(SCENE_EXEC)
 	rm -rf $(PLANES_EXEC)
 	rm -rf $(CYLINDERS_EXEC)
 	rm -rf demos/output
@@ -385,6 +390,12 @@ world: $(WORLD_EXEC)
 $(WORLD_EXEC): $(WORLD_SRC) $(WORLD_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
 	$(CC) $(CFLAGS) -o $(WORLD_EXEC) $(WORLD_SRC) $(WORLD_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
 
+scene: $(SCENE_EXEC)
+	@echo "🎬 Rendering Chapter 7 'Putting It Together' scene..."
+	$(RUNNER) ./$(SCENE_EXEC)
+
+$(SCENE_EXEC): $(SCENE_SRC) $(SCENE_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(CFLAGS) -o $(SCENE_EXEC) $(SCENE_SRC) $(SCENE_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
 
 planes: $(PLANES_EXEC)
 	@echo "🟫 Rendering planes demo..."
@@ -409,7 +420,8 @@ help:
 	@echo "  all              - Build the main miniRT project!"
 	@echo ""
 	@echo "📚 TESTING:"
-	@echo "  test-all         - Run ALL chapter tests (ch1-ch9)"
+	@echo "  run_test         - Run ALL chapter tests (ch1-ch13)"
+	@echo "           - Run ALL chapter tests (ch1-ch13)"
 	@echo "  test-all-valgrind - Run ALL chapter tests with Valgrind"
 	@echo "  test-ch1         - Run Chapter 1 tests"
 	@echo "  test-ch2         - Run Chapter 2 tests"
@@ -422,13 +434,34 @@ help:
 	@echo "  test-ch9         - Run Chapter 9 tests"
 	@echo "  test-ch13        - Run Chapter 13 tests"
 	@echo ""
+	@echo "  test-ch1 V=1     - Run Chapter 1 tests with Valgrind"
+	@echo "  test-ch2 V=1     - Run Chapter 2 tests with Valgrind"
+	@echo "  test-ch3 V=1     - Run Chapter 3 tests with Valgrind"
+	@echo "  test-ch4 V=1     - Run Chapter 4 tests with Valgrind"
+	@echo "  test-ch5 V=1     - Run Chapter 5 tests with Valgrind"
+	@echo "  test-ch6 V=1     - Run Chapter 6 tests with Valgrind"	
+	@echo "  test-ch7 V=1     - Run Chapter 7 tests with Valgrind"
+	@echo "  test-ch8 V=1     - Run Chapter 8 tests with Valgrind"
+	@echo "  test-ch9 V=1     - Run Chapter 9 tests with Valgrind"
+	@echo "  test-ch13 V=1    - Run Chapter 13 tests with Valgrind"
+	@echo ""
 	@echo "🎮 DEMOS:"
 	@echo "  clock            - Run clock face demo (Chapter 4)"
 	@echo "  sphere           - Run sphere render demo (Chapter 5 and 6)"
-	@echo "  world            - Render Chapter 7 world demo"
+	@echo "  world            - Render Chapter 7 world demo own experiments to (Chapter 7)"
+	@echo "  scene            - Render 'Putting It Together' scene (Chapter 7)"
 	@echo "  shadow           - Render Chapter 8 shadow demo"
 	@echo "  planes           - Render Chapter 9 planes demo"
 	@echo "  cylinders        - Render Chapter 13 cylinders demo (PPM)"
+	@echo ""
+	@echo "🎮 DEMOS with Valgrind:"
+	@echo "  clock V=1        - Run clock face demo (Chapter 4) with Valgrind"
+	@echo "  sphere V=1       - Run sphere render demo (Chapter 5 and 6) with Valgrind"
+	@echo "  world V=1        - Render Chapter 7 world demo own experiments to (Chapter 7) with Valgrind"
+	@echo "  scene V=1        - Render 'Putting It Together' scene (Chapter 7) with Valgrind"
+	@echo "  shadow V=1       - Render Chapter 8 shadow demo with Valgrind"
+	@echo "  planes V=1       - Render Chapter 9 planes demo with Valgrind"
+	@echo "  cylinders V=1    - Render Chapter 13 cylinders demo (PPM) with Valgrind"
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"

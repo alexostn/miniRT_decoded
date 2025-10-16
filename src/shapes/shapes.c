@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 12:12:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/04 12:12:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/16 14:22:05 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ t_shape	shape_set_material(t_shape s, t_material m)
 
 t_ray	shape_transform_ray_to_local(t_shape *s, t_ray r)
 {
-	bool	 ok;
-	t_matrix inv;
+	bool		ok;
+	t_matrix	inv;
 
 	inv = mat_inverse(s->transform, &ok);
 	if (ok)
@@ -47,11 +47,11 @@ t_ray	shape_transform_ray_to_local(t_shape *s, t_ray r)
 t_tuple	shape_normal_at(t_shape *s, t_tuple world_point,
 		t_tuple (*local_normal_at)(t_tuple local_point))
 {
-	bool	 ok;
-	t_matrix inv;
-	t_tuple	 local_point;
-	t_tuple	 local_normal;
-	t_tuple	 world_normal;
+	bool		ok;
+	t_matrix	inv;
+	t_tuple		local_point;
+	t_tuple		local_normal;
+	t_tuple		world_normal;
 
 	inv = mat_inverse(s->transform, &ok);
 	if (ok)
@@ -67,4 +67,3 @@ t_tuple	shape_normal_at(t_shape *s, t_tuple world_point,
 	world_normal.w = 0.0;
 	return (normalize_vector(world_normal));
 }
-
