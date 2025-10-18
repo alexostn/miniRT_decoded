@@ -193,6 +193,7 @@ clean:
 
 fclean: clean
 	@make -s -C $(LIBFT_DIR) fclean
+	-@make -s -C tests fclean
 	rm -f $(NAME)
 	rm -f valgrind.log
 	rm -f $(MLX_CLEAN_TARGET)
