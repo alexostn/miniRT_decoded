@@ -6,12 +6,13 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/17 00:50:04 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:05:36 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
+#include <stdio.h>
 
 void	init_parse_state(t_scene *scene, t_parse_state *state)
 {
@@ -25,6 +26,7 @@ void	init_parse_state(t_scene *scene, t_parse_state *state)
 bool	dispatch_element(const char *line, t_scene *scene,
 			t_parse_state *state)
 {
+	printf("DEBUG: dispatch_element called with line %d: '%s'\n", state->line_num, line);
 	if (line[0] == '#' || line[0] == '\0')
 		return (true);
 	if (ft_strncmp(line, "A ", 2) == 0)
@@ -48,7 +50,11 @@ bool	dispatch_element(const char *line, t_scene *scene,
 		return (parse_light((char *)line, scene));
 	}
 	if (ft_strncmp(line, "sp ", 3) == 0)
+	{
+		printf("DEBUG: Dispatching to parse_sphere\n");
 		return (parse_sphere((char *)line, scene));
+	}
+	printf("DEBUG: No match found for identifier\n");
 	return (false);
 }
 

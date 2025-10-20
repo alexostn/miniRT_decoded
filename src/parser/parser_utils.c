@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 22:21:56 by oostapen          #+#    #+#             */
+/*   Updated: 2025/10/20 22:21:58 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 
 /*
@@ -16,6 +28,8 @@ double	parse_double(char **str)
 {
 	double	result;
 	int		sign;
+	double	fraction;
+	double	divisor;
 
 	skip_whitespace(str);
 	sign = 1;
@@ -29,9 +43,6 @@ double	parse_double(char **str)
 		result = result * 10.0 + (*(*str)++ - '0');
 	if (**str == '.')
 	{
-		double	fraction;
-		double	divisor;
-
 		fraction = 0.0;
 		divisor = 1.0;
 		(*str)++;

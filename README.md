@@ -5,7 +5,6 @@
 # Download submodule with miniLibX (mlx)
 git submodule update --init --recursive
 ```
-
 ## Building and Running the Main Program
 ```bash
 # Build the main miniRT project
@@ -78,3 +77,29 @@ make fclean
 - All 200 tests should pass (100% success rate)
 - PPM files are automatically generated and compared during tests
 
+
+
+## Documentation
+📚 **[Parser Architecture Documentation](docs/parser/)** — comprehensive diagrams and guides for understanding the parser module (flowcharts, data flow, call trees, etc.)
+
+🔧 **[Memory Management & Debugging](docs/memory-management.md)** — stack trace diagrams for common memory leaks, Valgrind usage, and cleanup best practices
+
+🚀 **Architecture Transition Plans:**
+- **⚡ [Quick Start Guide](docs/QUICK_START.md)** — TL;DR: Which architecture to use? Start here!
+- **[Architecture Comparison](docs/architecture-comparison.md)** — detailed benchmark: stack vs heap vs hybrid (⚙️ **recommended read**)
+- **[Hybrid Heap Transition](docs/hybrid-heap-transition.md)** — stack for small scenes, heap for overflow (configurable `HEAP_THRESHOLD`)
+- **[Hybrid Architecture Flowchart](docs/hybrid-architecture-flowchart.md)** — visual diagrams for hybrid approach
+- **[Full Heap Migration](docs/heap-transition.md)** — complete replacement with dynamic allocation from start
+
+### Rendering Optimization (short)
+
+The renderer currently spends most time in geometry traversal (per-pixel world intersection and shadow checks). See `docs/rendering-optimization.md` for the full guide. Key ideas:
+
+- Cache and reuse the primary hit during shading to avoid duplicate traversals.
+- Provide `world_intersect()` and `world_occluded()` wrappers that use an acceleration structure when available.
+- Build a BVH (median-split, optionally SAH) to avoid O(N) per-ray sphere tests.
+- Use early-out occlusion checks for shadow rays and parallelize rendering by tiles.
+
+Full implementation notes, microbenchmarks and an incremental plan are available in the document:
+
+📄 [Rendering Optimization — full guide](docs/rendering-optimization.md)

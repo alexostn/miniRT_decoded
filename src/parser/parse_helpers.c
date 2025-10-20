@@ -6,29 +6,13 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 22:48:39 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 22:17:49 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
 #include "colors.h"// for clamp_channel
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_helpers.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/16 22:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 22:27:00 by oostapen         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "parser.h"
-#include "colors.h"
-#include "libft.h"
 
 double	parse_double(char **str)
 {
@@ -37,6 +21,8 @@ double	parse_double(char **str)
 	double	fraction;
 	double	divisor;
 
+	while (**str == ' ' || **str == '\t')
+		(*str)++;
 	sign = 1;
 	result = 0.0;
 	if (**str == '-')
@@ -94,7 +80,6 @@ t_tuple	parse_color_rgb(char **str)
 	if (**str == ',')
 		(*str)++;
 	b = parse_double(str);
-
 	return (color_d(normalize_rgb_channel(r),
 			normalize_rgb_channel(g),
 			normalize_rgb_channel(b)));

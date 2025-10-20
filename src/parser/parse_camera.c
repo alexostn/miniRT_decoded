@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:35:58 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 22:54:40 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 22:19:12 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** C 0,0,-5 0,0,1 70
 **   ^      ^     ^
 **   |      |     +-- FOV in degrees (0-180)
-**   |      +-------- Orientation vector (normalized direction where camera looks)
+**   |      +-------- Orientation vector(normalized where camera looks)
 **   +--------------- Position (x,y,z)
 **
 ** NOTE: Orientation is a DIRECTION VECTOR, not a target point!
