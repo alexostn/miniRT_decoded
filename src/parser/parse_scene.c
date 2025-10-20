@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:15:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/17 00:47:10 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:50:16 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static bool	parse_single_line(char *line, t_scene *sc, t_parse_state *st)
 
 	trimmed = ft_strtrim(line, " \t\n\r\v\f");
 	if (!trimmed)
-		return (false);
+		parser_error("Memory allocation failed during trim", st->line_num);
 	result = dispatch_element(trimmed, sc, st);
 	free(trimmed);
 	if (!result)
-		parser_error("Invalid scene format", st->line_num);
+		parser_error("Invalid identifier or scene format", st->line_num);
 	return (result);
 }
 
@@ -52,7 +52,7 @@ t_scene	parse_scene_file(const char *filename)
 	init_parse_state(&scene, &state);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		parser_error("Failed to open file", 0);
+		parser_error("Failed to open scene file", 0);
 	read_scene_file(fd, &scene, &state);
 	close(fd);
 	validate_scene(&state);

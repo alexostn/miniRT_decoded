@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/17 00:46:39 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:50:04 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ void	init_parse_state(t_scene *scene, t_parse_state *state)
 	state->line_num = 0;
 }
 
-/*
-** A robust dispatcher using strncmp for safety.
-*/
 bool	dispatch_element(const char *line, t_scene *scene,
 			t_parse_state *state)
 {
@@ -33,14 +30,15 @@ bool	dispatch_element(const char *line, t_scene *scene,
 	if (ft_strncmp(line, "A ", 2) == 0)
 	{
 		if (state->has_ambient)
-			parser_error("Ambient light (A) already defined", state->line_num);
+			parser_error("Ambient light (A) can only be defined once",
+				state->line_num);
 		state->has_ambient = true;
 		return (parse_ambient((char *)line, scene));
 	}
 	if (ft_strncmp(line, "C ", 2) == 0)
 	{
 		if (state->has_camera)
-			parser_error("Camera (C) already defined", state->line_num);
+			parser_error("Camera (C) can only be defined once", state->line_num);
 		state->has_camera = true;
 		return (parse_camera((char *)line, scene));
 	}
@@ -57,11 +55,12 @@ bool	dispatch_element(const char *line, t_scene *scene,
 void	validate_scene(t_parse_state *state)
 {
 	if (!state->has_ambient)
-		parser_error("Missing ambient light (A)", 0);
+		parser_error("Scene validation failed: Missing ambient light (A)", 0);
 	if (!state->has_camera)
-		parser_error("Missing camera (C)", 0);
+		parser_error("Scene validation failed: Missing camera (C)", 0);
 	if (!state->has_light)
-		parser_error("Missing light (L) is mandatory for this project", 0);
+		parser_error("Scene validation failed: Missing at least one light (L)",
+			0);
 }
 
 void	parser_error(const char *msg, int line_num)

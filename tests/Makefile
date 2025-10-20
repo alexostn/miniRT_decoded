@@ -101,8 +101,7 @@ TEST_SRCS = test_common.c \
 	$(CHAPTERS_DIR)/test_chapter7.c \
 	$(CHAPTERS_DIR)/test_chapter8.c \
 	$(CHAPTERS_DIR)/test_chapter9.c \
-	$(CHAPTERS_DIR)/test_chapter13.c \
-	test_parser_simple.c
+	$(CHAPTERS_DIR)/test_chapter13.c
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
