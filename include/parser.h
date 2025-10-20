@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:45:23 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 21:43:13 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:26:53 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		parser_error(const char *msg, int line_num);
 
 /* Parse utils*/
 bool		dispatch_element(const char *line, t_scene *scene,
-			t_parse_state *state);
+				t_parse_state *state);
 void		init_parse_state(t_scene *scene, t_parse_state *state);
 void		validate_scene(t_parse_state *state);
 

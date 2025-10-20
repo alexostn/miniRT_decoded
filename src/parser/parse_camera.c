@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:35:58 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:13:15 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:29:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,25 @@ static bool	check_end_of_line(char *ptr)
 	return (*ptr == '\0' || *ptr == '\n' || *ptr == '\r');
 }
 
+static bool	parse_camera_params(char *ptr, t_tuple *from,
+				t_tuple *orientation, double *fov)
+{
+	*from = parse_vector3(&ptr);
+	if (from->w == -1.0)
+		return (false);
+	while (*ptr == ' ' || *ptr == '\t')
+		ptr++;
+	*orientation = parse_vector3(&ptr);
+	if (orientation->w == -1.0 || !validate_normalized(*orientation))
+		return (false);
+	while (*ptr == ' ' || *ptr == '\t')
+		ptr++;
+	*fov = parse_double(&ptr);
+	if (!validate_range(*fov, 0.0, 180.0) || !check_end_of_line(ptr))
+		return (false);
+	return (true);
+}
+
 bool	parse_camera(char *line, t_scene *scene)
 {
 	char	*ptr;
@@ -45,20 +64,7 @@ bool	parse_camera(char *line, t_scene *scene)
 	ptr = line + 1;
 	while (*ptr == ' ' || *ptr == '\t')
 		ptr++;
-	from = parse_vector3(&ptr);
-	if (from.w == -1.0)
-		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	orientation = parse_vector3(&ptr);
-	if (orientation.w == -1.0 || !validate_normalized(orientation))
-		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	fov = parse_double(&ptr);
-	if (!validate_range(fov, 0.0, 180.0))
-		return (false);
-	if (!check_end_of_line(ptr))
+	if (!parse_camera_params(ptr, &from, &orientation, &fov))
 		return (false);
 	scene->camera = camera_make(800, 600, degrees_to_radians(fov));
 	to = add(from, orientation);

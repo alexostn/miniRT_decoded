@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:22:44 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 20:32:11 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:27:04 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,8 @@ void	init_scene(t_scene *scene)
 {
 	if (!scene)
 		return ;
-	
-	/* Initialize world (stack-based) */
 	scene->world = world_make();
-	
-	/* Initialize camera component (from Chapter 7 book) */
-	/* Default: 800x600 canvas, 60-degree FOV, identity transform */
 	scene->camera = camera_make(800, 600, M_PI / 3.0);
-	
-	/* Initialize ambient light component */
 	scene->ambient_color = tuple(1, 1, 1, 1);
 	scene->ambient_ratio = 0.1;
 }

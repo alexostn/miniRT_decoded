@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/20 23:05:06 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/20 23:31:46 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,6 +100,7 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/parser/parse_light.c \
 			$(SRC_DIR)/parser/parse_sphere.c \
 			$(SRC_DIR)/parser/parser_utils.c \
+			$(SRC_DIR)/parser/parser_color.c \
 			$(SRC_DIR)/parser/parse_validate.c
 
 OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))

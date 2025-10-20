@@ -1,7 +1,23 @@
 # The Raytracer Challenge Book Tests - Organized Structure
 
 This directory contains a reorganized version of all tests from "The Raytracer Challenge" book, separated by chapters for easier maintenance and debugging.
+
+## 🧪 Parser Tests
+
+### Quick Start
+
+```bash
+# Run parser integration tests (tests full scene parsing)
+make test-parser
+
+# Run parser unit tests (tests individual parsing functions)
+make test-parse-unit
 ```
+
+### Parser Test Files
+
+- **test_parser_simple.c** - Integration tests for complete scene file parsing
+- **test_parse.c** - Unit tests for individual parsing functions (parse_double, parse_vector3, etc.)
 
 ## 🚀 How to Use the Test System
 
@@ -13,6 +29,10 @@ make -f Makefile_mac run_test
 
 # Run all organized tests from ubuntu
 make run_test
+
+# Run parser tests
+make test-parser          # Integration tests
+make test-parse-unit      # Unit tests
 
 # Run tests for a specific chapter on Mac
 make -f Makefile_mac test-ch1    # Chapter 1: Tuples

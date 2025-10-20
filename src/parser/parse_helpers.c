@@ -6,30 +6,44 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 22:17:49 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:35:06 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
-#include "colors.h"// for clamp_channel
+#include "colors.h"
+
+static double	parse_fraction(char **str)
+{
+	double	fraction;
+	double	divisor;
+
+	fraction = 0.0;
+	divisor = 10.0;
+	while (**str >= '0' && **str <= '9')
+	{
+		fraction += (**str - '0') / divisor;
+		divisor *= 10.0;
+		(*str)++;
+	}
+	return (fraction);
+}
 
 double	parse_double(char **str)
 {
 	double	result;
 	int		sign;
-	double	fraction;
-	double	divisor;
 
 	while (**str == ' ' || **str == '\t')
 		(*str)++;
 	sign = 1;
-	result = 0.0;
 	if (**str == '-')
 	{
 		sign = -1;
 		(*str)++;
 	}
+	result = 0.0;
 	while (**str >= '0' && **str <= '9')
 	{
 		result = result * 10.0 + (**str - '0');
@@ -38,15 +52,7 @@ double	parse_double(char **str)
 	if (**str == '.')
 	{
 		(*str)++;
-		fraction = 0.0;
-		divisor = 10.0;
-		while (**str >= '0' && **str <= '9')
-		{
-			fraction += (**str - '0') / divisor;
-			divisor *= 10.0;
-			(*str)++;
-		}
-		result += fraction;
+		result += parse_fraction(str);
 	}
 	return (result * sign);
 }

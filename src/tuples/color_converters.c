@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:44:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 22:39:14 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:27:18 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ uint8_t	clamp_channel(double value)
 	return ((uint8_t)(value * 255.0 + 0.5));
 }
 
-/* Parsing: 0-255 → 0-1 */
-double normalize_rgb_channel(double value)
+double	normalize_rgb_channel(double value)
 {
 	if (value < 0.0)
 		return (0.0);

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:32:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:10:07 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:27:39 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ static bool	check_end_of_line(char *ptr)
 	return (*ptr == '\0' || *ptr == '\n' || *ptr == '\r');
 }
 
+static bool	parse_sphere_params(char *ptr, t_tuple *center,
+				double *diameter, t_tuple *color)
+{
+	*center = parse_vector3(&ptr);
+	if (center->w == -1.0)
+		return (false);
+	while (*ptr == ' ' || *ptr == '\t')
+		ptr++;
+	*diameter = parse_double(&ptr);
+	if (*diameter <= 0.0)
+		return (false);
+	while (*ptr == ' ' || *ptr == '\t')
+		ptr++;
+	*color = parse_color_rgb(&ptr);
+	if (color->w == -1.0 || !check_end_of_line(ptr))
+		return (false);
+	return (true);
+}
+
 bool	parse_sphere(char *line, t_scene *scene)
 {
 	char		*ptr;
@@ -54,24 +73,11 @@ bool	parse_sphere(char *line, t_scene *scene)
 	double		diameter;
 	t_tuple		color;
 	t_sphere	sphere;
-	
+
 	ptr = line + 2;
 	while (*ptr == ' ' || *ptr == '\t')
 		ptr++;
-	center = parse_vector3(&ptr);
-	if (center.w == -1.0)
-		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	diameter = parse_double(&ptr);
-	if (diameter <= 0.0)
-		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	color = parse_color_rgb(&ptr);
-	if (color.w == -1.0)
-		return (false);
-	if (!check_end_of_line(ptr))
+	if (!parse_sphere_params(ptr, &center, &diameter, &color))
 		return (false);
 	sphere = sphere_create();
 	sphere.material.color = color;

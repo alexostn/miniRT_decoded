@@ -164,6 +164,7 @@ clean:
 	rm -f *.ppm
 	rm -rf ../demos/output/*.ppm
 	rm -f test_parser_simple
+	rm -f test_parse
 
 fclean: clean
 	rm -f $(TARGET)
@@ -205,9 +206,17 @@ test-ch13: $(TARGET)
 test-parser: test_parser_simple
 	$(RUNNER) ./test_parser_simple
 
+test-parse-unit: test_parse
+	$(RUNNER) ./test_parse
+
 # Standalone parser test executable
 test_parser_simple: test_parser_simple.c $(OBJS) ../libft/libft.a
 	$(CC) $(CFLAGS) $(INCLUDES) test_parser_simple.c $(OBJS) \
+		-o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
+
+# Parser unit tests executable
+test_parse: test_parse.c $(OBJS) ../libft/libft.a
+	$(CC) $(CFLAGS) $(INCLUDES) test_parse.c $(OBJS) \
 		-o $@ $(LDFLAGS) $(MLX_FLAGS) -lm
 
 # Run all tests with Valgrind (Linux only)
@@ -239,7 +248,8 @@ help:
 	@echo "  test-ch8         - Run only Chapter 8 tests"
 	@echo "  test-ch9         - Run only Chapter 9 tests"
 	@echo "  test-ch13        - Run only Chapter 13 tests"
-	@echo "  test-parser      - Run parser test"
+	@echo "  test-parser      - Run parser integration test"
+	@echo "  test-parse-unit  - Run parser unit tests"
 	@echo "  help             - Show this help message"
 
-.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 test-parser help
+.PHONY: all test vtest test-all-valgrind clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 test-parser test-parse-unit help
