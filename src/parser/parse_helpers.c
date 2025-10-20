@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:35:06 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:58:59 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,32 +73,35 @@ t_tuple	parse_vector3(char **str)
 	return (vector(x, y, z));
 }
 
-t_tuple	parse_color_rgb(char **str)
+static double	normalize_color_value(int val)
 {
-	double	r;
-	double	g;
-	double	b;
-
-	r = parse_double(str);
-	if (**str == ',')
-		(*str)++;
-	g = parse_double(str);
-	if (**str == ',')
-		(*str)++;
-	b = parse_double(str);
-	return (color_d(normalize_rgb_channel(r),
-			normalize_rgb_channel(g),
-			normalize_rgb_channel(b)));
+	if (val < 0)
+		return (0.0);
+	if (val > 255)
+		return (1.0);
+	return (val / 255.0);
 }
 
-/*
-// Use your normalize_rgb_channel for each component
-or
-// Normalize 0-255 to 0-1 and use your color_d()
-return (color_d(r / 255.0, g / 255.0, b / 255.0));
-or "math_utils.h"
-r = clamp_double(r, 0.0, 255.0) / 255.0;
-g = clamp_double(g, 0.0, 255.0) / 255.0;
-b = clamp_double(b, 0.0, 255.0) / 255.0;
-return (color_d(r, g, b));
-*/
+t_tuple	parse_color_rgb(char **str)
+{
+	int		r;
+	int		g;
+	int		b;
+	t_tuple	error;
+
+	error = (t_tuple){0, 0, 0, -1.0};
+	r = (int)parse_double(str);
+	if (**str != ',')
+		return (error);
+	(*str)++;
+	g = (int)parse_double(str);
+	if (**str != ',')
+		return (error);
+	(*str)++;
+	b = (int)parse_double(str);
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+		return (error);
+	return (color_d(normalize_color_value(r),
+			normalize_color_value(g),
+			normalize_color_value(b)));
+}

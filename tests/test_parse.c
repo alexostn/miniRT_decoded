@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 23:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:37:12 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:58:11 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,41 @@ static void	test_parse_double(void)
 	printf("Test 3: parse_double(\"%s\") = %f\n", test, result);
 }
 
+static void	test_parse_color_rgb(void)
+{
+	char	*test;
+	char	*ptr;
+	t_tuple	result;
+
+	printf("\n=== Testing parse_color_rgb ===\n");
+	test = "255,128,0";
+	ptr = test;
+	result = parse_color_rgb(&ptr);
+	if (result.w == -1.0)
+		printf("Test 1: parse_color_rgb(\"%s\") = ERROR\n", test);
+	else
+		printf("Test 1: parse_color_rgb(\"%s\") = (%.2f, %.2f, %.2f)\n",
+			test, result.x, result.y, result.z);
+	test = "255,300,0";
+	ptr = test;
+	result = parse_color_rgb(&ptr);
+	if (result.w == -1.0)
+		printf("Test 2: parse_color_rgb(\"%s\") = ERROR (correctly rejected)\n",
+			test);
+	else
+		printf("Test 2: parse_color_rgb(\"%s\") = (%.2f, %.2f, %.2f)\n",
+			test, result.x, result.y, result.z);
+	test = "0,0,256";
+	ptr = test;
+	result = parse_color_rgb(&ptr);
+	if (result.w == -1.0)
+		printf("Test 3: parse_color_rgb(\"%s\") = ERROR (correctly rejected)\n",
+			test);
+	else
+		printf("Test 3: parse_color_rgb(\"%s\") = (%.2f, %.2f, %.2f)\n",
+			test, result.x, result.y, result.z);
+}
+
 static void	test_parse_vector3(void)
 {
 	char	*test;
@@ -56,6 +91,7 @@ int	main(void)
 	printf("========================================\n");
 	test_parse_double();
 	test_parse_vector3();
+	test_parse_color_rgb();
 	printf("\n========================================\n");
 	printf("✓ All parser unit tests completed!\n");
 	printf("========================================\n");
