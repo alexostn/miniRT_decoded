@@ -168,7 +168,6 @@ clean:
 fclean: clean
 	rm -f $(TARGET)
 	rm -f ../libmlx.dylib
-	@make -s -C tests fclean 
 
 re: fclean all
 
