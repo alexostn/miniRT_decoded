@@ -15,6 +15,8 @@ This diagram shows how data flows and transforms through the parser pipeline.
 ┌───────────┴─────────────────────────────────────────┐
 │  Parser (parse_color_rgb)                           │
 │  • Reads: "255,128,0"                               │
+│  • Validates: RGB values in [0-255] range           │
+│    (rejects >255 with error, not clamping)          │
 │  • Converts: rgb_to_normalized(255) = 1.0           │
 │  • Returns: color(1.0, 0.5, 0.0)  ← t_tuple         │
 └───────────┬─────────────────────────────────────────┘

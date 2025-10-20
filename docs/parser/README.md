@@ -129,15 +129,17 @@ Detailed:     [Data Flow] ████████░░
 
 ### Data Flow (04-dataflow.md)
 - Input: .rt file (RGB 0-255, FOV degrees, diameter)
+- Validation: RGB strictly in [0-255] range (rejects >255, not clamping)
 - Parsing: string → normalized values
 - Storage: scene/world (colors 0-1, angles radians)
 - Output: ready for rendering
 
 ### Component (05-components.md)
-- Core files: parse_scene, parse_internal, parse_helpers, parse_validate
+- Core files: parse_scene, parse_internal, parser_utils, parser_color, parse_validate
 - Element parsers: ambient, camera, light, sphere
-- Dependencies: all elements use helpers
-- Critical: parse_helpers used by everyone
+- Dependencies: all elements use parser_utils.c and parser_color.c
+- Critical: parser_utils used by everyone, parser_color used for RGB parsing
+- Note: parse_helpers.c is legacy (tests only, not in main project)
 
 ### Call Tree (06-calltree.md)
 - Entry: main() → parse_scene_file()
@@ -149,20 +151,30 @@ Detailed:     [Data Flow] ████████░░
 
 ### Parser files
 - `parse_scene.c` — File I/O and orchestration
-- `parse_internal.c` — Dispatch and error handling
-- `parse_helpers.c` — Token parsing utilities
+- `parse_internal.c` — Dispatch and error handling (with helpers: dispatch_ace)
+- `parser_utils.c` — Core token parsing (double, vector3, fraction helper)
+- `parser_color.c` — RGB color parsing with validation (0-255 range, normalization)
 - `parse_validate.c` — Final scene validation
 - `parse_ambient.c` — Ambient light (A)
-- `parse_camera.c` — Camera (C)
-- `parse_light.c` — Light (L)
-- `parse_sphere.c` — Sphere (sp)
+- `parse_camera.c` — Camera (C, with helper: parse_camera_params)
+- `parse_light.c` — Light (L, with helper: parse_light_params)
+- `parse_sphere.c` — Sphere (sp, with helper: parse_sphere_params)
+- `parse_helpers.c` — **Legacy file for tests only** (not used in main project)
+
+**Note**: Helper functions added for Norminette compliance (max 25 lines per function)
 
 ### Key functions
 - `parse_scene_file()` — Entry point
 - `dispatch_element()` — Routes by identifier
+- `dispatch_ace()` — Helper for A/C/E dispatch (Norminette)
 - `parse_double()` — Parses floating point
+- `parse_fraction()` — Helper for parsing decimal part (Norminette)
 - `parse_vector3()` — Parses x,y,z coordinates
-- `parse_color_rgb()` — Parses RGB and normalizes
+- `parse_color_rgb()` — Parses RGB with strict validation (rejects >255)
+- `normalize_color_value()` — Converts 0-255 to 0-1 range
+- `parse_camera_params()` — Helper for camera parsing (Norminette)
+- `parse_light_params()` — Helper for light parsing (Norminette)
+- `parse_sphere_params()` — Helper for sphere parsing (Norminette)
 - `validate_scene()` — Ensures required elements
 - `parser_error()` — Error handling
 

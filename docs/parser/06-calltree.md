@@ -2,6 +2,15 @@
 
 This diagram shows the hierarchy of function calls in the parser, from entry point to leaf operations.
 
+**Note**: Helper functions added for Norminette compliance (max 25 lines per function):
+- `dispatch_ace()` — dispatches A/C/E elements in `dispatch_element()`
+- `parse_camera_params()` — parses camera parameters in `parse_camera()`
+- `parse_light_params()` — parses light parameters in `parse_light()`
+- `parse_sphere_params()` — parses sphere parameters in `parse_sphere()`
+- `parse_fraction()` — parses decimal part in `parse_double()`
+
+**Note**: Core parsing functions are in `parser_utils.c` (parse_double, parse_vector3) and `parser_color.c` (parse_color_rgb with validation).
+
 ## Full parser call tree
 
 ```
@@ -20,10 +29,12 @@ main()
       │       ├─> parse_single_line(line, &scene, &state)
       │       │   ├─> trimmed = ft_strtrim(line, " \t\n\r\v\f")
       │       │   │
-      │       │   ├─> dispatch_element(trimmed, &scene, &state)
-      │       │   │   ├─> [if line[0] == '#' or '\0'] → return true
-      │       │   │   │
-      │       │   │   ├─> [if "A "] → parse_ambient(line, &scene)
+      │       │   │   ├─> dispatch_element(trimmed, &scene, &state)
+      │       │   │   │   ├─> [if line[0] == '#' or '\0'] → return true
+      │       │   │   │   │
+      │       │   │   │   ├─> dispatch_ace(line, &scene, &state)  [helper for A/C/E]
+      │       │   │   │   │   │
+      │       │   │   │   │   ├─> [if "A "] → parse_ambient(line, &scene)
       │       │   │   │   ├─> ptr = line + 2
       │       │   │   │   ├─> ratio = parse_double(&ptr)
       │       │   │   │   │   └─> skip whitespace, parse sign, int part, frac part

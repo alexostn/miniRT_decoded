@@ -70,7 +70,14 @@ flowchart LR
 ```
 
 ## What this shows
-- Parser lane: orchestration (open → loop → dispatch → validate).
-- Helpers lane: token-level parsing utilities used by all element parsers.
-- World lane: where geometry is added/managed.
-- Error exits: open/invalid identifier/validation failure flow through parser_error.
+- **Parser lane**: orchestration (open → loop → dispatch → validate).
+  - Main files: `parse_scene.c`, `parse_internal.c`, `parse_validate.c`
+  - Element parsers: `parse_ambient.c`, `parse_camera.c`, `parse_light.c`, `parse_sphere.c`
+- **Helpers lane**: token-level parsing utilities used by all element parsers.
+  - Core parsing: `parser_utils.c` (parse_double, parse_vector3)
+  - Color parsing: `parser_color.c` (parse_color_rgb with validation)
+- **World lane**: where geometry is added/managed.
+  - File: `src/world/world.c`
+- **Error exits**: open/invalid identifier/validation failure flow through parser_error.
+
+**Note**: `parse_helpers.c` is legacy (tests only), not used in main project.

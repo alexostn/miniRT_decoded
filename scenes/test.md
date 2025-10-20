@@ -100,13 +100,14 @@ sp 0,0,20 12.6 255,0,0
 **Expected**: `Error\nScene validation failed: Missing ambient light (A)`
 **Status**: ✅ Working
 
-### 9. Missing required element - no camera (no_camera.rt)
+### 9. Missing required element - no camera (no_camera.rt) ✅
 ```
 A 0.2 255,255,255
 L -40,50,0 0.6 255,255,255
 sp 0,0,20 12.6 255,0,0
 ```
 **Expected**: `Error\nScene validation failed: Missing camera (C)`
+**Status**: ✅ Working
 
 ### 10. Invalid identifier (invalid_id.rt) ✅
 ```
@@ -128,6 +129,40 @@ sp 0,0,20 12.6 255,0,0
 **Expected**: `Error\nLine 3: Invalid identifier or scene format`
 **Status**: ✅ Working - Extra argument '999' detected
 
+## RGB Color Validation Details
+
+### Color Behavior
+**Question**: Are RGB values > 255 clamped or rejected?  
+**Answer**: ✅ **REJECTED** (correct behavior for miniRT)
+
+### Examples:
+```bash
+# Test: RGB 300 (out of range)
+sp 0,0,20 10 255,300,0
+# Result: Error - Line X: Invalid identifier or scene format
+
+# Test: RGB 256 (out of range)  
+sp 0,0,20 10 0,0,256
+# Result: Error - Line X: Invalid identifier or scene format
+
+# Test: RGB 255 (valid maximum)
+sp 0,0,20 10 255,255,255
+# Result: ✅ Accepted and rendered
+```
+
+### Implementation:
+- RGB values are validated in `parse_color_rgb()`
+- Valid range: [0-255]
+- Out of range → returns error tuple (w=-1.0)
+- Parser outputs "Error\n" and exits
+
+### Why Not Clamping?
+According to miniRT subject:
+- "RGB colors: in range [0-255]"
+- Values outside range = **invalid input**
+- Must output "Error\n" (not silently clamp)
+- This differs from projects like FdF where clamping is acceptable
+
 ## Test Results Summary
 
 All validation cases work correctly ✅
@@ -138,3 +173,4 @@ All validation cases work correctly ✅
 - ✅ Parameter count validation (check_end_of_line)
 - ✅ Invalid identifiers detection
 - ✅ Negative number parsing
+- ✅ RGB out-of-range rejection (not clamping)

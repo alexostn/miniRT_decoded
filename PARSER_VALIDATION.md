@@ -6,13 +6,13 @@ This document explains the parser validation system and confirms that all test c
 
 ## Test Results
 
-✅ **All 15 validation tests pass**
+✅ **All 16 validation tests pass**
 
 ### Valid Scenes (2 tests)
 - ✅ Simple valid scene with all required elements
 - ✅ Scene with negative coordinates
 
-### Invalid Scenes (13 tests)
+### Invalid Scenes (14 tests)
 All correctly detected and output `Error\n`:
 
 1. ✅ Missing required light (L)
@@ -23,11 +23,12 @@ All correctly detected and output `Error\n`:
 6. ✅ FOV out of range [0-180]
 7. ✅ Ambient ratio out of range [0-1]
 8. ✅ Missing ambient light (A)
-9. ✅ Invalid identifier (e.g., `X` instead of `sp`)
-10. ✅ Extra arguments
-11. ✅ Missing arguments
-12. ✅ Invalid format with letters
-13. ✅ Invalid color format
+9. ✅ Missing camera (C)
+10. ✅ Invalid identifier (e.g., `X` instead of `sp`)
+11. ✅ Extra arguments
+12. ✅ Missing arguments
+13. ✅ Invalid format with letters
+14. ✅ Invalid color format
 
 ## Running Tests
 
@@ -64,6 +65,15 @@ timeout 1 ./miniRT scenes/valid_simple.rt
 ./miniRT scenes/invalid_no_light.rt
 # Output: Error
 #         Scene validation failed: Missing at least one light (L)
+```
+
+**Вывод**: В miniRT **все три обязательных элемента** (A, C, L) **требуются**.
+
+Создан также тест `scenes/no_camera.rt`:
+```bash
+./miniRT scenes/no_camera.rt
+# Output: Error
+#         Scene validation failed: Missing camera (C)
 ```
 
 ### 2. "invalid data type и Wrong ammount of parameters не проверяется"
@@ -111,6 +121,7 @@ All test files are in `scenes/` directory:
 - `invalid_range_fov.rt` - FOV > 180
 - `invalid_range_ambient.rt` - Ambient > 1.0
 - `no_ambient.rt` - Missing ambient
+- `no_camera.rt` - Missing camera
 - `invalid_id.rt` - Unknown identifier
 - `invalid_argc_extra.rt` - Too many arguments
 - `invalid_argc_missing.rt` - Too few arguments
@@ -146,7 +157,9 @@ All test files are in `scenes/` directory:
 ✅ Все три проблемы, которые вы упомянули, **уже работают правильно**:
 
 1. ✅ Сцена без света (L) - корректно выдает ошибку
-2. ✅ Неверный тип данных (буквы в числах) - обнаруживается
-3. ✅ Неправильное количество параметров - обнаруживается
+2. ✅ Сцена без камеры (C) - корректно выдает ошибку
+3. ✅ Неверный тип данных (буквы в числах) - обнаруживается
+4. ✅ Неправильное количество параметров - обнаруживается
+5. ✅ RGB вне диапазона [0-255] - отклоняются (не обрезаются)
 
-Парсер полностью функционален и проходит все 15 тестовых сценариев!
+Парсер полностью функционален и проходит все 16 тестовых сценариев!
