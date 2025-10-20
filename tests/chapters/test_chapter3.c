@@ -14,7 +14,7 @@ void test_ch3_matrix_construction()
 
 	t_matrix M = create_matrix(values);
 
-	// Проверки согласно тесту
+	// Test assertions according to requirements
 	TEST_ASSERT((get_matrix_element(&M, 0, 0) == 1), "M[0,0] = 1");
 	// assert(get_matrix_element(&M, 0, 0) == 1);
 	TEST_ASSERT((get_matrix_element(&M, 0, 3) == 4), "M[0,3] = 4");

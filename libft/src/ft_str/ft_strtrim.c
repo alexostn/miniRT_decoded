@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 20:59:19 by oostapen          #+#    #+#             */
-/*   Updated: 2024/12/01 22:20:54 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/21 00:29:52 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
  *
  * 'start' is initialized to 0 and then incremented until a
  * character in 's1' not in 'set' is found.
- * Функция `ft_check_set` принимает два аргумента: символ и строку.
- * В данном случае, `s1[start]` - это символ из строки `s1` на позиции `start`,
- * а `set` - это строка, в которой мы ищем этот символ.
-
-* Таким образом, `ft_check_set(s1[start], set)` проверяет, содержится ли символ
-* `s1[start]` в строке `set`. Если символ содержится, функция возвращает `1`,
-* в противном случае - `0`.
+ * The `ft_check_set` function takes two arguments: a character and a string.
+ * In this case, `s1[start]` is the character from string `s1` at position `start`,
+ * and `set` is the string where we search for this character.
+ *
+ * Thus, `ft_check_set(s1[start], set)` checks if the character
+ * `s1[start]` is contained in the string `set`. If the character is found,
+ * the function returns `1`, otherwise - `0`.
  *
  * 'end' is initialized to the length of 's1' and then
  * decremented until a character in 's1' not in 'set' is

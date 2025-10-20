@@ -46,50 +46,50 @@ timeout 1 ./miniRT scenes/valid_simple.rt
 ./miniRT scenes/invalid_no_light.rt
 ```
 
-## Answer to Your Questions
+## Answers to Your Questions
 
-### 1. "у меня нет сценария без света или это по так должо быть"
+### 1. "I don't have a scene without light or should it be like this?"
 
-**Ответ**: Да, это правильно! В miniRT свет (L) **обязателен**.
+**Answer**: Yes, that's correct! In miniRT, light (L) is **required**.
 
-Парсер проверяет наличие всех обязательных элементов:
-- **A** (Ambient light) - обязателен
-- **C** (Camera) - обязателен  
-- **L** (Light) - обязателен
-- **sp/pl/cy** (Objects) - опциональны
+Parser checks presence of all required elements:
+- **A** (Ambient light) - required
+- **C** (Camera) - required  
+- **L** (Light) - required
+- **sp/pl/cy** (Objects) - optional
 
-Файл `scenes/invalid_no_light.rt` создан специально для тестирования этой валидации.
+File `scenes/invalid_no_light.rt` was created specifically to test this validation.
 
-**Результат теста**:
+**Test result**:
 ```bash
 ./miniRT scenes/invalid_no_light.rt
 # Output: Error
 #         Scene validation failed: Missing at least one light (L)
 ```
 
-**Вывод**: В miniRT **все три обязательных элемента** (A, C, L) **требуются**.
+**Conclusion**: In miniRT **all three required elements** (A, C, L) **are mandatory**.
 
-Создан также тест `scenes/no_camera.rt`:
+Test `scenes/no_camera.rt` was also created:
 ```bash
 ./miniRT scenes/no_camera.rt
 # Output: Error
 #         Scene validation failed: Missing camera (C)
 ```
 
-### 2. "invalid data type и Wrong ammount of parameters не проверяется"
+### 2. "Invalid data type and wrong amount of parameters are not checked"
 
-**Ответ**: На самом деле обе проверки **работают корректно**!
+**Answer**: Actually both checks **work correctly**!
 
-#### Проверка неверного типа данных (буквы в числах):
+#### Invalid data type check (letters in numbers):
 ```bash
 ./miniRT scenes/invalid_letter_in_number.rt
 # File contains: sp 0,0,20 12.a 255,0,0
 # Output: Error
 #         Line 4: Invalid identifier or scene format
 ```
-Функция `parse_double()` проверяет `is_valid_number_end()` после парсинга числа.
+Function `parse_double()` checks `is_valid_number_end()` after parsing number.
 
-#### Проверка количества параметров:
+#### Parameter count check:
 ```bash
 ./miniRT scenes/invalid_incomplete_color.rt
 # File contains: L -40,50,0 0.6 10,255
@@ -154,12 +154,12 @@ All test files are in `scenes/` directory:
 
 ## Conclusion
 
-✅ Все три проблемы, которые вы упомянули, **уже работают правильно**:
+✅ All three issues you mentioned **already work correctly**:
 
-1. ✅ Сцена без света (L) - корректно выдает ошибку
-2. ✅ Сцена без камеры (C) - корректно выдает ошибку
-3. ✅ Неверный тип данных (буквы в числах) - обнаруживается
-4. ✅ Неправильное количество параметров - обнаруживается
-5. ✅ RGB вне диапазона [0-255] - отклоняются (не обрезаются)
+1. ✅ Scene without light (L) - correctly outputs error
+2. ✅ Scene without camera (C) - correctly outputs error
+3. ✅ Invalid data type (letters in numbers) - detected
+4. ✅ Wrong number of parameters - detected
+5. ✅ RGB outside [0-255] range - rejected (not clamped)
 
-Парсер полностью функционален и проходит все 16 тестовых сценариев!
+Parser is fully functional and passes all 16 test scenarios!
