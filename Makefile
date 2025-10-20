@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/16 23:44:54 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/20 23:05:06 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,14 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/cylinders/cylinders.c \
 			$(SRC_DIR)/cones/cones.c \
 			$(SRC_DIR)/scene/init_scene.c \
+			$(SRC_DIR)/parser/parse_scene.c \
+			$(SRC_DIR)/parser/parse_internal.c \
+			$(SRC_DIR)/parser/parse_ambient.c \
+			$(SRC_DIR)/parser/parse_camera.c \
+			$(SRC_DIR)/parser/parse_light.c \
+			$(SRC_DIR)/parser/parse_sphere.c \
+			$(SRC_DIR)/parser/parser_utils.c \
+			$(SRC_DIR)/parser/parse_validate.c
 
 OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 

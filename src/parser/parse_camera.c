@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:35:58 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 22:19:12 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/20 23:13:15 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@
 **
 ** Returns: true on success, false on parse error
 */
+/*
+** check_end_of_line - Verify no extra arguments
+*/
+static bool	check_end_of_line(char *ptr)
+{
+	while (*ptr == ' ' || *ptr == '\t')
+		ptr++;
+	return (*ptr == '\0' || *ptr == '\n' || *ptr == '\r');
+}
+
 bool	parse_camera(char *line, t_scene *scene)
 {
 	char	*ptr;
@@ -32,27 +42,24 @@ bool	parse_camera(char *line, t_scene *scene)
 	t_tuple	to;
 	double	fov;
 
-	ptr = line;
-	ptr++;
+	ptr = line + 1;
 	while (*ptr == ' ' || *ptr == '\t')
 		ptr++;
 	from = parse_vector3(&ptr);
+	if (from.w == -1.0)
+		return (false);
 	while (*ptr == ' ' || *ptr == '\t')
 		ptr++;
 	orientation = parse_vector3(&ptr);
-	if (!validate_normalized(orientation))
-	{
-		ft_putstr_fd("Error\nCamera orientation must be normalized\n", 2);
+	if (orientation.w == -1.0 || !validate_normalized(orientation))
 		return (false);
-	}
 	while (*ptr == ' ' || *ptr == '\t')
 		ptr++;
 	fov = parse_double(&ptr);
 	if (!validate_range(fov, 0.0, 180.0))
-	{
-		ft_putstr_fd("Error\nCamera FOV must be in range [0, 180]\n", 2);
 		return (false);
-	}
+	if (!check_end_of_line(ptr))
+		return (false);
 	scene->camera = camera_make(800, 600, degrees_to_radians(fov));
 	to = add(from, orientation);
 	scene->camera.transform = view_transform(from, to, vector(0, 1, 0));
