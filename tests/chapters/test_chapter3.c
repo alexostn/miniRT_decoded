@@ -305,7 +305,7 @@ void	test_ch3_determinant_3x3_and_4x4(void)
 	printf(ANSI_COLOR_RED "Matrix determinant is:\n%f\n\n" ANSI_COLOR_RESET, mat_determinant(b) );
 }
 
-void    test_ch3_inversion(void)
+void	test_ch3_inversion(void)
 {
 	t_matrix    a;
 	t_matrix    inv_a;

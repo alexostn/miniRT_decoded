@@ -60,6 +60,6 @@ sequenceDiagram
 ```
 
 ## What this shows
-- Контекст вызовов и их порядок (кто с кем и когда взаимодействует).
-- Выделение ролей: Parser (логика), Helpers (парсинг токенов), World (хранилище/сцена).
-- Ветвления в месте dispatch и проверка diameter для сфер.
+- Call context and their order (who interacts with whom and when).
+- Role assignments: Parser (logic), Helpers (token parsing), World (storage/scene).
+- Branching at the dispatch location and diameter check for spheres.

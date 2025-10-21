@@ -17,9 +17,9 @@ IGNORE_LIST=(
 	"include/cones.h"
 	"include/shapes.h"
 	# "src/shapes/shapes.c"
-	"src/cylinders/cylinders.c"
-	"src/cones/cones.c"
-	"src/planes/planes.c"
+	# "src/cylinders/cylinders.c"
+	# "src/cones/cones.c"
+	# "src/planes/planes.c"
 	# You can add any other directory to ignore using the same pattern
 	# "path/to/another/file.c"
 )

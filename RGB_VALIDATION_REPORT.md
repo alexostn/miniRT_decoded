@@ -134,7 +134,7 @@ Your parser correctly:
 
 ### Test Results: 16/16 ✅
 
-Все тесты валидации, включая RGB ranges, проходят успешно.
+All validation tests pass, including RGB ranges.
 
 ### Summary of All Fixes
 

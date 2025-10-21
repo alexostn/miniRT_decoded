@@ -74,7 +74,7 @@ include/
 ```
 
 **To get pure stack version:**
-1. Delete `src/world/heap/` directory
+1. Delete `src/world/heap/` directory	
 2. Change `memory_config.h`: `#define STRATEGY_STACK`
 3. Recompile → **No heap code included!**
 

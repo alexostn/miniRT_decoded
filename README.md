@@ -80,6 +80,7 @@ make fclean
 
 
 ## Documentation
+🎯 **[Entry for Parser Architecture Documentation](docs/parser/06-calltree.md)**
 📚 **[Parser Architecture Documentation](docs/parser/)** — comprehensive diagrams and guides for understanding the parser module (flowcharts, data flow, call trees, etc.)
 
 🔧 **[Memory Management & Debugging](docs/memory-management.md)** — stack trace diagrams for common memory leaks, Valgrind usage, and cleanup best practices
