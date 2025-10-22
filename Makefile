@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/20 23:31:46 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/22 16:52:48 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,13 +67,6 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/matrices/matrice_operations.c \
 			$(SRC_DIR)/matrices/matrice_inverse.c \
 			$(SRC_DIR)/rays/rays.c \
-			$(SRC_DIR)/spheres/spheres.c \
-			$(SRC_DIR)/spheres/sphere_normal.c \
-			$(SRC_DIR)/spheres/sphere_render_grid.c \
-			$(SRC_DIR)/spheres/sphere_render_phong.c \
-			$(SRC_DIR)/spheres/sphere_intersect.c \
-			$(SRC_DIR)/intersections/intersections.c \
-			$(SRC_DIR)/intersections/utils.c \
 			$(SRC_DIR)/materials/materials.c \
 			$(SRC_DIR)/materials/lighting.c \
 			$(SRC_DIR)/lights/lights.c \
@@ -89,9 +82,18 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/camera/camera.c \
 			$(SRC_DIR)/render/render.c \
 			$(SRC_DIR)/shapes/shapes.c \
-			$(SRC_DIR)/planes/planes.c \
+			$(SRC_DIR)/spheres/spheres.c \
+			$(SRC_DIR)/spheres/sphere_intersect.c \
+			$(SRC_DIR)/spheres/sphere_normal.c \
+			$(SRC_DIR)/spheres/sphere_render_grid.c \
+			$(SRC_DIR)/spheres/sphere_render_phong.c \
 			$(SRC_DIR)/cylinders/cylinders.c \
+			$(SRC_DIR)/cylinders/cylinder_intersect.c \
+			$(SRC_DIR)/cylinders/cylinder_normal.c \
+			$(SRC_DIR)/planes/planes.c \
 			$(SRC_DIR)/cones/cones.c \
+			$(SRC_DIR)/intersections/intersections.c \
+			$(SRC_DIR)/intersections/utils.c \
 			$(SRC_DIR)/scene/init_scene.c \
 			$(SRC_DIR)/parser/parse_scene.c \
 			$(SRC_DIR)/parser/parse_internal.c \

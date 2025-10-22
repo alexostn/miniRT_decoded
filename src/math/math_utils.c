@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 21:06:04 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/09 19:10:48 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:23:42 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,9 @@ double	clamp_double(double value, double min, double max)
 	if (value > max)
 		return (max);
 	return (value);
+}
+
+int	approx_zero(double a)
+{
+	return (fabs(a) < EPS);
 }

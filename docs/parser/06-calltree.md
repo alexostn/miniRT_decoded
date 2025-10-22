@@ -14,7 +14,7 @@ This diagram shows the hierarchy of function calls in the parser, from entry poi
 ## Full parser call tree
 
 ```
-main()
+main()	
   └─> parse_scene_file(filename)
       ├─> init_parse_state(&scene, &state)
       │   └─> world_make()
