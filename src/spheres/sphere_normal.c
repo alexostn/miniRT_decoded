@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 12:30:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/02 21:04:42 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:27:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "spheres.h"
+#include "matrices.h"
 #include <math.h>
 
 /*

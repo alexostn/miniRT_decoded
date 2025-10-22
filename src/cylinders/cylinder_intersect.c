@@ -6,11 +6,14 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:52:09 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 16:54:46 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:27:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cylinders.h"
+#include "rays.h"
+#include "matrices.h"
+#include "intersect.h"
 #include "math_utils.h"
 
 /*

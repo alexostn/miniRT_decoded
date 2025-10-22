@@ -6,12 +6,13 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 12:17:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/22 21:53:56 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:27:40 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "intersect.h"
 #include "planes.h"
+#include "matrices.h"
+#include "materials.h"
 
 t_plane	plane_create(void)
 {

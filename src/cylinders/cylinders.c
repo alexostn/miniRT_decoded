@@ -6,13 +6,15 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:02:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/22 21:21:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:27:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cylinders.h"
-#include <math.h>
+#include "matrices.h"
+#include "materials.h"
 #include "defines.h"
+#include <math.h>
 
 t_cylinder	cylinder_create(void)
 {

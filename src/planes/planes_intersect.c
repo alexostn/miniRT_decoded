@@ -6,13 +6,15 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:53:59 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 21:54:55 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:27:55 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include "intersect.h"
 #include "planes.h"
+#include "rays.h"
+#include "matrices.h"
+#include "intersect.h"
+#include <math.h>
 
 t_xs	plane_local_intersect(t_plane *p, t_ray local_ray)
 {
