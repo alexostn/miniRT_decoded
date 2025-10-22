@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:35:58 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:29:24 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:59:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "camera.h"
 
 /*
 ** C 0,0,-5 0,0,1 70
@@ -37,20 +38,13 @@ static bool	check_end_of_line(char *ptr)
 static bool	parse_camera_params(char *ptr, t_tuple *from,
 				t_tuple *orientation, double *fov)
 {
-	*from = parse_vector3(&ptr);
-	if (from->w == -1.0)
+	if (!parse_vector3(&ptr, from))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	*orientation = parse_vector3(&ptr);
-	if (orientation->w == -1.0 || !validate_normalized(*orientation))
+	if (!parse_vector3(&ptr, orientation) || !validate_normalized(*orientation))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	*fov = parse_double(&ptr);
-	if (!validate_range(*fov, 0.0, 180.0) || !check_end_of_line(ptr))
+	if (!parse_double(&ptr, fov) || !validate_range(*fov, 0, 180))
 		return (false);
-	return (true);
+	return (check_end_of_line(ptr));
 }
 
 bool	parse_camera(char *line, t_scene *scene)
@@ -58,16 +52,15 @@ bool	parse_camera(char *line, t_scene *scene)
 	char	*ptr;
 	t_tuple	from;
 	t_tuple	orientation;
-	t_tuple	to;
 	double	fov;
 
 	ptr = line + 1;
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
 	if (!parse_camera_params(ptr, &from, &orientation, &fov))
 		return (false);
-	scene->camera = camera_make(800, 600, degrees_to_radians(fov));
-	to = add(from, orientation);
-	scene->camera.transform = view_transform(from, to, vector(0, 1, 0));
+	scene->camera = camera_make(WIN_WIDTH, WIN_HEIGHT,
+			fov * (M_PI / 180.0));
+	scene->camera.transform = view_transform(from,
+			add(from, orientation),
+			vector(0, 1, 0));
 	return (true);
 }

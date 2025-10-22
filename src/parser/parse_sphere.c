@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:32:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:27:39 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 19:19:03 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,16 @@ static bool	check_end_of_line(char *ptr)
 static bool	parse_sphere_params(char *ptr, t_tuple *center,
 				double *diameter, t_tuple *color)
 {
-	*center = parse_vector3(&ptr);
-	if (center->w == -1.0)
+	if (!parse_vector3(&ptr, center))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	*diameter = parse_double(&ptr);
-	if (*diameter <= 0.0)
+
+	if (!parse_double(&ptr, diameter) || *diameter <= 0)
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	*color = parse_color_rgb(&ptr);
-	if (color->w == -1.0 || !check_end_of_line(ptr))
+
+	if (!parse_color_rgb(&ptr, color))
 		return (false);
-	return (true);
+
+	return (check_end_of_line(ptr));
 }
 
 bool	parse_sphere(char *line, t_scene *scene)

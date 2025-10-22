@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:32:24 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:31:42 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ bool	dispatch_element(const char *line, t_scene *scene,
 	}
 	if (ft_strncmp(line, "sp ", 3) == 0)
 		return (parse_sphere((char *)line, scene));
+	if (ft_strncmp(line, "pl ", 3) == 0)
+		return (parse_plane((char *)line, scene));
+	if (ft_strncmp(line, "cy ", 3) == 0)
+		return (parse_cylinder((char *)line, scene));
 	return (false);
 }
 

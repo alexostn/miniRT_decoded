@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 20:59:19 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/21 00:33:51 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 20:36:41 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
  * 'start' is initialized to 0 and then incremented until a
  * character in 's1' not in 'set' is found.
  * The `ft_check_set` function takes two arguments: a character and a string.
- * In this case, `s1[start]` is the character from string `s1` at position `start`,
+ * In this case, `s1[start]`
+ * is the character from string `s1` at position `start`,
  * and `set` is the string where we search for this character.
  *
  * Thus, `ft_check_set(s1[start], set)` checks if the character

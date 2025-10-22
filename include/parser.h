@@ -6,21 +6,24 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:45:23 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:26:53 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 19:39:15 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# include "defines.h"
+
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
 # include "parser_rt.h"
 # include "libft.h"
 # include "scene.h"
 # include "camera.h"
-# include <fcntl.h>
-# include <unistd.h>
-# include <unistd.h>//?
-# include <stdlib.h>//?
+# include "cylinders.h"
+# include "planes.h"
 
 /* Parser state tracker */
 typedef struct s_parse_state
@@ -39,11 +42,14 @@ bool		parse_ambient(char *line, t_scene *scene);
 bool		parse_camera(char *line, t_scene *scene);
 bool		parse_light(char *line, t_scene *scene);
 bool		parse_sphere(char *line, t_scene *scene);
+bool		parse_plane(char *line, t_scene *scene);
+bool		parse_cylinder(char *line, t_scene *scene);
+
 
 /* Helper parsers */
-t_tuple		parse_vector3(char **str);
-t_tuple		parse_color_rgb(char **str);
-double		parse_double(char **str);
+bool		parse_vector3(char **str, t_tuple *vec);
+bool		parse_color_rgb(char **str, t_tuple *color);
+bool		parse_double(char **str, double *val);
 
 /* Validation */
 bool		validate_range(double val, double min, double max);

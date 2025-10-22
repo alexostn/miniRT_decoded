@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:52:35 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:31:11 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 19:14:35 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,13 @@ static bool	check_end_of_line(char *ptr)
 static bool	parse_light_params(char *ptr, t_tuple *position,
 				double *brightness, t_tuple *color)
 {
-	*position = parse_vector3(&ptr);
-	if (position->w == -1.0)
+	if (!parse_vector3(&ptr, position))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	*brightness = parse_double(&ptr);
-	if (!validate_range(*brightness, 0.0, 1.0))
+	if (!parse_double(&ptr, brightness) || !validate_range(*brightness, 0.0, 1.0))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	*color = parse_color_rgb(&ptr);
-	if (color->w == -1.0 || !check_end_of_line(ptr))
+	if (!parse_color_rgb(&ptr, color))
 		return (false);
-	return (true);
+	return (check_end_of_line(ptr));
 }
 
 bool	parse_light(char *line, t_scene *scene)
@@ -49,14 +42,12 @@ bool	parse_light(char *line, t_scene *scene)
 	t_tuple			position;
 	double			brightness;
 	t_tuple			color;
-	t_point_light	light;
 
 	ptr = line + 1;
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
 	if (!parse_light_params(ptr, &position, &brightness, &color))
 		return (false);
-	light = point_light(position, multiply_tuple_scalar(color, brightness));
-	scene->world.light = light;
+	scene->world.light = point_light(position,
+			multiply_tuple_scalar(color, brightness));
+	scene->world.light_present = true;
 	return (true);
 }

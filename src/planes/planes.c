@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 12:17:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/22 17:29:32 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:20:50 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,16 @@ t_xs	plane_intersect(t_plane *p, t_ray r)
 
 	local_ray = shape_transform_ray_to_local(&p->shape, r);
 	return (plane_local_intersect(p, local_ray));
+}
+
+t_plane	plane_set_transform(t_plane p, t_matrix transform)
+{
+	p.shape = shape_set_transform(p.shape, transform);
+	return (p);
+}
+
+t_plane	plane_set_material(t_plane p, t_material material)
+{
+	p.shape = shape_set_material(p.shape, material);
+	return (p);
 }

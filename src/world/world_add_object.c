@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:24:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 23:37:38 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 */
 bool	world_add_sphere(t_world *world, t_sphere sphere)
 {
-	if (!world)
-		return (false);
 	if (world->spheres_count >= MAX_OBJECTS)
 		return (false);
 	world->spheres[world->spheres_count] = sphere;
@@ -37,11 +35,28 @@ bool	world_add_sphere(t_world *world, t_sphere sphere)
 	return (true);
 }
 
+bool	world_add_plane(t_world *world, t_plane plane)
+{
+	if (world->planes_count >= MAX_OBJECTS)
+		return (false);
+	world->planes[world->planes_count] = plane;
+	world->planes_count++;
+	return (true);
+}
+
+bool	world_add_cylinder(t_world *world, t_cylinder cylinder)
+{
+	if (world->cylinders_count >= MAX_OBJECTS)
+		return (false);
+	world->cylinders[world->cylinders_count] = cylinder;
+	world->cylinders_count++;
+	return (true);
+}
+
 /*
-**
-** This is a wrapper around world_add_sphere for consistency with parser.
-** When multiple object types are added (planes, cylinders), this function
-** will need to accept a generic t_object union/enum instead.
+** world_add_object is now just an alias for world_add_sphere
+** for backward compatibility with the parser.
+** In a future refactor, the parser should call world_add_sphere directly.
 */
 bool	world_add_object(t_world *world, t_sphere sphere)
 {

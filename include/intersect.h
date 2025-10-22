@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/09 18:00:46 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int				intersections_count(t_xs xs);
 t_intersection	intersection_create(double t, void *obj);
 t_intersection	intersections_get(t_xs xs, int index);
 t_intersection	intersections_hit(t_xs xs);
+t_xs			intersections_add_all(t_xs xs, t_xs *to_add);
 
 /*
 ** Intersection math utilities

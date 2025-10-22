@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/09 16:16:19 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,21 @@ t_intersection	intersections_get(t_xs xs, int index)
 	if (index < 0 || index >= xs.count)
 		return (null_intersection);
 	return (xs.intersections[index]);
+}
+
+/*
+** intersections_add_all()
+** Adds all intersections from one collection to another
+*/
+t_xs	intersections_add_all(t_xs xs, t_xs *to_add)
+{
+	int	i;
+
+	i = 0;
+	while (i < to_add->count)
+	{
+		xs = intersections_add(xs, to_add->intersections[i]);
+		i++;
+	}
+	return (xs);
 }

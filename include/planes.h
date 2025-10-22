@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 12:15:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/22 17:45:41 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:20:50 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct s_plane
 }	t_plane;
 
 t_plane	plane_create(void);
+t_plane	plane_set_transform(t_plane p, t_matrix transform);
+t_plane	plane_set_material(t_plane p, t_material material);
 
 /* Plane-specific local operations */
 t_tuple	plane_local_normal_at(t_tuple local_point);

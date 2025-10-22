@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:26:35 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stddef.h>
 # include "spheres.h"
+# include "planes.h"
+# include "cylinders.h"
 # include "tuples.h"
 # include "matrices.h"
 # include "transformations.h"
@@ -43,10 +45,6 @@ typedef struct s_shadow_check
 
 /* ======  World Structure with Typed Object Arrays ====== */
 // TODO:
-// t_plane			planes[MAX_OBJECTS];
-// int				planes_count;
-// t_cylinder		cylinders[MAX_OBJECTS];
-// int				cylinders_count;
 // explicit presence flag is for:
 // "0" - is this absence of light or black light?
 typedef struct s_world
@@ -55,6 +53,10 @@ typedef struct s_world
 	t_point_light	light;
 	t_sphere		spheres[MAX_OBJECTS];
 	int				spheres_count;
+	t_plane			planes[MAX_OBJECTS];
+	int				planes_count;
+	t_cylinder		cylinders[MAX_OBJECTS];
+	int				cylinders_count;
 }	t_world;
 
 t_world		world_make(void);
@@ -75,6 +77,8 @@ t_tuple		color_at(t_world *w, t_ray r);
 **   Returns false only on malloc failure
 */
 bool		world_add_sphere(t_world *world, t_sphere sphere);
+bool		world_add_plane(t_world *world, t_plane plane);
+bool		world_add_cylinder(t_world *world, t_cylinder cylinder);
 
 /* Alias for parser compatibility (calls world_add_sphere) */
 bool		world_add_object(t_world *world, t_sphere sphere);

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/22 16:58:25 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:21:12 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef struct s_cylinder
 // Cylinder creation and operations
 
 t_cylinder	cylinder_create(void);
+t_cylinder	cylinder_set_transform(t_cylinder c, t_matrix transform);
+t_cylinder	cylinder_set_material(t_cylinder c, t_material material);
 
 /* Local (object-space) operations */
 t_xs		cylinder_local_intersect(t_cylinder *cyl, t_ray local_ray);
