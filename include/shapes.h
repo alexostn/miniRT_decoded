@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 12:10:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/04 12:10:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:26:07 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,3 @@ t_tuple	shape_normal_at(t_shape *s, t_tuple world_point,
 		t_tuple (*local_normal_at)(t_tuple local_point));
 
 #endif
-

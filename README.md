@@ -80,9 +80,12 @@ make fclean
 
 
 ## Documentation
+🎯 **[Entry for Parser Architecture Documentation](docs/parser/06-calltree.md)**
 📚 **[Parser Architecture Documentation](docs/parser/)** — comprehensive diagrams and guides for understanding the parser module (flowcharts, data flow, call trees, etc.)
 
-🔧 **[Memory Management & Debugging](docs/memory-management.md)** — stack trace diagrams for common memory leaks, Valgrind usage, and cleanup best practices
+� **[Geometry Module Documentation](docs/geometry/)** — structure of geometric objects (spheres, planes, cylinders, cones), intersection algorithms, normal calculations
+
+�🔧 **[Memory Management & Debugging](docs/memory-management.md)** — stack trace diagrams for common memory leaks, Valgrind usage, and cleanup best practices
 
 🚀 **Architecture Transition Plans:**
 - **⚡ [Quick Start Guide](docs/QUICK_START.md)** — TL;DR: Which architecture to use? Start here!

@@ -1,41 +1,41 @@
 # RGB Color Validation Report
 
 ## Question
-"Скажи а в случае с цветом он обрезается или не корректно работает, можешь дать распечатку цвета сфер при тестах вроде `sp 0,0,20 10 255,300,0` и `sp 0,0,20 10 255,3000,0`"
+"Does the color get clamped or does it work incorrectly? Can you show the color output for spheres with tests like `sp 0,0,20 10 255,300,0` and `sp 0,0,20 10 255,3000,0`?"
 
 ## Answer
 
-### Правильное поведение согласно miniRT subject
+### Correct Behavior According to miniRT Subject
 
-Согласно **subject miniRT**:
+According to the **miniRT subject**:
 > **RGB colors**: in range [0-255]
 
-Это означает, что значения **должны быть отклонены (rejected)**, а не обрезаны (clamped).
+This means values **must be rejected**, not clamped.
 
-### Текущая реализация: ✅ ПРАВИЛЬНАЯ
+### Current Implementation: ✅ CORRECT
 
-Парсер **корректно отклоняет** значения RGB вне диапазона [0-255].
+Parser **correctly rejects** RGB values outside the [0-255] range.
 
-#### Тестирование:
+#### Testing:
 
 ```bash
-# Test 1: RGB с компонентом 256
+# Test 1: RGB with component 256
 ./miniRT scenes/invalid_range_color.rt
-# Содержит: L -40,50,0 0.6 256,255,255
+# Contains: L -40,50,0 0.6 256,255,255
 # Output: Error
 #         Line 5: Invalid identifier or scene format
 # Status: ✅ Correctly REJECTED
 
-# Test 2: RGB с компонентом 300  
+# Test 2: RGB with component 300  
 ./miniRT /tmp/test_color_300.rt
-# Содержит: sp 0,0,20 10 255,300,0
+# Contains: sp 0,0,20 10 255,300,0
 # Output: Error
 #         Line 4: Invalid identifier or scene format
 # Status: ✅ Correctly REJECTED
 
-# Test 3: RGB с компонентом 3000
+# Test 3: RGB with component 3000
 ./miniRT /tmp/test_color_3000.rt
-# Содержит: sp 0,0,20 10 255,3000,0
+# Contains: sp 0,0,20 10 255,3000,0
 # Output: Error
 #         Line 4: Invalid identifier or scene format
 # Status: ✅ Correctly REJECTED
@@ -52,8 +52,8 @@ Test 3: parse_color_rgb("0,0,256")    = ERROR              ✅ Invalid - Rejecte
 
 ### Implementation Details
 
-Файл: `src/parser/parser_color.c` (используется в основном проекте)
-Файл: `src/parser/parse_helpers.c` (используется в тестах)
+File: `src/parser/parser_color.c` (used in main project)
+File: `src/parser/parse_helpers.c` (used in tests)
 
 ```c
 t_tuple	parse_color_rgb(char **str)
@@ -85,56 +85,56 @@ t_tuple	parse_color_rgb(char **str)
 }
 ```
 
-### Ответ на вопрос о правилах 42
+### Answer About 42 Project Rules
 
-**Вопрос**: "Может ли он обрезаться до максимально возможного, это ок по правилам проекта 42?"
+**Question**: "Can it be clamped to the maximum possible value? Is this okay according to 42 project rules?"
 
-**Ответ**: **НЕТ, это НЕ правильно для miniRT**.
+**Answer**: **NO, this is NOT correct for miniRT**.
 
-#### Причины:
+#### Reasons:
 
-1. **Subject явно указывает диапазон [0-255]**
-   - Значения вне диапазона являются **некорректным входом**
-   - Программа должна обрабатывать **только корректный ввод**
+1. **Subject explicitly specifies [0-255] range**
+   - Values outside the range are **invalid input**
+   - Program should only handle **valid input**
 
-2. **Принцип "Error handling"**
-   - miniRT требует: "The program must handle errors properly"
-   - Невалидный ввод → Error output
-   - Это отличается от проектов где clamping допустим (например, FdF)
+2. **"Error handling" principle**
+   - miniRT requires: "The program must handle errors properly"
+   - Invalid input → Error output
+   - This differs from projects where clamping is acceptable (e.g., FdF)
 
-3. **Сравнение с другими проектами**:
-   - **FdF/fract-ol**: Clamping допустим (визуализация данных)
+3. **Comparison with other projects**:
+   - **FdF/fract-ol**: Clamping acceptable (data visualization)
    - **miniRT**: Strict validation (ray tracing requires precise input)
    - **cub3D**: Strict validation (game engine requirements)
 
-4. **Тестирование evaluator'ом**:
-   - Evaluator проверит **Error handling**
-   - Файлы с RGB > 255 должны выводить `Error\n`
-   - Silently clamping = потеря баллов
+4. **Evaluator testing**:
+   - Evaluator will check **Error handling**
+   - Files with RGB > 255 should output `Error\n`
+   - Silently clamping = loss of points
 
 ### Conclusion
 
-✅ **Текущая реализация ПРАВИЛЬНАЯ**
+✅ **Current Implementation is CORRECT**
 
-Ваш парсер корректно:
-- ✅ Принимает валидные значения RGB [0-255]
-- ✅ Отклоняет невалидные значения (< 0 или > 255)
-- ✅ Выводит "Error\n" для невалидного ввода
-- ✅ Соответствует требованиям subject'а
-- ✅ Готов к защите проекта
+Your parser correctly:
+- ✅ Accepts valid RGB values [0-255]
+- ✅ Rejects invalid values (< 0 or > 255)
+- ✅ Outputs "Error\n" for invalid input
+- ✅ Complies with subject requirements
+- ✅ Ready for project defense
 
-### Проблема была обнаружена и исправлена
+### Issue Was Detected and Fixed
 
-**До исправления**: `parse_helpers.c` использовал `normalize_rgb_channel()` который **молча обрезал** значения.
+**Before fix**: `parse_helpers.c` used `normalize_rgb_channel()` which **silently clamped** values.
 
-**После исправления**: Оба файла (`parser_color.c` и `parse_helpers.c`) теперь:
-1. Проверяют диапазон [0-255]
-2. Возвращают ошибку (tuple с w=-1.0) для невалидных значений
-3. Программа выводит "Error\n" и завершается с exit(1)
+**After fix**: Both files (`parser_color.c` and `parse_helpers.c`) now:
+1. Check [0-255] range
+2. Return error (tuple with w=-1.0) for invalid values
+3. Program outputs "Error\n" and exits with exit(1)
 
 ### Test Results: 16/16 ✅
 
-Все тесты валидации, включая RGB ranges, проходят успешно.
+All validation tests pass, including RGB ranges.
 
 ### Summary of All Fixes
 

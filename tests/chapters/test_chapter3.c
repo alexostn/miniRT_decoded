@@ -14,7 +14,7 @@ void test_ch3_matrix_construction()
 
 	t_matrix M = create_matrix(values);
 
-	// Проверки согласно тесту
+	// Test assertions according to requirements
 	TEST_ASSERT((get_matrix_element(&M, 0, 0) == 1), "M[0,0] = 1");
 	// assert(get_matrix_element(&M, 0, 0) == 1);
 	TEST_ASSERT((get_matrix_element(&M, 0, 3) == 4), "M[0,3] = 4");
@@ -305,7 +305,7 @@ void	test_ch3_determinant_3x3_and_4x4(void)
 	printf(ANSI_COLOR_RED "Matrix determinant is:\n%f\n\n" ANSI_COLOR_RESET, mat_determinant(b) );
 }
 
-void    test_ch3_inversion(void)
+void	test_ch3_inversion(void)
 {
 	t_matrix    a;
 	t_matrix    inv_a;

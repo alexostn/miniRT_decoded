@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/16 20:00:47 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/21 19:39:14 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -154,7 +154,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # >>> BOOK TESTS SECTION START (RULES) >>>
 # Rule for compiling book_tests.c into obj/book_tests.o
 $(BOOK_TEST_RUNNER_OBJ): $(BOOK_TEST_RUNNER_SRC)
-	@mkdir -p $(OBJ_DIR) # Убедимся, что obj/ существует
+	@mkdir -p $(OBJ_DIR) # make sure obj/ exists
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Target for building and running the book tests
