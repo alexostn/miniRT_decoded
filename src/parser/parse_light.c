@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:52:35 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 19:14:35 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:47:27 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static bool	parse_light_params(char *ptr, t_tuple *position,
 {
 	if (!parse_vector3(&ptr, position))
 		return (false);
-	if (!parse_double(&ptr, brightness) || !validate_range(*brightness, 0.0, 1.0))
+	if (!parse_double(&ptr, brightness)
+		|| !validate_range(*brightness, 0.0, 1.0))
 		return (false);
 	if (!parse_color_rgb(&ptr, color))
 		return (false);

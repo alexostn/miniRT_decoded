@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:32:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 19:19:03 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:43:19 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,10 @@ static bool	parse_sphere_params(char *ptr, t_tuple *center,
 {
 	if (!parse_vector3(&ptr, center))
 		return (false);
-
 	if (!parse_double(&ptr, diameter) || *diameter <= 0)
 		return (false);
-
 	if (!parse_color_rgb(&ptr, color))
 		return (false);
-
 	return (check_end_of_line(ptr));
 }
 
