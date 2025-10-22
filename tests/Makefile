@@ -81,6 +81,8 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/cylinders/cylinder_normal.c \
 	$(SRC_DIR)/planes/planes.c \
 	$(SRC_DIR)/cones/cones.c \
+	$(SRC_DIR)/cones/cone_intersect.c \
+	$(SRC_DIR)/cones/cone_normal.c \
 	$(SRC_DIR)/scene/init_scene.c \
 	$(SRC_DIR)/parser/parse_scene.c \
 	$(SRC_DIR)/parser/parse_internal.c \

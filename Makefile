@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/22 16:52:48 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/22 17:54:28 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,6 +92,8 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/cylinders/cylinder_normal.c \
 			$(SRC_DIR)/planes/planes.c \
 			$(SRC_DIR)/cones/cones.c \
+			$(SRC_DIR)/cones/cone_intersect.c \
+			$(SRC_DIR)/cones/cone_normal.c \
 			$(SRC_DIR)/intersections/intersections.c \
 			$(SRC_DIR)/intersections/utils.c \
 			$(SRC_DIR)/scene/init_scene.c \

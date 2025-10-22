@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cones.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:10:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/10 12:10:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/22 17:52:19 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_cone
 	double	minimum;
 	double	maximum;
 	bool	closed;
-}t_cone;
+}	t_cone;
 
 t_cone	cone_create(void);
 t_xs	cone_local_intersect(t_cone *cone, t_ray local_ray);
@@ -31,4 +31,3 @@ t_xs	cone_intersect(t_cone *cone, t_ray r);
 t_tuple	cone_normal_at(t_cone *cone, t_tuple world_point);
 
 #endif
-

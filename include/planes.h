@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   planes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 12:15:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/04 12:15:00 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/22 17:45:41 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 typedef struct s_plane
 {
 	t_shape	shape;
-}t_plane;
+}	t_plane;
 
 t_plane	plane_create(void);
 
