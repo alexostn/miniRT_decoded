@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:58:59 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 21:37:33 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,94 +14,70 @@
 #include "libft.h"
 #include "colors.h"
 
-static double	parse_fraction(char **str)
+bool	parse_double(char **str, double *val)
 {
-	double	fraction;
-	double	divisor;
-
-	fraction = 0.0;
-	divisor = 10.0;
-	while (**str >= '0' && **str <= '9')
-	{
-		fraction += (**str - '0') / divisor;
-		divisor *= 10.0;
-		(*str)++;
-	}
-	return (fraction);
-}
-
-double	parse_double(char **str)
-{
+	char	*endptr;
 	double	result;
-	int		sign;
 
 	while (**str == ' ' || **str == '\t')
 		(*str)++;
-	sign = 1;
-	if (**str == '-')
-	{
-		sign = -1;
-		(*str)++;
-	}
-	result = 0.0;
-	while (**str >= '0' && **str <= '9')
-	{
-		result = result * 10.0 + (**str - '0');
-		(*str)++;
-	}
-	if (**str == '.')
-	{
-		(*str)++;
-		result += parse_fraction(str);
-	}
-	return (result * sign);
+	if (**str == '\0')
+		return (false);
+	result = ft_strtod(*str, &endptr);
+	if (endptr == *str)
+		return (false);
+	*str = endptr;
+	*val = result;
+	return (true);
 }
 
-t_tuple	parse_vector3(char **str)
+bool	parse_vector3(char **str, t_tuple *vec)
 {
 	double	x;
 	double	y;
 	double	z;
 
-	x = parse_double(str);
-	if (**str == ',')
+	while (**str == ' ' || **str == '\t')
 		(*str)++;
-	y = parse_double(str);
-	if (**str == ',')
-		(*str)++;
-	z = parse_double(str);
-	return (vector(x, y, z));
+	if (!parse_double(str, &x))
+		return (false);
+	if (**str != ',')
+		return (false);
+	(*str)++;
+	if (!parse_double(str, &y))
+		return (false);
+	if (**str != ',')
+		return (false);
+	(*str)++;
+	if (!parse_double(str, &z))
+		return (false);
+	*vec = vector(x, y, z);
+	return (true);
 }
 
-static double	normalize_color_value(int val)
+bool	parse_color_rgb(char **str, t_tuple *color)
 {
-	if (val < 0)
-		return (0.0);
-	if (val > 255)
-		return (1.0);
-	return (val / 255.0);
-}
+	double	r;
+	double	g;
+	double	b;
 
-t_tuple	parse_color_rgb(char **str)
-{
-	int		r;
-	int		g;
-	int		b;
-	t_tuple	error;
-
-	error = (t_tuple){0, 0, 0, -1.0};
-	r = (int)parse_double(str);
+	while (**str == ' ' || **str == '\t')
+		(*str)++;
+	if (!parse_double(str, &r))
+		return (false);
 	if (**str != ',')
-		return (error);
+		return (false);
 	(*str)++;
-	g = (int)parse_double(str);
+	if (!parse_double(str, &g))
+		return (false);
 	if (**str != ',')
-		return (error);
+		return (false);
 	(*str)++;
-	b = (int)parse_double(str);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (error);
-	return (color_d(normalize_color_value(r),
-			normalize_color_value(g),
-			normalize_color_value(b)));
+	if (!parse_double(str, &b))
+		return (false);
+	if (!validate_range(r, 0, 255) || !validate_range(g, 0, 255)
+		|| !validate_range(b, 0, 255))
+		return (false);
+	*color = color_d(r / 255.0, g / 255.0, b / 255.0);
+	return (true);
 }

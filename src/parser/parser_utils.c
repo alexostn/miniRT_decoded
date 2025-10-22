@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 22:21:56 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:29:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:42:50 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static double	parse_fraction(char **str)
 	return (fraction / divisor);
 }
 
-double	parse_double(char **str)
+bool	parse_double(char **str, double *val)
 {
 	double	result;
 	int		sign;
@@ -70,35 +70,38 @@ double	parse_double(char **str)
 	}
 	result = 0.0;
 	if (!(**str >= '0' && **str <= '9'))
-		return (0.0);
+		return (false);
 	while (**str >= '0' && **str <= '9')
 		result = result * 10.0 + (*(*str)++ - '0');
 	result += parse_fraction(str);
 	if (!is_valid_number_end(**str))
-		return (0.0);
-	return (result * sign);
+		return (false);
+	*val = result * sign;
+	return (true);
 }
 
 /*
 ** parse_vector3 - Parse "x,y,z" coordinates with validation
-** Returns: point/vector on success, tuple with w=-1.0 on error
+** Returns: true on success, false on error
 */
-t_tuple	parse_vector3(char **str)
+bool	parse_vector3(char **str, t_tuple *vec)
 {
 	double	x;
 	double	y;
 	double	z;
-	t_tuple	error;
 
-	error = (t_tuple){0, 0, 0, -1.0};
-	x = parse_double(str);
+	if (!parse_double(str, &x))
+		return (false);
 	if (**str != ',')
-		return (error);
+		return (false);
 	(*str)++;
-	y = parse_double(str);
+	if (!parse_double(str, &y))
+		return (false);
 	if (**str != ',')
-		return (error);
+		return (false);
 	(*str)++;
-	z = parse_double(str);
-	return (point(x, y, z));
+	if (!parse_double(str, &z))
+		return (false);
+	*vec = point(x, y, z);
+	return (true);
 }

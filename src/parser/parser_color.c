@@ -6,41 +6,30 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 23:30:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:28:43 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 19:20:42 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static double	normalize_color_value(int val)
+bool	parse_color_rgb(char **str, t_tuple *color_out)
 {
-	if (val < 0)
-		return (0.0);
-	if (val > 255)
-		return (1.0);
-	return (val / 255.0);
-}
+	double	r;
+	double	g;
+	double	b;
 
-t_tuple	parse_color_rgb(char **str)
-{
-	int		r;
-	int		g;
-	int		b;
-	t_tuple	error;
-
-	error = (t_tuple){0, 0, 0, -1.0};
-	r = (int)parse_double(str);
+	if (!parse_double(str, &r) || !validate_range(r, 0, 255))
+		return (false);
 	if (**str != ',')
-		return (error);
+		return (false);
 	(*str)++;
-	g = (int)parse_double(str);
+	if (!parse_double(str, &g) || !validate_range(g, 0, 255))
+		return (false);
 	if (**str != ',')
-		return (error);
+		return (false);
 	(*str)++;
-	b = (int)parse_double(str);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (error);
-	return (color_d(normalize_color_value(r),
-			normalize_color_value(g),
-			normalize_color_value(b)));
+	if (!parse_double(str, &b) || !validate_range(b, 0, 255))
+		return (false);
+	*color_out = color_d(r / 255.0, g / 255.0, b / 255.0);
+	return (true);
 }

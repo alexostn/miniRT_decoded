@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cones_new.c                                        :+:      :+:    :+:   */
+/*   plane_normal.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/10 12:12:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/22 17:52:44 by oostapen         ###   ########.fr       */
+/*   Created: 2025/10/22 22:00:00 by oostapen          #+#    #+#             */
+/*   Updated: 2025/10/22 22:04:32 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cones.h"
-#include <math.h>
-#include "defines.h"
+#include "planes.h"
+#include "matrices.h"
 
-t_cone	cone_create(void)
+t_tuple	plane_normal_at(t_plane *p, t_tuple world_point)
 {
-	t_cone	c;
-
-	c.shape = shape_create();
-	c.minimum = -INFINITY;
-	c.maximum = INFINITY;
-	c.closed = false;
-	return (c);
+	return (shape_normal_at(&p->shape, world_point, plane_local_normal_at));
 }

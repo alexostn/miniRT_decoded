@@ -6,13 +6,15 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/09 15:51:10 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:27:24 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "spheres.h"
-#include <math.h>
+#include "rays.h"
+#include "matrices.h"
 #include "intersect.h"
+#include <math.h>
 
 /*
 ** add_intersections_sorted()

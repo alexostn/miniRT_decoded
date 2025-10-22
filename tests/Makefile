@@ -64,6 +64,7 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/lights/lights.c \
 	$(SRC_DIR)/world/world.c \
 	$(SRC_DIR)/world/world_add_object.c \
+	$(SRC_DIR)/world/world_intersect.c \
 	$(SRC_DIR)/computations/computations.c \
 	$(SRC_DIR)/camera/camera.c \
 	$(SRC_DIR)/render/render.c \
@@ -80,7 +81,11 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/cylinders/cylinder_intersect.c \
 	$(SRC_DIR)/cylinders/cylinder_normal.c \
 	$(SRC_DIR)/planes/planes.c \
+	$(SRC_DIR)/planes/planes_intersect.c \
+	$(SRC_DIR)/planes/plane_normal.c \
 	$(SRC_DIR)/cones/cones.c \
+	$(SRC_DIR)/cones/cone_intersect.c \
+	$(SRC_DIR)/cones/cone_normal.c \
 	$(SRC_DIR)/scene/init_scene.c \
 	$(SRC_DIR)/parser/parse_scene.c \
 	$(SRC_DIR)/parser/parse_internal.c \
@@ -89,7 +94,9 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/parser/parse_light.c \
 	$(SRC_DIR)/parser/parse_sphere.c \
 	$(SRC_DIR)/parser/parse_helpers.c \
-	$(SRC_DIR)/parser/parse_validate.c
+	$(SRC_DIR)/parser/parse_validate.c \
+	$(SRC_DIR)/parser/parse_cylinder.c \
+	$(SRC_DIR)/parser/parse_plane.c
 
 # Test source files
 TEST_SRCS = test_common.c \

@@ -6,11 +6,12 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/09 16:16:19 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:32:47 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "intersect.h"
+#include <stddef.h>
 
 /*
 ** intersection_create()

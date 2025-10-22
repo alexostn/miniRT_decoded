@@ -1,0 +1,18 @@
+# Test scene with all object types
+# Ambient lighting
+A 0.2 255,255,255
+
+# Camera: position, orientation (normalized!), field of view
+C 0,5,-10 0,0,1 70
+
+# Light: position, brightness, color
+L -5,10,0 0.7 255,255,255
+
+# Sphere: center, diameter, color
+sp 0,0,5 2 255,0,0
+
+# Plane: point, normal vector (normalized!), color
+pl 0,-1,0 0,1,0 100,100,100
+
+# Cylinder: center, axis (normalized!), diameter, height, color
+cy 3,0,5 0,1,0 1 4 0,255,0

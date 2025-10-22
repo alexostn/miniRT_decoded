@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:05:51 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 23:10:04 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:51:04 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,9 @@ bool	parse_ambient(char *line, t_scene *scene)
 	t_tuple	color;
 
 	ptr = line + 1;
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	ratio = parse_double(&ptr);
-	if (ratio < 0.0 || ratio > 1.0)
+	if (!parse_double(&ptr, &ratio) || !validate_range(ratio, 0.0, 1.0))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	color = parse_color_rgb(&ptr);
-	if (color.w == -1.0)
+	if (!parse_color_rgb(&ptr, &color))
 		return (false);
 	if (!check_end_of_line(ptr))
 		return (false);
