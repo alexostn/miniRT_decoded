@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:00:00 by sarherna          #+#    #+#             */
-/*   Updated: 2025/10/09 16:14:19 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:17:15 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,28 @@ t_intersection	intersections_hit(t_xs xs)
 		i++;
 	}
 	return (hit);
+}
+
+/*
+** intersections_add_all()
+** Adds all intersections from one collection to another
+**
+** Parameters:
+** - xs: destination intersections collection
+** - to_add: source intersections collection to add from
+**
+** Returns:
+** - t_xs: updated intersections collection
+*/
+t_xs	intersections_add_all(t_xs xs, t_xs *to_add)
+{
+	int	i;
+
+	i = 0;
+	while (i < to_add->count)
+	{
+		xs = intersections_add(xs, to_add->intersections[i]);
+		i++;
+	}
+	return (xs);
 }

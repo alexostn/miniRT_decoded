@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:29:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:19:59 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,38 +58,6 @@ t_world	default_world(void)
 	w.spheres[1].transform = scaling(0.5, 0.5, 0.5);
 	w.spheres_count = 2;
 	return (w);
-}
-
-//TODO: Iterate through all objects in world
-t_xs	intersect_world(t_world *w, t_ray r)
-{
-	t_xs	result;
-	t_xs	temp;
-	int		i;
-
-	result = xs_create();
-	i = -1;
-	while (++i < w->spheres_count)
-	{
-		temp = sphere_intersect(&w->spheres[i], r);
-		result = intersections_add_all(result, &temp);
-		intersections_destroy(&temp);
-	}
-	i = -1;
-	while (++i < w->planes_count)
-	{
-		temp = plane_intersect(&w->planes[i], r);
-		result = intersections_add_all(result, &temp);
-		intersections_destroy(&temp);
-	}
-	i = -1;
-	while (++i < w->cylinders_count)
-	{
-		temp = cylinder_intersect(&w->cylinders[i], r);
-		result = intersections_add_all(result, &temp);
-		intersections_destroy(&temp);
-	}
-	return (result);
 }
 
 bool	is_shadowed(t_world world, t_tuple point)

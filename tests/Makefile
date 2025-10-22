@@ -64,6 +64,7 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/lights/lights.c \
 	$(SRC_DIR)/world/world.c \
 	$(SRC_DIR)/world/world_add_object.c \
+	$(SRC_DIR)/world/world_intersect.c \
 	$(SRC_DIR)/computations/computations.c \
 	$(SRC_DIR)/camera/camera.c \
 	$(SRC_DIR)/render/render.c \
@@ -80,6 +81,8 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/cylinders/cylinder_intersect.c \
 	$(SRC_DIR)/cylinders/cylinder_normal.c \
 	$(SRC_DIR)/planes/planes.c \
+	$(SRC_DIR)/planes/planes_intersect.c \
+	$(SRC_DIR)/planes/plane_normal.c \
 	$(SRC_DIR)/cones/cones.c \
 	$(SRC_DIR)/cones/cone_intersect.c \
 	$(SRC_DIR)/cones/cone_normal.c \

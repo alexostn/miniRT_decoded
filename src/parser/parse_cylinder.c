@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 21:19:38 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:13:19 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,66 @@
 #include "cylinders.h"
 #include "libft.h"
 
+static void	skip_ws(char **ptr)
+{
+	while (**ptr == ' ' || **ptr == '\t')
+		(*ptr)++;
+}
+
+static bool	parse_cy_vectors(char **ptr, t_tuple *center, t_tuple *axis)
+{
+	*ptr += 2;
+	skip_ws(ptr);
+	if (!parse_vector3(ptr, center))
+		return (false);
+	skip_ws(ptr);
+	if (!parse_vector3(ptr, axis))
+		return (false);
+	if (!validate_normalized(*axis))
+		return (false);
+	return (true);
+}
+
+static bool	parse_cy_dimensions(char **ptr, double *diam, double *height)
+{
+	skip_ws(ptr);
+	if (!parse_double(ptr, diam))
+		return (false);
+	skip_ws(ptr);
+	if (!parse_double(ptr, height))
+		return (false);
+	return (true);
+}
+
+static t_matrix	create_cy_transform(t_tuple center, double diam, double h)
+{
+	t_matrix	scale;
+	t_matrix	trans;
+
+	scale = scaling(diam / 2.0, h, diam / 2.0);
+	trans = translation(center.x, center.y, center.z);
+	return (mat_mul(trans, scale));
+}
+
 bool	parse_cylinder(char *line, t_scene *scene)
 {
-	char		*ptr;
 	t_tuple		center;
 	t_tuple		axis;
-	double		diameter;
-	double		height;
+	double		dims[2];
 	t_tuple		color;
-	t_cylinder	cylinder;
-	t_material	material;
-	t_matrix	transform;
+	t_cylinder	cy;
 
-	ptr = line + 2;
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	if (!parse_vector3(&ptr, &center))
+	if (!parse_cy_vectors(&line, &center, &axis))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	if (!parse_vector3(&ptr, &axis))
+	if (!parse_cy_dimensions(&line, &dims[0], &dims[1]))
 		return (false);
-	if (!validate_normalized(axis))
+	skip_ws(&line);
+	if (!parse_color_rgb(&line, &color))
 		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	if (!parse_double(&ptr, &diameter))
-		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	if (!parse_double(&ptr, &height))
-		return (false);
-	while (*ptr == ' ' || *ptr == '\t')
-		ptr++;
-	if (!parse_color_rgb(&ptr, &color))
-		return (false);
-	cylinder = cylinder_create();
-	transform = mat_mul(translation(center.x, center.y, center.z),
-			scaling(diameter / 2.0, height, diameter / 2.0));
-	cylinder = cylinder_set_transform(cylinder, transform);
-	material = material_create();
-	material.color = color;
-	cylinder = cylinder_set_material(cylinder, material);
-	world_add_cylinder(&scene->world, cylinder);
+	cy = cylinder_create();
+	cy = cylinder_set_transform(cy, create_cy_transform(center, dims[0],
+				dims[1]));
+	cy.shape.material.color = color;
+	world_add_cylinder(&scene->world, cy);
 	return (true);
 }
