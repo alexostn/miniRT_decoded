@@ -1,7 +1,7 @@
 # Parser Test Cases
 
 ## Valid Cases
-
+L 0,10,0 0.7 255,255,255
 ### 1. Simple valid scene (valid_simple.rt) ✅
 ```
 A 0.2 255,255,255

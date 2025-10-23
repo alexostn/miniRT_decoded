@@ -5,26 +5,26 @@ This document describes the scene parser flow used in miniRT.
 ## High-level flow (Mermaid)
 
 ```mermaid
-flowchart TD
-    A[parse_scene_file(filename)] --> B[init_parse_state(scene, state)]
-    B --> C{open(filename) OK?}
-    C -- no --> E[parser_error("Failed to open", 0)]
-    C -- yes --> D[read_scene_file(fd, scene, state)]
+graph TD
+    A["parse_scene_file(filename)"] --> B["init_parse_state(scene, state)"]
+    B --> C{"open(filename) OK?"}
+    C -- no --> E["parser_error(&quot;Failed to open&quot;, 0)"]
+    C -- yes --> D["read_scene_file(fd, scene, state)"]
     D --> F[[Loop: get_next_line]]
-    F --> G[ line_num++ ]
-    G --> H[trimmed = ft_strtrim(line)]
-    H --> I{dispatch_element(trimmed, scene, state)}
-    I -- false --> J[parser_error("Invalid identifier", line_num)]
-    I -- true --> K[free(line), free(trimmed)]
+    F -- line exists --> G["line_num++"]
+    G --> H["trimmed = ft_strtrim(line)"]
+    H --> I{"dispatch_element(trimmed, scene, state)"}
+    I -- false --> J["parser_error(&quot;Invalid identifier&quot;, line_num)"]
+    I -- true --> K["free(line), free(trimmed)"]
     K --> F
-    D --> L[close(fd)]
-    L --> M{validate_scene(state)}
-    M -- invalid --> N[parser_error("Scene validation failed", 0)]
-    M -- valid --> O[return scene]
+    F -- EOF --> L["close(fd)"]
+    L --> M{"validate_scene(state)"}
+    M -- invalid --> N["parser_error(&quot;Scene validation failed&quot;, 0)"]
+    M -- valid --> O["return scene"]
 
     subgraph Dispatch
-        I --> DA{Starts with...}
-        DA -- "#" or empty --> DB[return true]
+        I --> DA{"Starts with..."}
+        DA -- "# or empty" --> DB[return true]
         DA -- "A " --> DC[parse_ambient]
         DA -- "C " --> DD[parse_camera]
         DA -- "L " --> DE[parse_light]
@@ -33,12 +33,14 @@ flowchart TD
     end
 
     subgraph parse_ambient
-        DC --> DC1[ptr after "A "]
+        DC --> DC1["ptr after &quot;A &quot;"]
         DC1 --> DC2[ratio = parse_double]
         DC2 --> DC3[color = parse_color_rgb]
         DC3 --> DC4[scene.ambient_ratio/color set]
         DC4 --> DC5[return true]
     end
+
+
 
     subgraph parse_camera
         DD --> DD1[ptr after "C "]

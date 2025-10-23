@@ -6,21 +6,22 @@ This directory contains comprehensive documentation of the parser architecture, 
 
 ### Architecture & Design
 
-| Documentation | Type | Best for |
-|---------------|------|----------|
-| [Process Flow](01-flowchart.md) | Flowchart | Understanding control flow, conditionals, loops |
-| [Responsibilities](02-swimlane.md) | Swimlane | Seeing module boundaries (Parser/Helpers/World) |
-| [Interactions](03-sequence.md) | Sequence | Tracing message flow between components |
+| Documentation                         | Type      | Best for                                         |
+|---------------------------------------|-----------|--------------------------------------------------|
+| [Process Flow](01-flowchart.md)       | Flowchart | Understanding control flow, conditionals, loops  |
+| [Responsibilities](02-swimlane.md)    | Swimlane  | Seeing module boundaries (Parser/Helpers/World)  |
+| [Interactions](03-sequence.md)        | Sequence  | Tracing message flow between components          |
 | [Data Transformation](04-dataflow.md) | Data Flow | Debugging formats (0-255→0-1, degrees→radians) |
-| [Module Structure](05-components.md) | Component | Architecture decisions, adding features |
-| [Call Hierarchy](06-calltree.md) | Call Tree | Debugging execution, profiling, stack traces |
+| [Module Structure](05-components.md)  | Component | Architecture decisions, adding features          |
+| [Call Hierarchy](06-calltree.md)      | Call Tree | Debugging execution, profiling, stack traces     |
+
 
 ### Testing & Validation
 
-| Documentation | Purpose |
-|---------------|---------|
-| [Parser Testing Guide](PARSER_TESTING.md) | How to test parser with scene files |
-| [Validation Guide](VALIDATION.md) | Input validation rules and error handling |
+| Documentation                         | Purpose                                 |
+|---------------------------------------|-----------------------------------------|
+| [Parser Testing Guide](PARSER_TESTING.md) | How to test parser with scene files   |
+| [Validation Guide](VALIDATION.md)     | Input validation rules and error handling |
 
 ---
 
