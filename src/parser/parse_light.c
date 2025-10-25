@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:52:35 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 21:47:27 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:01:09 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,38 @@ static bool	check_end_of_line(char *ptr)
 	return (*ptr == '\0' || *ptr == '\n' || *ptr == '\r');
 }
 
-static bool	parse_light_params(char *ptr, t_tuple *position,
-				double *brightness, t_tuple *color)
+static void	validate_light_brightness(double brightness, t_parse_state *state)
 {
-	if (!parse_vector3(&ptr, position))
-		return (false);
-	if (!parse_double(&ptr, brightness)
-		|| !validate_range(*brightness, 0.0, 1.0))
-		return (false);
-	if (!parse_color_rgb(&ptr, color))
-		return (false);
-	return (check_end_of_line(ptr));
+	if (!validate_range(brightness, 0.0, 1.0))
+		parser_error("Light: Brightness in range [0.0,1.0]", state->line_num);
 }
 
-bool	parse_light(char *line, t_scene *scene)
+static void	parse_light_params(char *ptr, t_tuple *pos,
+				t_tuple *color, t_parse_state *state)
 {
-	char			*ptr;
-	t_tuple			position;
-	double			brightness;
-	t_tuple			color;
+	double	brightness;
+
+	if (!parse_vector3(&ptr, pos))
+		parser_error("Light: Invalid position coordinates", state->line_num);
+	if (!parse_double(&ptr, &brightness))
+		parser_error("Light: Invalid brightness value", state->line_num);
+	validate_light_brightness(brightness, state);
+	if (!parse_color_rgb(&ptr, color))
+		parser_error("Light: Invalid color RGB values", state->line_num);
+	if (!check_end_of_line(ptr))
+		parser_error("Light: Unexpected extra parameters", state->line_num);
+	*color = multiply_tuple_scalar(*color, brightness);
+}
+
+bool	parse_light(char *line, t_scene *scene, t_parse_state *state)
+{
+	char	*ptr;
+	t_tuple	position;
+	t_tuple	color;
 
 	ptr = line + 1;
-	if (!parse_light_params(ptr, &position, &brightness, &color))
-		return (false);
-	scene->world.light = point_light(position,
-			multiply_tuple_scalar(color, brightness));
+	parse_light_params(ptr, &position, &color, state);
+	scene->world.light = point_light(position, color);
 	scene->world.light_present = true;
 	return (true);
 }

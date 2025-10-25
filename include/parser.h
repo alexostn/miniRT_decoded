@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:45:23 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 22:09:04 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 02:56:42 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ typedef struct s_parse_state
 t_scene		parse_scene_file(const char *filename);
 
 /* Element parsers */
-bool		parse_ambient(char *line, t_scene *scene);
-bool		parse_camera(char *line, t_scene *scene);
-bool		parse_light(char *line, t_scene *scene);
-bool		parse_sphere(char *line, t_scene *scene);
-bool		parse_plane(char *line, t_scene *scene);
-bool		parse_cylinder(char *line, t_scene *scene);
+bool		parse_ambient(char *line, t_scene *scene, t_parse_state *state);
+bool		parse_camera(char *line, t_scene *scene, t_parse_state *state);
+bool		parse_light(char *line, t_scene *scene, t_parse_state *state);
+bool		parse_sphere(char *line, t_scene *scene, t_parse_state *state);
+bool		parse_plane(char *line, t_scene *scene, t_parse_state *state);
+bool		parse_cylinder(char *line, t_scene *scene, t_parse_state *state);
 
 /* Helper parsers */
 bool		parse_vector3(char **str, t_tuple *vec);

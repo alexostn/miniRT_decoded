@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 21:31:42 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:06:34 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool	dispatch_ace(const char *line, t_scene *scene,
 			parser_error("Ambient light (A) can only be defined once",
 				state->line_num);
 		state->has_ambient = true;
-		return (parse_ambient((char *)line, scene));
+		return (parse_ambient((char *)line, scene, state));
 	}
 	if (ft_strncmp(line, "C ", 2) == 0)
 	{
@@ -39,7 +39,7 @@ static bool	dispatch_ace(const char *line, t_scene *scene,
 			parser_error("Camera (C) can only be defined once",
 				state->line_num);
 		state->has_camera = true;
-		return (parse_camera((char *)line, scene));
+		return (parse_camera((char *)line, scene, state));
 	}
 	return (false);
 }
@@ -53,15 +53,18 @@ bool	dispatch_element(const char *line, t_scene *scene,
 		return (true);
 	if (ft_strncmp(line, "L ", 2) == 0)
 	{
+		if (state->has_light)
+			parser_error("Light can only be defined once in mandatory",
+				state->line_num);
 		state->has_light = true;
-		return (parse_light((char *)line, scene));
+		return (parse_light((char *)line, scene, state));
 	}
 	if (ft_strncmp(line, "sp ", 3) == 0)
-		return (parse_sphere((char *)line, scene));
+		return (parse_sphere((char *)line, scene, state));
 	if (ft_strncmp(line, "pl ", 3) == 0)
-		return (parse_plane((char *)line, scene));
+		return (parse_plane((char *)line, scene, state));
 	if (ft_strncmp(line, "cy ", 3) == 0)
-		return (parse_cylinder((char *)line, scene));
+		return (parse_cylinder((char *)line, scene, state));
 	return (false);
 }
 

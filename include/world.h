@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 02:46:42 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,15 @@ typedef struct s_world
 	int			capacity;	// Capacity for the dynamic array
 }	t_world;
 
+HEAP_EXPANSION: Uncomment for bonus multi-light support
+** When implementing bonus, add:
+** t_point_light   *lights;         // Dynamic array of lights
+** int             lights_capacity;  // Allocated capacity
+** int             lights_count;     // Number of lights in use
+** 
+** Then modify world_create() to malloc lights array
+** and world_destroy() to free it
+ END: Light management 
 // HEAP-BASED functions (dynamic arrays)
 t_world	*world_create(int initial_capacity);
 t_world	*default_world_create(void);

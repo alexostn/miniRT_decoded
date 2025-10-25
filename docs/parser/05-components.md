@@ -1,4 +1,4 @@
-# Parser Architecture — Component View
+ss# Parser Architecture — Component View
 
 This diagram shows the structure of the parser module: files, their responsibilities, and dependencies.
 

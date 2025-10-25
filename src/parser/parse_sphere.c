@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:32:27 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 21:43:19 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:03:48 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,34 +47,38 @@ static bool	check_end_of_line(char *ptr)
 	return (*ptr == '\0' || *ptr == '\n' || *ptr == '\r');
 }
 
-static bool	parse_sphere_params(char *ptr, t_tuple *center,
-				double *diameter, t_tuple *color)
+static void	parse_sp_params(char *ptr, t_tuple *center,
+				t_tuple *color, t_parse_state *state)
 {
+	double	diameter;
+
 	if (!parse_vector3(&ptr, center))
-		return (false);
-	if (!parse_double(&ptr, diameter) || *diameter <= 0)
-		return (false);
+		parser_error("Sphere: Invalid center coordinates", state->line_num);
+	if (!parse_double(&ptr, &diameter))
+		parser_error("Sphere: Invalid diameter value", state->line_num);
+	if (diameter <= 0)
+		parser_error("Sphere: Diameter must be positive", state->line_num);
 	if (!parse_color_rgb(&ptr, color))
-		return (false);
-	return (check_end_of_line(ptr));
+		parser_error("Sphere: Invalid color RGB values", state->line_num);
+	if (!check_end_of_line(ptr))
+		parser_error("Sphere: Unexpected extra parameters", state->line_num);
+	center->w = diameter;
 }
 
-bool	parse_sphere(char *line, t_scene *scene)
+bool	parse_sphere(char *line, t_scene *scene, t_parse_state *state)
 {
 	char		*ptr;
 	t_tuple		center;
-	double		diameter;
 	t_tuple		color;
 	t_sphere	sphere;
 
 	ptr = line + 2;
 	while (*ptr == ' ' || *ptr == '\t')
 		ptr++;
-	if (!parse_sphere_params(ptr, &center, &diameter, &color))
-		return (false);
+	parse_sp_params(ptr, &center, &color, state);
 	sphere = sphere_create();
 	sphere.material.color = color;
-	sphere = apply_sphere_transform(sphere, center, diameter);
+	sphere = apply_sphere_transform(sphere, center, center.w);
 	return (world_add_sphere(&scene->world, sphere));
 }
 
