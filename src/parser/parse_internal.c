@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 03:06:34 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:30:17 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@ static bool	dispatch_ace(const char *line, t_scene *scene,
 	return (false);
 }
 
+/* Check for common case-sensitivity errors */
+static void	check_case_errors(const char *line, t_parse_state *state)
+{
+	if (ft_strncmp(line, "a ", 2) == 0)
+		parser_error("Invalid identifier 'a' (use 'A' for ambient light)",
+			state->line_num);
+	if (ft_strncmp(line, "c ", 2) == 0)
+		parser_error("Invalid identifier 'c' (use 'C' for camera)",
+			state->line_num);
+	if (ft_strncmp(line, "l ", 2) == 0)
+		parser_error("Invalid identifier 'l' (use 'L' for light)",
+			state->line_num);
+}
+
 bool	dispatch_element(const char *line, t_scene *scene,
 			t_parse_state *state)
 {
@@ -65,6 +79,7 @@ bool	dispatch_element(const char *line, t_scene *scene,
 		return (parse_plane((char *)line, scene, state));
 	if (ft_strncmp(line, "cy ", 3) == 0)
 		return (parse_cylinder((char *)line, scene, state));
+	check_case_errors(line, state);
 	return (false);
 }
 
@@ -77,25 +92,4 @@ void	validate_scene(t_parse_state *state)
 	if (!state->has_light)
 		parser_error("Scene validation failed: Missing at least one light (L)",
 			0);
-}
-
-void	parser_error(const char *msg, int line_num)
-{
-	char	*line_str;
-
-	ft_putstr_fd("Error\n", 2);
-	if (line_num > 0)
-	{
-		ft_putstr_fd("Line ", 2);
-		line_str = ft_itoa(line_num);
-		if (line_str)
-		{
-			ft_putstr_fd(line_str, 2);
-			ft_putstr_fd(": ", 2);
-			free(line_str);
-		}
-	}
-	ft_putstr_fd((char *)msg, 2);
-	ft_putstr_fd("\n", 2);
-	exit(1);
 }

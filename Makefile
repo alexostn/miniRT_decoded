@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/22 22:21:13 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/25 03:30:17 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,6 +102,7 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/scene/init_scene.c \
 			$(SRC_DIR)/parser/parse_scene.c \
 			$(SRC_DIR)/parser/parse_internal.c \
+			$(SRC_DIR)/parser/parse_error.c \
 			$(SRC_DIR)/parser/parse_ambient.c \
 			$(SRC_DIR)/parser/parse_camera.c \
 			$(SRC_DIR)/parser/parse_light.c \

@@ -56,7 +56,7 @@ C -50.0, 0,20 1,0,0 0
 ```
 ✅ Now shows error: "Camera: FOV must be in range (0,180]"
 
-### 7.4.2
+### 7.4.2✅ 
 ### Camera: ∗ FOV '-1'
 ### ∗ wrong message could be more precise 
 ### 'invalid Field of view degrees in range [0,180]
@@ -81,7 +81,7 @@ cy 50.0,1.0, 20.6   0.0,0.0,1.0   14.2   -21.42  10,0,255
 ```
 ✅ Now shows error: "Cylinder: Height must be positive"
 
-### 100.
+### 100.✅
 ### Plane: Does not show plane in parser output
 ```
 pl 0.0,0.0,-10.0    0.0, 0.7071, 0.7071   0,0,225
@@ -98,7 +98,7 @@ Sphere count: 1
 
 
 
-### 110
+### 110 ✅
 ### Cylinder: ∗ Does not show plane in parser output
 ```
 cy 50.0,0.0,20.6   0.0,0.0,1.0 14.2 21.42  10,0,255

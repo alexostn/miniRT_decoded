@@ -89,6 +89,7 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/scene/init_scene.c \
 	$(SRC_DIR)/parser/parse_scene.c \
 	$(SRC_DIR)/parser/parse_internal.c \
+	$(SRC_DIR)/parser/parse_error.c \
 	$(SRC_DIR)/parser/parse_ambient.c \
 	$(SRC_DIR)/parser/parse_camera.c \
 	$(SRC_DIR)/parser/parse_light.c \

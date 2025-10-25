@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 23:33:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 23:35:30 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:26:31 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	main(void)
 		scene.world.light.position.y,
 		scene.world.light.position.z);
 	printf("Sphere count: %d\n", scene.world.spheres_count);
+	printf("Plane count: %d\n", scene.world.planes_count);
+	printf("Cylinder count: %d\n", scene.world.cylinders_count);
 	printf("\n✓ All tests passed!\n");
 	printf("========================================\n");
 	return (0);
