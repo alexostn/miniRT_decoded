@@ -42,7 +42,7 @@ static void	parse_pl_vectors(char **ptr, t_tuple *point,
 static t_plane	create_plane_with_transform(t_tuple point, t_tuple normal,
 		t_parse_state *state)
 {
-	t_plane	plane;
+	t_plane		plane;
 	t_matrix	orientation;
 	t_matrix	translate;
 	t_matrix	transform;

@@ -20,7 +20,7 @@
 # include "materials.h"
 # include "intersect.h"
 
-typedef struct s_world	t_world;
+typedef struct s_world				t_world;
 
 typedef enum e_object_type
 {
@@ -42,14 +42,14 @@ typedef struct s_object_ref
 */
 typedef struct s_comps
 {
-	double		t;
+	double			t;
 	t_object_ref	object;
-	t_tuple		point;
-	t_tuple		over_point;
-	t_tuple		eyev;
-	t_tuple		normalv;
-	bool		inside_hit;
-	t_material	material;
+	t_tuple			point;
+	t_tuple			over_point;
+	t_tuple			eyev;
+	t_tuple			normalv;
+	bool			inside_hit;
+	t_material		material;
 }				t_comps;
 
 t_comps	prepare_computations(t_world *world, t_intersection hit, t_ray r);

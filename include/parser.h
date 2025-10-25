@@ -24,6 +24,8 @@
 # include "camera.h"
 # include "cylinders.h"
 # include "planes.h"
+# include "parser_numbers.h"
+# include "parser_utils.h"
 
 /* Parser state tracker */
 typedef struct s_parse_state
@@ -47,10 +49,7 @@ bool		parse_cylinder(char *line, t_scene *scene, t_parse_state *state);
 bool		parse_cone(char *line, t_scene *scene, t_parse_state *state);
 
 /* Helper parsers */
-bool		parse_vector3(char **str, t_tuple *vec);
 bool		parse_color_rgb(char **str, t_tuple *color);
-bool		parse_double(char **str, double *val);
-bool		build_orientation_matrix(t_tuple direction, t_matrix *out);
 
 /* Validation */
 bool		validate_range(double val, double min, double max);
