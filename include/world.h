@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:31:51 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:46:44 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_world
 {
 	bool			light_present;
 	t_point_light	light;
+	t_point_light	lights[MAX_OBJECTS];
+	int				lights_count;
 	t_sphere		spheres[MAX_OBJECTS];
 	int				spheres_count;
 	t_plane			planes[MAX_OBJECTS];
@@ -65,7 +67,7 @@ typedef struct s_world
 t_world		world_make(void);
 t_world		default_world(void);
 t_xs		intersect_world(t_world *w, t_ray r);
-bool		is_shadowed(t_world world, t_tuple point);
+bool		is_shadowed(t_world world, t_tuple point, t_point_light light);
 
 t_tuple		color_at(t_world *w, t_ray r);
 
@@ -83,6 +85,7 @@ bool		world_add_sphere(t_world *world, t_sphere sphere);
 bool		world_add_plane(t_world *world, t_plane plane);
 bool		world_add_cylinder(t_world *world, t_cylinder cylinder);
 bool		world_add_cone(t_world *world, t_cone cone);
+bool		world_add_light(t_world *world, t_point_light light);
 
 /* Alias for parser compatibility (calls world_add_sphere) */
 bool		world_add_object(t_world *world, t_sphere sphere);

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:52:35 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 03:01:09 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:45:46 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,18 @@ static void	parse_light_params(char *ptr, t_tuple *pos,
 
 bool	parse_light(char *line, t_scene *scene, t_parse_state *state)
 {
-	char	*ptr;
-	t_tuple	position;
-	t_tuple	color;
+	char			*ptr;
+	t_tuple			position;
+	t_tuple			color;
+	t_point_light	light;
 
 	ptr = line + 1;
 	parse_light_params(ptr, &position, &color, state);
-	scene->world.light = point_light(position, color);
+	light = point_light(position, color);
+	scene->world.light = light;
 	scene->world.light_present = true;
+	if (!world_add_light(&scene->world, light))
+		parser_error("Light: Too many lights (MAX_OBJECTS reached)",
+			state->line_num);
 	return (true);
 }

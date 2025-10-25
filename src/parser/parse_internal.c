@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:34:28 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:45:59 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,8 @@ bool	dispatch_element(const char *line, t_scene *scene,
 		return (true);
 	if (ft_strncmp(line, "L ", 2) == 0)
 	{
-		if (state->has_light)
-			parser_error("Light can only be defined once in mandatory",
-				state->line_num);
-		state->has_light = true;
+		if (!state->has_light)
+			state->has_light = true;
 		return (parse_light((char *)line, scene, state));
 	}
 	if (ft_strncmp(line, "sp ", 3) == 0)

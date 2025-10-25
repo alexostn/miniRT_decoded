@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:23:53 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/07 17:29:50 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:47:04 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,23 @@ t_comps	prepare_computations_sphere(t_intersection i, t_ray r, t_sphere s)
 t_tuple	shade_hit(t_world world, t_comps comps)
 {
 	t_lighting_args	args;
+	t_tuple			final_color;
 	bool			in_shadow;
+	int				i;
 
-	args.material = comps.sphere.material;
-	args.light = world.light;
-	args.position = comps.over_point;
-	args.eyev = comps.eyev;
-	args.normalv = comps.normalv;
-	in_shadow = false;
-	if (world.light_present)
-		in_shadow = is_shadowed(world, comps.over_point);
-	args.in_shadow = in_shadow;
-	return (lighting(args));
+	final_color = color_d(0, 0, 0);
+	i = 0;
+	while (i < world.lights_count)
+	{
+		args.material = comps.sphere.material;
+		args.light = world.lights[i];
+		args.position = comps.over_point;
+		args.eyev = comps.eyev;
+		args.normalv = comps.normalv;
+		in_shadow = is_shadowed(world, comps.over_point, world.lights[i]);
+		args.in_shadow = in_shadow;
+		final_color = add(final_color, lighting(args));
+		i++;
+	}
+	return (final_color);
 }

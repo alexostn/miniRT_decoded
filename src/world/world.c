@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:29:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:32:01 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:46:53 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_world	world_make(void)
 	w.light_present = false;
 	w.light.position = tuple(0, 0, 0, 0);
 	w.light.intensity = tuple(0, 0, 0, 0);
+	w.lights_count = 0;
 	w.spheres_count = 0;
 	w.planes_count = 0;
 	w.cylinders_count = 0;
@@ -61,14 +62,12 @@ t_world	default_world(void)
 	return (w);
 }
 
-bool	is_shadowed(t_world world, t_tuple point)
+bool	is_shadowed(t_world world, t_tuple point, t_point_light light)
 {
 	t_shadow_check	calc;
 	bool			shadowed;
 
-	if (!world.light_present)
-		return (false);
-	calc.vector_to_light = substract_tuples(world.light.position, point);
+	calc.vector_to_light = substract_tuples(light.position, point);
 	calc.distance = magnitude_of_vector(calc.vector_to_light);
 	calc.direction = normalize_vector(calc.vector_to_light);
 	calc.shadow_ray = ray(point, calc.direction);
