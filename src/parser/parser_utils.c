@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "parser.h"
+#include "tuples.h"
+#include "matrices.h"
 
 /*
 ** skip_whitespace - Skip spaces and tabs
@@ -103,5 +106,39 @@ bool	parse_vector3(char **str, t_tuple *vec)
 	if (!parse_double(str, &z))
 		return (false);
 	*vec = point(x, y, z);
+	return (true);
+}
+
+bool	build_orientation_matrix(t_tuple direction, t_matrix *out)
+{
+	t_tuple	up;
+	t_tuple	reference;
+	t_tuple	right;
+	t_tuple	forward;
+
+	if (!out)
+		return (false);
+	up = normalize_vector(direction);
+	if (magnitude_of_vector(up) < EPS)
+		return (false);
+	reference = vector(0, 1, 0);
+	if (fabs(dot_product(up, reference)) > 0.999)
+		reference = vector(1, 0, 0);
+	right = cross_product(reference, up);
+	if (magnitude_of_vector(right) < EPS)
+		return (false);
+	right = normalize_vector(right);
+	forward = cross_product(up, right);
+	forward = normalize_vector(forward);
+	*out = mat_identity();
+	(*out).data[0][0] = right.x;
+	(*out).data[0][1] = right.y;
+	(*out).data[0][2] = right.z;
+	(*out).data[1][0] = up.x;
+	(*out).data[1][1] = up.y;
+	(*out).data[1][2] = up.z;
+	(*out).data[2][0] = forward.x;
+	(*out).data[2][1] = forward.y;
+	(*out).data[2][2] = forward.z;
 	return (true);
 }

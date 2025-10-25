@@ -32,6 +32,7 @@ static void	parse_cy_vectors(char **ptr, t_tuple *center,
 	skip_ws(ptr);
 	if (!parse_vector3(ptr, axis))
 		parser_error("Cylinder: Invalid axis vector", state->line_num);
+	axis->w = 0.0;
 	mag = magnitude_of_vector(*axis);
 	if (mag < 0.999 || mag > 1.001)
 		parser_error("Cylinder: Axis must be normalized (x²+y²+z²=1)",
@@ -53,14 +54,19 @@ static void	parse_cy_dimensions(char **ptr, double *diam,
 		parser_error("Cylinder: Height must be positive", state->line_num);
 }
 
-static t_matrix	create_cy_transform(t_tuple center, double diam, double h)
+static bool	create_cy_transform(t_tuple center, t_tuple axis,
+				double diameter, t_matrix *out)
 {
 	t_matrix	scale;
 	t_matrix	trans;
+	t_matrix	orientation;
 
-	scale = scaling(diam / 2.0, h, diam / 2.0);
+	if (!build_orientation_matrix(normalize_vector(axis), &orientation))
+		return (false);
+	scale = scaling(diameter / 2.0, 1.0, diameter / 2.0);
 	trans = translation(center.x, center.y, center.z);
-	return (mat_mul(trans, scale));
+	*out = mat_mul(trans, mat_mul(orientation, scale));
+	return (true);
 }
 
 bool	parse_cylinder(char *line, t_scene *scene, t_parse_state *state)
@@ -70,6 +76,7 @@ bool	parse_cylinder(char *line, t_scene *scene, t_parse_state *state)
 	double		dims[2];
 	t_tuple		color;
 	t_cylinder	cy;
+	t_matrix	transform;
 
 	parse_cy_vectors(&line, &center, &axis, state);
 	parse_cy_dimensions(&line, &dims[0], &dims[1], state);
@@ -77,9 +84,15 @@ bool	parse_cylinder(char *line, t_scene *scene, t_parse_state *state)
 	if (!parse_color_rgb(&line, &color))
 		parser_error("Cylinder: Invalid color RGB values", state->line_num);
 	cy = cylinder_create();
-	cy = cylinder_set_transform(cy, create_cy_transform(center, dims[0],
-				dims[1]));
+	if (!create_cy_transform(center, axis, dims[0], &transform))
+		parser_error("Cylinder: Failed to apply axis rotation", state->line_num);
+	cy = cylinder_set_transform(cy, transform);
+	cy.minimum = -(dims[1] / 2.0);
+	cy.maximum = dims[1] / 2.0;
+	cy.closed = true;
 	cy.shape.material.color = color;
-	world_add_cylinder(&scene->world, cy);
+	if (!world_add_cylinder(&scene->world, cy))
+		parser_error("Cylinder: Too many cylinders (MAX_OBJECTS reached)",
+			state->line_num);
 	return (true);
 }

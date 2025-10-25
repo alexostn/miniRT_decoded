@@ -50,6 +50,7 @@ bool		parse_cone(char *line, t_scene *scene, t_parse_state *state);
 bool		parse_vector3(char **str, t_tuple *vec);
 bool		parse_color_rgb(char **str, t_tuple *color);
 bool		parse_double(char **str, double *val);
+bool		build_orientation_matrix(t_tuple direction, t_matrix *out);
 
 /* Validation */
 bool		validate_range(double val, double min, double max);

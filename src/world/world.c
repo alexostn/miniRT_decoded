@@ -27,6 +27,8 @@ t_world	world_make(void)
 	w.light_present = false;
 	w.light.position = tuple(0, 0, 0, 0);
 	w.light.intensity = tuple(0, 0, 0, 0);
+	w.ambient_ratio = 0.1;
+	w.ambient_color = color_d(1.0, 1.0, 1.0);
 	w.lights_count = 0;
 	w.spheres_count = 0;
 	w.planes_count = 0;
@@ -91,7 +93,6 @@ t_tuple	color_at(t_world *w, t_ray r)
 	t_xs			xs;
 	t_intersection	hit;
 	t_tuple			result;
-	t_sphere		*object;
 	t_comps			comps;
 
 	xs = intersect_world(w, r);
@@ -101,8 +102,7 @@ t_tuple	color_at(t_world *w, t_ray r)
 		intersections_destroy(&xs);
 		return (color_d(0.0, 0.0, 0.0));
 	}
-	object = (t_sphere *)hit.object;
-	comps = prepare_computations_sphere(hit, r, *object);
+	comps = prepare_computations(w, hit, r);
 	result = shade_hit(*w, comps);
 	intersections_destroy(&xs);
 	return (result);

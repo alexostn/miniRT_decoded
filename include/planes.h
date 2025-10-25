@@ -33,5 +33,6 @@ t_xs	plane_local_intersect(t_plane *p, t_ray local_ray);
 
 /* Convenience: world-space intersect that transforms ray */
 t_xs	plane_intersect(t_plane *p, t_ray r);
+t_tuple	plane_normal_at(t_plane *p, t_tuple world_point);
 
 #endif

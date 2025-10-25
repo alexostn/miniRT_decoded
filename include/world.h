@@ -52,6 +52,8 @@ typedef struct s_world
 {
 	bool			light_present;
 	t_point_light	light;
+	double			ambient_ratio;
+	t_tuple			ambient_color;
 	t_point_light	lights[MAX_OBJECTS];
 	int				lights_count;
 	t_sphere		spheres[MAX_OBJECTS];
