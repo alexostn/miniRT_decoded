@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:35:58 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 03:22:07 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:51:38 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	validate_camera_orientation(t_tuple orientation,
 
 	mag = magnitude_of_vector(orientation);
 	if (mag < 0.999 || mag > 1.001)
-		parser_error("Camera: Orientation must be normalized (len=1)",
+		parser_error("Camera: Orientation must be normalized (x²+y²+z²=1)",
 			state->line_num);
 }
 

@@ -6,13 +6,15 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 22:57:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/20 22:55:21 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:00:46 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "window.h"
 #include "minirt.h"
 #include "parser.h"
+#include "camera.h"
+#include "image.h"
 #include "libft.h"
 #include <fcntl.h>
 
@@ -56,12 +58,17 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 	t_scene	scene;
+	t_image	*image;
 
 	validate_args(argc, argv);
 	scene = parse_scene_file(argv[1]);
 	vars.scene = &scene;
 	if (init_window(&vars))
 		return (1);
+	image = render(vars.mlx, scene.camera, &scene.world);
+	if (!image)
+		error_exit("Failed to render scene");
+	mlx_put_image_to_window(vars.mlx, vars.win, image->img_ptr, 0, 0);
 	mlx_loop(vars.mlx);
 	return (0);
 }

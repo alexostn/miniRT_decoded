@@ -20,9 +20,6 @@ L -40,50,0 0.6 255,255,256
 ```
 ✅ Now shows error: "Light: Invalid color RGB values"
 
-
-
-
 ### 7.3.1 ✅ FIXED
 ### Camera: ∗3d normalized orientation vector 
 ### In range [-1,1] for each x,y,z axis: 0.0,0.0,1.0

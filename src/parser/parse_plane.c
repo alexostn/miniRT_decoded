@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 03:10:27 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:51:38 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	parse_pl_vectors(char **ptr, t_tuple *point,
 		parser_error("Plane: Invalid normal vector", state->line_num);
 	mag = magnitude_of_vector(*normal);
 	if (mag < 0.999 || mag > 1.001)
-		parser_error("Plane: Normal must be normalized (len=1)",
+		parser_error("Plane: Normal must be normalized (x²+y²+z²=1)",
 			state->line_num);
 }
 
