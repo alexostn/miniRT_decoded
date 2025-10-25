@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 02:46:42 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:31:51 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "spheres.h"
 # include "planes.h"
 # include "cylinders.h"
+# include "cones.h"
 # include "tuples.h"
 # include "matrices.h"
 # include "transformations.h"
@@ -49,7 +50,7 @@ typedef struct s_shadow_check
 // "0" - is this absence of light or black light?
 typedef struct s_world
 {
-	bool			light_present; // explicit presence flag 
+	bool			light_present;
 	t_point_light	light;
 	t_sphere		spheres[MAX_OBJECTS];
 	int				spheres_count;
@@ -57,6 +58,8 @@ typedef struct s_world
 	int				planes_count;
 	t_cylinder		cylinders[MAX_OBJECTS];
 	int				cylinders_count;
+	t_cone			cones[MAX_OBJECTS];
+	int				cones_count;
 }	t_world;
 
 t_world		world_make(void);
@@ -79,6 +82,7 @@ t_tuple		color_at(t_world *w, t_ray r);
 bool		world_add_sphere(t_world *world, t_sphere sphere);
 bool		world_add_plane(t_world *world, t_plane plane);
 bool		world_add_cylinder(t_world *world, t_cylinder cylinder);
+bool		world_add_cone(t_world *world, t_cone cone);
 
 /* Alias for parser compatibility (calls world_add_sphere) */
 bool		world_add_object(t_world *world, t_sphere sphere);

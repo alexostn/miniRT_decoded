@@ -97,6 +97,7 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/parser/parse_helpers.c \
 	$(SRC_DIR)/parser/parse_validate.c \
 	$(SRC_DIR)/parser/parse_cylinder.c \
+	$(SRC_DIR)/parser/parse_cone.c \
 	$(SRC_DIR)/parser/parse_plane.c
 
 # Test source files

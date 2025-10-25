@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 22:30:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 22:19:47 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:32:46 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,20 @@ static void	intersect_cylinders(t_world *w, t_ray r, t_xs *result)
 	}
 }
 
+static void	intersect_cones(t_world *w, t_ray r, t_xs *result)
+{
+	t_xs	temp;
+	int		i;
+
+	i = -1;
+	while (++i < w->cones_count)
+	{
+		temp = cone_intersect(&w->cones[i], r);
+		*result = intersections_add_all(*result, &temp);
+		intersections_destroy(&temp);
+	}
+}
+
 t_xs	intersect_world(t_world *w, t_ray r)
 {
 	t_xs	result;
@@ -63,5 +77,6 @@ t_xs	intersect_world(t_world *w, t_ray r)
 	intersect_spheres(w, r, &result);
 	intersect_planes(w, r, &result);
 	intersect_cylinders(w, r, &result);
+	intersect_cones(w, r, &result);
 	return (result);
 }

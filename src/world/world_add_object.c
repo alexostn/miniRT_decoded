@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:24:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 18:36:35 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:31:41 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,15 @@ bool	world_add_cylinder(t_world *world, t_cylinder cylinder)
 		return (false);
 	world->cylinders[world->cylinders_count] = cylinder;
 	world->cylinders_count++;
+	return (true);
+}
+
+bool	world_add_cone(t_world *world, t_cone cone)
+{
+	if (world->cones_count >= MAX_OBJECTS)
+		return (false);
+	world->cones[world->cones_count] = cone;
+	world->cones_count++;
 	return (true);
 }
 

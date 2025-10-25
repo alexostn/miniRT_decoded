@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:29:33 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 22:19:59 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:32:01 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_world	world_make(void)
 	w.spheres_count = 0;
 	w.planes_count = 0;
 	w.cylinders_count = 0;
+	w.cones_count = 0;
 	return (w);
 }
 
