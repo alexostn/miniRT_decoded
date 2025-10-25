@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/25 03:30:17 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/25 04:13:12 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -227,6 +227,23 @@ fclean: clean
 
 re: fclean all
 
+# --- RUN WITH OPTIONAL VALGRIND ---
+# Usage: make run SCENE=scenes/simple_test.rt [V=1]
+# Example: make run SCENE=scenes/simple_test.rt V=1
+run: $(NAME)
+	@if [ -z "$(SCENE)" ]; then \
+		echo "Error: Please specify SCENE=<file.rt>"; \
+		echo "Usage: make run SCENE=scenes/simple_test.rt [V=1]"; \
+		exit 1; \
+	fi
+	@echo "🚀 Running miniRT with $(SCENE)"
+ifeq ($(V),1)
+	@echo "🔍 Running with Valgrind..."
+	$(RUNNER) ./$(NAME) $(SCENE)
+else
+	./$(NAME) $(SCENE)
+endif
+
 # New organized test system
 run_test:
 	cd tests && make test
@@ -421,7 +438,7 @@ $(SCENE_EXEC): $(SCENE_SRC) $(SCENE_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_T
 	$(CC) $(CFLAGS) -o $(SCENE_EXEC) $(SCENE_SRC) $(SCENE_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_FLAGS) $(MLX_LIB)
 
 planes: $(PLANES_EXEC)
-	@echo "🟫 Rendering planes demo..."
+	@echo "🛫 □ Rendering planes demo..."
 	$(RUNNER) ./$(PLANES_EXEC)
 
 $(PLANES_EXEC): $(PLANES_SRC) $(PLANES_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
@@ -429,7 +446,7 @@ $(PLANES_EXEC): $(PLANES_SRC) $(PLANES_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(ML
 
 # Cylinders demo
 cylinders: $(CYLINDERS_EXEC)
-	@echo "🧱 Rendering cylinders demo..."
+	@echo "🛢 Rendering cylinders demo..."
 	$(RUNNER) ./$(CYLINDERS_EXEC)
 
 $(CYLINDERS_EXEC): $(CYLINDERS_SRC) $(CYLINDERS_OBJS) $(DEMO_UTILS_OBJ) $(LIBFT_LIB) $(MLX_TARGET)
@@ -442,9 +459,14 @@ help:
 	@echo "Available targets:"
 	@echo "  all              - Build the main miniRT project!"
 	@echo ""
+	@echo "� RUNNING:"
+	@echo "  run SCENE=<file> - Run miniRT with a scene file"
+	@echo "  run SCENE=<file> V=1 - Run miniRT with Valgrind"
+	@echo "  Example: make run SCENE=scenes/simple_test.rt"
+	@echo "  Example: make run SCENE=scenes/simple_test.rt V=1"
+	@echo ""
 	@echo "📚 TESTING:"
 	@echo "  run_test         - Run ALL chapter tests (ch1-ch13)"
-	@echo "           - Run ALL chapter tests (ch1-ch13)"
 	@echo "  test-all-valgrind - Run ALL chapter tests with Valgrind"
 	@echo "  test-ch1         - Run Chapter 1 tests"
 	@echo "  test-ch2         - Run Chapter 2 tests"
@@ -495,7 +517,7 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 test-parser test-all test-all-valgrind help clock sphere world shadow planes cylinders
+.PHONY: all clean fclean re run test-ch1 test-ch2 test-ch3 test-ch4 test-ch5 test-ch6 test-ch7 test-ch8 test-ch9 test-ch13 test-parser test-all test-all-valgrind help clock sphere world shadow planes cylinders
 
 #!!!DELETE valgrind.log as well
 # rm -f valgrind.log  # <-- to delete later
