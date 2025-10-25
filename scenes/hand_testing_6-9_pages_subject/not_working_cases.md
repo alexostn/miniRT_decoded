@@ -48,12 +48,13 @@ Error
 Line 2: Invalid identifier or scene format ()
 
 
-### 7.4.1
+### 7.4.1 ✅ FIXED
 ### Camera: ∗ FOV 0 is technically possible but logically better parse as mistake as you can see nothing
+### ∗ FOV must be in range (0,180]
 ```
 C -50.0, 0,20 1,0,0 0
 ```
-Camera FOV: 0.00 radians
+✅ Now shows error: "Camera: FOV must be in range (0,180]"
 
 ### 7.4.2
 ### Camera: ∗ FOV '-1'
@@ -121,6 +122,4 @@ Line 3: Invalid identifier or scene format
 
 ### X.
 ### 
-```
-
 ```

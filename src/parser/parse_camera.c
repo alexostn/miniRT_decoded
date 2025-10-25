@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:35:58 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 03:10:27 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 03:22:07 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ static void	parse_cam_params(char *ptr, t_tuple *from,
 	validate_camera_orientation(*orient, state);
 	if (!parse_double(&ptr, &fov))
 		parser_error("Camera: Invalid FOV value", state->line_num);
-	if (!validate_range(fov, 0, 180))
-		parser_error("Camera: FOV in range [0,180] degrees", state->line_num);
+	if (fov <= 0 || fov > 180)
+		parser_error("Camera: FOV must be > 0 and <= 180 degrees",
+			state->line_num);
 	if (!check_end_of_line(ptr))
 		parser_error("Camera: Unexpected extra parameters", state->line_num);
 	from->w = fov;
