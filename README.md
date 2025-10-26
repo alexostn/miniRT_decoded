@@ -16,6 +16,12 @@ make re
 ./miniRT
 # Starts a window that can be closed with the X button or ESC key
 ```
+# Quick render with make (automatically builds if needed)
+make run SCENE=scenes/3_spheres.rt
+
+# or with verbose build output (this is light scene to test fast also use smaller window)
+make run SCENE=scenes/3_spheres.rt V=1
+
 
 ## Testing System (NEW UNIFIED SYSTEM)
 

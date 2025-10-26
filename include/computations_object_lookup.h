@@ -1,4 +1,14 @@
-/* computations_object_lookup.h */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   computations_object_lookup.h                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/26 21:12:52 by oostapen          #+#    #+#             */
+/*   Updated: 2025/10/26 21:13:15 by alex             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef COMPUTATIONS_OBJECT_LOOKUP_H
 # define COMPUTATIONS_OBJECT_LOOKUP_H
