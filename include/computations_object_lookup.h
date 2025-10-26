@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 21:12:52 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/26 21:13:15 by alex             ###   ########.fr       */
+/*   Updated: 2025/10/26 23:14:16 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 typedef struct s_lookup_ctx
 {
-	void		*array;
-	size_t		stride;
-	int		count;
+	void			*array;
+	size_t			stride;
+	int				count;
 	t_object_type	type;
 }	t_lookup_ctx;
 
