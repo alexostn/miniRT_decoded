@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cone.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 04:35:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:32:46 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/27 02:06:56 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,32 +53,32 @@ static void	parse_co_dimensions(char **ptr, double *diam,
 		parser_error("Cone: Height must be positive", state->line_num);
 }
 
-static t_matrix	create_co_transform(t_tuple center, double diam, double h)
-{
-	t_matrix	scale;
-	t_matrix	trans;
-
-	scale = scaling(diam / 2.0, h, diam / 2.0);
-	trans = translation(center.x, center.y, center.z);
-	return (mat_mul(trans, scale));
-}
-
+/*
+** For double cone (two cones joined at apex):
+**   co.minimum = -dims[1];
+**   co.closed = false;
+*/
 bool	parse_cone(char *line, t_scene *scene, t_parse_state *state)
 {
-	t_tuple	center;
-	t_tuple	axis;
-	double	dims[2];
-	t_tuple	color;
-	t_cone	co;
+	t_tuple		data[3];
+	double		dims[2];
+	t_cone		co;
+	t_matrix	orient;
 
-	parse_co_vectors(&line, &center, &axis, state);
+	parse_co_vectors(&line, &data[0], &data[1], state);
 	parse_co_dimensions(&line, &dims[0], &dims[1], state);
 	skip_ws(&line);
-	if (!parse_color_rgb(&line, &color))
+	if (!parse_color_rgb(&line, &data[2]))
 		parser_error("Cone: Invalid color RGB values", state->line_num);
 	co = cone_create();
-	co.shape.transform = create_co_transform(center, dims[0], dims[1]);
-	co.shape.material.color = color;
+	if (!build_orientation_matrix(normalize_vector(data[1]), &orient))
+		parser_error("Cone: Cannot create orientation matrix", state->line_num);
+	co.shape.transform = mat_mul(translation(data[0].x, data[0].y, data[0].z),
+			mat_mul(orient, scaling(dims[0] / 2.0, 1.0, dims[0] / 2.0)));
+	co.minimum = 0.0;
+	co.maximum = dims[1];
+	co.closed = true;
+	co.shape.material.color = data[2];
 	world_add_cone(&scene->world, co);
 	return (true);
 }
