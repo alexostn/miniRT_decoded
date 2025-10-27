@@ -3,6 +3,8 @@
 This document describes the format of each geometric shape in the `.rt` scene file.
 
 ---
+choose color you wish in RGB:
+https://www.schemecolor.com/calmingly-fresh.php
 
 ## Sphere (sp)
 
