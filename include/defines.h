@@ -14,8 +14,8 @@
 # define DEFINES_H
 
 /*for window not for FOV - small resolution for fast rendering (2.5x subject)*/
-# define WIN_WIDTH 250
-# define WIN_HEIGHT 125
+# define WIN_WIDTH 400
+# define WIN_HEIGHT 200
 
 /* precision for comparing float/double */
 /*#  define EPS 1e-6 to be closer to book I came back to 0.00001 (1e-5)*/
