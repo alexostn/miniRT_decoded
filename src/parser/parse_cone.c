@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 04:35:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/27 02:13:34 by alex             ###   ########.fr       */
+/*   Updated: 2025/10/27 02:25:04 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ bool	parse_cone(char *line, t_scene *scene, t_parse_state *state)
 		parser_error("Cone: Cannot create orientation matrix", state->line_num);
 	co.shape.transform = mat_mul(translation(data[0].x, data[0].y, data[0].z),
 			mat_mul(orient, scaling(dims[0] / 2.0, 1.0, dims[0] / 2.0)));
-	co.minimum = -dims[1];
+	co.minimum = 0.0;
 	co.maximum = dims[1];
-	co.closed = false;
+	co.closed = true;
 	co.shape.material.color = data[2];
 	world_add_cone(&scene->world, co);
 	return (true);
