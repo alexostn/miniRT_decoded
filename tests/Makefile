@@ -67,6 +67,9 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/world/world_add_light.c \
 	$(SRC_DIR)/world/world_intersect.c \
 	$(SRC_DIR)/computations/computations.c \
+	$(SRC_DIR)/computations/computations_compat.c \
+	$(SRC_DIR)/computations/object_lookup.c \
+	$(SRC_DIR)/computations/lighting_support.c \
 	$(SRC_DIR)/camera/camera.c \
 	$(SRC_DIR)/render/render.c \
 	$(SRC_DIR)/shapes/shapes.c \
@@ -95,11 +98,13 @@ SRCS = $(SRC_DIR)/window.c \
 	$(SRC_DIR)/parser/parse_camera.c \
 	$(SRC_DIR)/parser/parse_light.c \
 	$(SRC_DIR)/parser/parse_sphere.c \
-	$(SRC_DIR)/parser/parse_helpers.c \
+	$(SRC_DIR)/parser/parser_color.c \
 	$(SRC_DIR)/parser/parse_validate.c \
 	$(SRC_DIR)/parser/parse_cylinder.c \
 	$(SRC_DIR)/parser/parse_cone.c \
-	$(SRC_DIR)/parser/parse_plane.c
+	$(SRC_DIR)/parser/parse_plane.c \
+	$(SRC_DIR)/parser/helpers/parser_numbers.c \
+	$(SRC_DIR)/parser/helpers/parser_orientation.c
 
 # Test source files
 TEST_SRCS = test_common.c \

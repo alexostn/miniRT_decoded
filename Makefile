@@ -81,6 +81,7 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/world/world_add_light.c \
 			$(SRC_DIR)/world/world_intersect.c \
 			$(SRC_DIR)/computations/computations.c \
+			$(SRC_DIR)/computations/computations_compat.c \
 			$(SRC_DIR)/computations/object_lookup.c \
 			$(SRC_DIR)/computations/lighting_support.c \
 			$(SRC_DIR)/camera/camera.c \

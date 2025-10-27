@@ -72,7 +72,7 @@ t_lighting_args	build_light_args(t_world world, t_comps *comps, int index)
 	args.position = comps->over_point;
 	args.eyev = comps->eyev;
 	args.normalv = comps->normalv;
-	args.in_shadow = is_shadowed(world,
+	args.in_shadow = is_shadowed_from_light(world,
 			comps->over_point, world.lights[index]);
 	return (args);
 }

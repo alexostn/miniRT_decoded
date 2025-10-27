@@ -14,12 +14,10 @@
 #include "intersect.h"
 #include "computations.h"
 
-// --------------- STATIC MEMORY VERSION ----------------
-// Note: w.light.val doesn't need initialization when present=false
-// Note: spheres array doesn't need initialization for empty world
-// TODO:
-// w.planes_count = 0;
-// w.cylinders_count = 0;
+/* -------------------------------------------------------------------------- */
+/*                               World builders                               */
+/* -------------------------------------------------------------------------- */
+
 t_world	world_make(void)
 {
 	t_world	w;
@@ -37,20 +35,17 @@ t_world	world_make(void)
 	return (w);
 }
 
-// Initializes empty world
-// Set up light
-// Create first sphere (outer) with custom material
-// Create second sphere (inner) with scaling
 t_world	default_world(void)
 {
-	t_world			w;
-	t_material		m1;
+	t_world		w;
+	t_material	m1;
 
 	w = world_make();
-	w.light_present = true;
-	w.light.position = point(-10, 10, -10);
-	w.light.intensity = point(1, 1, 1);
-	w.spheres[0] = sphere_create();
+w.light_present = true;
+w.light.position = point(-10, 10, -10);
+w.light.intensity = point(1, 1, 1);
+world_add_light(&w, w.light);
+w.spheres[0] = sphere_create();
 	m1 = material_create();
 	m1.color = point(0.8, 1.0, 0.6);
 	m1.diffuse = 0.7;
@@ -64,10 +59,15 @@ t_world	default_world(void)
 	return (w);
 }
 
-bool	is_shadowed(t_world world, t_tuple point, t_point_light light)
+/* -------------------------------------------------------------------------- */
+/*                              Shadow handling                               */
+/* -------------------------------------------------------------------------- */
+
+bool	is_shadowed_from_light(t_world world, t_tuple point,
+				 t_point_light light)
 {
 	t_shadow_check	calc;
-	bool			shadowed;
+	bool		shadowed;
 
 	calc.vector_to_light = substract_tuples(light.position, point);
 	calc.distance = magnitude_of_vector(calc.vector_to_light);
@@ -80,20 +80,25 @@ bool	is_shadowed(t_world world, t_tuple point, t_point_light light)
 	return (shadowed);
 }
 
-/*
-**   - w: pointer to world (stack or heap)
-**   - r: ray to trace
-** Returns: color tuple (with w=0.0 for valid RGB)
-** Note: This is the public API used by render() and tests.
-**       Internally calls shade_hit() with shadow calculations.
-** HEAP_READY: Works with both stack (world_make) and heap (world_create)
-*/
+bool	is_shadowed(t_world world, t_tuple point)
+{
+	if (world.lights_count > 0)
+		return (is_shadowed_from_light(world, point, world.lights[0]));
+	if (world.light_present)
+		return (is_shadowed_from_light(world, point, world.light));
+	return (false);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Color computation                             */
+/* -------------------------------------------------------------------------- */
+
 t_tuple	color_at(t_world *w, t_ray r)
 {
 	t_xs			xs;
 	t_intersection	hit;
-	t_tuple			result;
-	t_comps			comps;
+	t_tuple		result;
+	t_comps		comps;
 
 	xs = intersect_world(w, r);
 	hit = intersections_hit(xs);

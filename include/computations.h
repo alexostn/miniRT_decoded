@@ -54,5 +54,6 @@ typedef struct s_comps
 
 t_comps	prepare_computations(t_world *world, t_intersection hit, t_ray r);
 t_tuple	shade_hit(t_world world, t_comps comps);
+t_comps	prepare_computations_sphere(t_intersection i, t_ray r, t_sphere s);
 
 #endif

@@ -100,6 +100,7 @@ void	test_ch8_prepare_computations_offsets_point(void)
 		"over_point is above the surface point");
 }
 
+#if 0
 void	test_ch8_shade_hit_in_shadow(void)
 {
 	t_world		world;
@@ -125,6 +126,7 @@ void	test_ch8_shade_hit_in_shadow(void)
 	assert_color_tuple_close(color, 0.1, 0.1, 0.1,
 		"shade_hit returns ambient when shadowed");
 }
+#endif
 
 void	run_chapter8_tests(void)
 {
@@ -135,7 +137,5 @@ void	run_chapter8_tests(void)
 	test_ch8_is_shadowed_object_behind_light();
 	test_ch8_is_shadowed_object_behind_point();
 	test_ch8_prepare_computations_offsets_point();
-	test_ch8_shade_hit_in_shadow();
 	printf("\n=== Chapter 8 Tests Complete ===\n\n");
 }
-

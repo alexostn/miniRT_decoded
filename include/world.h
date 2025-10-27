@@ -69,7 +69,9 @@ typedef struct s_world
 t_world		world_make(void);
 t_world		default_world(void);
 t_xs		intersect_world(t_world *w, t_ray r);
-bool		is_shadowed(t_world world, t_tuple point, t_point_light light);
+bool		is_shadowed(t_world world, t_tuple point);
+bool		is_shadowed_from_light(t_world world, t_tuple point,
+					t_point_light light);
 
 t_tuple		color_at(t_world *w, t_ray r);
 

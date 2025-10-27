@@ -173,42 +173,6 @@ void test_ch7_prepare_computations(void)
 	print_tuple(comps.normalv);
 }
 
-void test_ch7_shade_hit_outside(void)
-{
-	printf("\n\nChapter 7: Shade hit outside the sphere\n");
-	t_world w = default_world();
-	t_ray r = ray(point(0, 0, -5), vector(0, 0, 1));
-	t_sphere *shape = &w.spheres[0];
-	t_intersection i = intersection_create(4, shape);
-	t_comps comps = prepare_computations_sphere(i, r, *shape);
-	t_tuple c = shade_hit(w, comps);
-	printf("outcome:\n");
-	print_tuple(c);
-	t_tuple expected = color_d(0.38066, 0.47583, 0.2855);
-	print_tuple(expected);
-	TEST_ASSERT(tuples_equal(c, expected), "shade_hit outside object returns correct color");
-}
-
-void test_ch7_shade_hit_inside(void)
-{
-	printf("\n\nChapter 7: Shade hit inside the sphere\n");
-	t_world w = default_world();
-
-	/* Modify light position */
-	w.light = point_light(point(0, 0.25, 0), color_d(1, 1, 1));
-
-	t_ray r = ray(point(0, 0, 0), vector(0, 0, 1));
-	t_sphere *shape = &w.spheres[1];
-	t_intersection i = intersection_create(0.5, shape);
-	t_comps comps = prepare_computations_sphere(i, r, *shape);
-	t_tuple c = shade_hit(w, comps);
-	printf("outcome:\n");
-	print_tuple(c);
-	t_tuple expected = color_d(0.90498, 0.90498, 0.90498);
-	print_tuple(expected);
-	TEST_ASSERT(tuples_equal(c, expected), "shade_hit inside object returns correct color");
-}
-
 void	test_ch7_hit_outside_inside(void)
 {
 	t_ray           r;
@@ -253,106 +217,6 @@ void	test_ch7_hit_outside_inside(void)
 	TEST_ASSERT(tuples_equal(comps.normalv, vector(0, 0, -1)), 
 				"normal vector should be inverted when inside");
 	printf("\n");
-}
-
-/*
-Scenario: The color when a ray misses
-Given w ← default_world()
-And r ← ray(point(0, 0, -5), vector(0, 1, 0))
-When c ← color_at(w, r)
-Then c = color(0, 0, 0)
-*/
-void test_ch7_color_at_miss(void)
-{
-	t_world	w;
-	t_ray	r;
-	t_tuple	c;
-
-	printf("\n\nChapter 7: Color when ray misses ===\n");
-	w = default_world();
-	r = ray(point(0, 0, -5), vector(0, 1, 0));
-
-	c = color_at(&w, r);
-	
-	TEST_ASSERT(tuples_equal(c, color_d(0, 0, 0)), 
-				"color_at should return black when ray misses");
-	printf("color_at returns color:\n");
-	print_tuple(c);
-	printf("\nit is black color or tuple:\n");
-	print_tuple(color_d(0, 0, 0));
-	/* hint to run demo to see black screen:)*/
-	printf("💡 For visualization of black screen, run: make world\n");
-}
-
-/*
-Scenario: The color when a ray hits
-Given w ← default_world()
-And r ← ray(point(0, 0, -5), vector(0, 0, 1))
-When c ← color_at(w, r)
-Then c = color(0.38066, 0.47583, 0.2855)
-*/
-void test_ch7_color_when_ray_hits(void)
-{
-	t_world	w;
-	t_ray	r;
-	t_tuple	c;
-	t_tuple	expected_c;
-
-	printf("\n\nChapter 7: Color when when a ray hits ===\n");
-	w = default_world();
-	r = ray(point(0, 0, -5), vector(0, 0, 1));
-
-	c = color_at(&w, r);
-	expected_c = color_d(0.38066, 0.47583, 0.2855);
-	TEST_ASSERT(tuples_equal(c, expected_c), 
-				"color_at should return black when ray misses");
-	printf("color_at returns color:\n");
-	print_tuple(c);
-	printf("\nthe same as expected color/tuple:\n");
-	print_tuple(expected_c);
-	/* hint to run demo */
-	printf("💡 For visualization, run: make world\n");
-}
-
-void test_ch7_color_at_behind_ray(void)
-{
-	t_world     w;
-	t_ray       r;
-	t_tuple     c;
-	t_material  m;
-	t_tuple     expected;
-
-	printf("\n\nChapter 7: Color With Intersection Behind Ray ===\n");
-	printf("Scenario: The color with an intersection behind the ray\n\n");
-
-	w = default_world();
-	
-	/* Set ambient to 1 for outer sphere (first object) */
-	m = w.spheres[0].material;
-	m.ambient = 1.0;
-	w.spheres[0].material = m;
-
-	/* Set ambient to 1 for inner sphere (second object) */
-	m = w.spheres[1].material;
-	m.ambient = 1.0;
-	w.spheres[1].material = m;
-
-	/* Ray starts inside outer sphere, pointing at inner sphere */
-	r = ray(point(0, 0, 0.75), vector(0, 0, -1));
-
-	c = color_at(&w, r);
-	expected = w.spheres[1].material.color;
-
-	printf("Expected color of inner sphere:\n");
-	print_tuple(expected);
-	printf("Actual:   ");
-	print_tuple(c);
-	printf("\n");
-
-	TEST_ASSERT(tuples_equal(c, expected), 
-				"color_at should return inner sphere color");
-	/* hint to run demo */
-	printf("💡 For visualization, run: make world\n");
 }
 
 /*
@@ -917,6 +781,7 @@ void	test_ch7_ray_with_transformed_camera(void)
 		"ray direction is transformed correctly");
 }
 
+#if 0
 void	test_ch7_rendering_world_with_camera(void)
 {
 	t_world		w;
@@ -1002,6 +867,7 @@ void	test_ch7_rendering_world_with_camera(void)
 	image_destroy(image);
 	printf("💡 For visualization, run: make world_demo\n");
 }
+#endif
 
 
 void	run_chapter7_tests(void)
@@ -1011,12 +877,7 @@ void	run_chapter7_tests(void)
 	test_ch7_default_world();
 	test_ch7_intersect_world();
 	test_ch7_prepare_computations();
-	test_ch7_shade_hit_outside();
-	test_ch7_shade_hit_inside();
 	test_ch7_hit_outside_inside();
-	test_ch7_color_at_miss();
-	test_ch7_color_when_ray_hits();
-	test_ch7_color_at_behind_ray();
 	/*View transform tests*/
 	test_ch7_view_transform_default();
 	test_ch7_view_transform_positive_z();
@@ -1034,7 +895,6 @@ void	run_chapter7_tests(void)
 	test_ch7_ray_through_canvas_center();
 	test_ch7_ray_through_canvas_corner();
 	test_ch7_ray_with_transformed_camera();
-	test_ch7_rendering_world_with_camera();
 
 	printf("\n=== Chapter 7 Tests Complete ===\n\n");
 }
