@@ -22,7 +22,9 @@ Camera X Y Z and `view_transform();
 forward is local −Z, 
 left is local    +X, 
 true_up is local +Y;
-they are not “equal” to the world X/Y/Z
+they are not "equal" to the world X/Y/Z
+
+Fixed: Handles gimbal lock when camera looks straight up/down
 */
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
@@ -31,10 +33,19 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	t_tuple		left;
 	t_tuple		true_up;
 	t_matrix	orientation;
+	double		dot;
 
 	forward = substract_tuples(to, from);
 	forward = normalize_vector(forward);
 	up_normalized = normalize_vector(up);
+	dot = dot_product(forward, up_normalized);
+	if (fabs(fabs(dot) - 1.0) < 0.001)
+	{
+		if (fabs(forward.y) > 0.9)
+			up_normalized = vector(1, 0, 0);
+		else
+			up_normalized = vector(0, 1, 0);
+	}
 	left = cross_product(forward, up_normalized);
 	true_up = cross_product(left, forward);
 	orientation = mat_identity();

@@ -1,0 +1,35 @@
+# Complex scene with multiple lights, cones, spheres, cylinders and planes
+A 0.2 255,255,255
+C 0,8,-18 0,-0.408,0.913 75
+L -8,10,-10 0.6 255,200,200
+L 8,10,-10 0.6 200,200,255
+L 0,5,5 0.5 200,255,200
+
+# Central sphere - red
+sp 0,2,0 3.0 255,50,50
+
+# Side spheres
+sp -5,1.5,3 2.0 255,200,0
+sp 5,1.5,3 2.0 0,200,255
+
+# Cylinders forming pillars
+cy -6,0,-3 0,1,0 1.0 6.0 150,100,200
+cy 6,0,-3 0,1,0 1.0 6.0 100,200,150
+cy 0,0,8 0,1,0 1.5 5.0 200,150,100
+
+# Horizontal cylinder
+cy 0,4,0 1,0,0 0.8 12.0 100,255,200
+
+# Cones pointing up
+co -3,0,0 0,1,0 2.0 4.0 255,150,0
+co 3,0,0 0,1,0 2.0 4.0 150,0,255
+
+# Inverted cone
+co 0,5,-5 0,-1,0 1.5 3.0 0,255,255
+
+# Ground plane - checkered effect with gray
+pl 0,-1,0 0,1,0 180,180,180
+
+# Back wall
+pl 0,0,12 0,0,-1 220,220,240
+
