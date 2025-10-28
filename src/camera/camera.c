@@ -28,36 +28,9 @@ Fixed: Handles gimbal lock when camera looks straight up/down
 */
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
-	t_tuple		forward;
-	t_tuple		up_normalized;
-	t_tuple		left;
-	t_tuple		true_up;
 	t_matrix	orientation;
-	double		dot;
 
-	forward = substract_tuples(to, from);
-	forward = normalize_vector(forward);
-	up_normalized = normalize_vector(up);
-	dot = dot_product(forward, up_normalized);
-	if (fabs(fabs(dot) - 1.0) < 0.001)
-	{
-		if (fabs(forward.y) > 0.9)
-			up_normalized = vector(1, 0, 0);
-		else
-			up_normalized = vector(0, 1, 0);
-	}
-	left = cross_product(forward, up_normalized);
-	true_up = cross_product(left, forward);
-	orientation = mat_identity();
-	orientation.data[0][0] = left.x;
-	orientation.data[0][1] = left.y;
-	orientation.data[0][2] = left.z;
-	orientation.data[1][0] = true_up.x;
-	orientation.data[1][1] = true_up.y;
-	orientation.data[1][2] = true_up.z;
-	orientation.data[2][0] = -forward.x;
-	orientation.data[2][1] = -forward.y;
-	orientation.data[2][2] = -forward.z;
+	orientation = compute_orientation(from, to, up);
 	return (mat_mul(orientation, translation(-from.x, -from.y, -from.z)));
 }
 

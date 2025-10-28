@@ -45,6 +45,7 @@ typedef struct s_camera
 
 t_camera	camera_make(int hsize, int vsize, double fov);
 t_ray		ray_for_pixel(t_camera *camera, int px, int py);
+t_matrix	compute_orientation(t_tuple from, t_tuple to, t_tuple up);
 
 /*
 forward = normalize(to - from) = (0, 0, -1)// Look direction

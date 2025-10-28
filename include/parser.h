@@ -24,6 +24,7 @@
 # include "camera.h"
 # include "cylinders.h"
 # include "planes.h"
+# include "cones.h"
 # include "parser_numbers.h"
 # include "parser_utils.h"
 

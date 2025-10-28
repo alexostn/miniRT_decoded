@@ -41,11 +41,11 @@ t_world	default_world(void)
 	t_material	m1;
 
 	w = world_make();
-w.light_present = true;
-w.light.position = point(-10, 10, -10);
-w.light.intensity = point(1, 1, 1);
-world_add_light(&w, w.light);
-w.spheres[0] = sphere_create();
+	w.light_present = true;
+	w.light.position = point(-10, 10, -10);
+	w.light.intensity = point(1, 1, 1);
+	world_add_light(&w, w.light);
+	w.spheres[0] = sphere_create();
 	m1 = material_create();
 	m1.color = point(0.8, 1.0, 0.6);
 	m1.diffuse = 0.7;
@@ -64,10 +64,10 @@ w.spheres[0] = sphere_create();
 /* -------------------------------------------------------------------------- */
 
 bool	is_shadowed_from_light(t_world world, t_tuple point,
-				 t_point_light light)
+				t_point_light light)
 {
 	t_shadow_check	calc;
-	bool		shadowed;
+	bool			shadowed;
 
 	calc.vector_to_light = substract_tuples(light.position, point);
 	calc.distance = magnitude_of_vector(calc.vector_to_light);
@@ -97,8 +97,8 @@ t_tuple	color_at(t_world *w, t_ray r)
 {
 	t_xs			xs;
 	t_intersection	hit;
-	t_tuple		result;
-	t_comps		comps;
+	t_tuple			result;
+	t_comps			comps;
 
 	xs = intersect_world(w, r);
 	hit = intersections_hit(xs);

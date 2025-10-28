@@ -12,6 +12,8 @@
 
 #include "cones.h"
 #include "matrices.h"
+#include "defines.h"
+#include <math.h>
 
 /*
 ** cone_local_normal_at()
@@ -28,13 +30,22 @@ t_tuple	cone_local_normal_at(t_cone *cone, t_tuple p)
 {
 	double	dist;
 	double	y;
+	double	radius_at_y;
 
 	dist = p.x * p.x + p.z * p.z;
-	if (dist < 1.0 && p.y >= (cone->maximum - EPS))
-		return (vector(0, 1, 0));
-	if (dist < 1.0 && p.y <= (cone->minimum + EPS))
-		return (vector(0, -1, 0));
-	y = sqrt(p.x * p.x + p.z * p.z);
+	if (p.y >= (cone->maximum - EPS))
+	{
+		radius_at_y = fabs(cone->maximum);
+		if (dist <= radius_at_y * radius_at_y + EPS)
+			return (vector(0, 1, 0));
+	}
+	if (p.y <= (cone->minimum + EPS))
+	{
+		radius_at_y = fabs(cone->minimum);
+		if (dist <= radius_at_y * radius_at_y + EPS)
+			return (vector(0, -1, 0));
+	}
+	y = sqrt(dist);
 	if (p.y > 0)
 		y = -y;
 	return (vector(p.x, y, p.z));
