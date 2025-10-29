@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computations.c                                     :+:      :+:    :+:   */
+/*   shade_hit_mandatory.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,33 @@
 
 #include "computations.h"
 #include "world.h"
-#include "spheres.h"
-#include "planes.h"
-#include "cylinders.h"
-#include "cones.h"
 #include "materials.h"
+#include "lights.h"
 #include "computations_object_lookup.h"
 
 /*
-** prepare_computations()
-** Precompute useful data for shading an intersection (generic object)
+** shade_hit() - MANDATORY VERSION
+** Uses only the single world.light (not the lights[] array)
 */
-t_comps	prepare_computations(t_world *world, t_intersection hit, t_ray r)
+t_tuple	shade_hit(t_world world, t_comps comps)
 {
-	t_comps	comps;
+	t_lighting_args	args;
+	t_tuple			color;
+	t_material		material_copy;
 
-	comps.t = hit.t;
-	comps.object = identify_object(world, hit.object);
-	comps.material = extract_hit_material(comps.object);
-	comps.point = ray_position(r, comps.t);
-	comps.eyev = multiply_tuple_scalar(r.direction, -1);
-	comps.normalv = object_normal_at(comps.object, comps.point);
-	if (dot_product(comps.normalv, comps.eyev) < 0)
-	{
-		comps.inside_hit = true;
-		comps.normalv = multiply_tuple_scalar(comps.normalv, -1);
-	}
-	else
-		comps.inside_hit = false;
-	comps.over_point = add(comps.point,
-			multiply_tuple_scalar(comps.normalv, EPS));
-	return (comps);
+	color = ambient_component(world, &comps);
+	if (!world.light_present)
+		return (color);
+	material_copy = comps.material;
+	material_copy.ambient = 0.0;
+	args.material = material_copy;
+	args.light = world.light;
+	args.position = comps.over_point;
+	args.eyev = comps.eyev;
+	args.normalv = comps.normalv;
+	args.in_shadow = is_shadowed_from_light(world,
+			comps.over_point, world.light);
+	color = add(color, lighting(args));
+	return (color);
 }
+

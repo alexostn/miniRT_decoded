@@ -48,7 +48,11 @@ endif
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRCS	= $(SRC_DIR)/main.c \
+# ============================================================================ #
+#                              COMMON SOURCES                                  #
+# ============================================================================ #
+# These sources are shared between mandatory and bonus
+SRCS_COMMON	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/window.c \
 			$(SRC_DIR)/image.c \
 			$(SRC_DIR)/tuples/tuple_creation.c \
@@ -79,11 +83,9 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/world/world.c \
 			$(SRC_DIR)/world/world_add_object.c \
 			$(SRC_DIR)/world/world_add_light.c \
-			$(SRC_DIR)/world/world_intersect.c \
 			$(SRC_DIR)/computations/computations.c \
 			$(SRC_DIR)/computations/computations_compat.c \
 			$(SRC_DIR)/computations/object_lookup.c \
-			$(SRC_DIR)/computations/lighting_support.c \
 			$(SRC_DIR)/camera/camera.c \
 			$(SRC_DIR)/camera/camera_orientation.c \
 			$(SRC_DIR)/render/render.c \
@@ -99,45 +101,71 @@ SRCS	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/planes/planes.c \
 			$(SRC_DIR)/planes/planes_intersect.c \
 			$(SRC_DIR)/planes/plane_normal.c \
-			$(SRC_DIR)/cones/cones.c \
-			$(SRC_DIR)/cones/cone_intersect.c \
-			$(SRC_DIR)/cones/cone_normal.c \
 			$(SRC_DIR)/intersections/intersections.c \
 			$(SRC_DIR)/intersections/utils.c \
 			$(SRC_DIR)/scene/init_scene.c \
 			$(SRC_DIR)/parser/parse_scene.c \
-			$(SRC_DIR)/parser/parse_internal.c \
 			$(SRC_DIR)/parser/parse_error.c \
 			$(SRC_DIR)/parser/parse_ambient.c \
 			$(SRC_DIR)/parser/parse_camera.c \
-			$(SRC_DIR)/parser/parse_light.c \
 			$(SRC_DIR)/parser/parse_sphere.c \
 			$(SRC_DIR)/parser/parser_color.c \
-			$(SRC_DIR)/parser/parse_validate.c \
 			$(SRC_DIR)/parser/parse_cylinder.c \
-			$(SRC_DIR)/parser/parse_cone.c \
 			$(SRC_DIR)/parser/parse_plane.c \
+			$(SRC_DIR)/parser/parse_validate.c \
 			$(SRC_DIR)/parser/helpers/parser_numbers.c \
-			$(SRC_DIR)/parser/helpers/parser_orientation.c \
-			$(SRC_DIR)/parser/helpers/parser_cone_input.c \
-			$(SRC_DIR)/parser/helpers/parser_cone_utils.c
+			$(SRC_DIR)/parser/helpers/parser_orientation.c
 
-OBJS	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+# ============================================================================ #
+#                            MANDATORY SOURCES                                 #
+# ============================================================================ #
+# Mandatory: single light, no cones
+SRCS_MANDATORY = $(SRCS_COMMON) \
+			$(SRC_DIR)/mandatory/parser/parse_internal_mandatory.c \
+			$(SRC_DIR)/mandatory/parser/parse_light_mandatory.c \
+			$(SRC_DIR)/mandatory/computations/shade_hit_mandatory.c \
+			$(SRC_DIR)/mandatory/computations/lighting_support_mandatory.c \
+			$(SRC_DIR)/mandatory/world/world_intersect_mandatory.c
 
-# Variables for booktests (REMOVED - no longer used)
+# ============================================================================ #
+#                              BONUS SOURCES                                   #
+# ============================================================================ #
+# Bonus: multiple lights + cones
+SRCS_BONUS = $(SRCS_COMMON) \
+			$(SRC_DIR)/bonus/cones/cones_bonus.c \
+			$(SRC_DIR)/bonus/cones/cone_intersect_bonus.c \
+			$(SRC_DIR)/bonus/cones/cone_normal_bonus.c \
+			$(SRC_DIR)/bonus/parser/parse_cone_bonus.c \
+			$(SRC_DIR)/bonus/parser/parse_light_bonus.c \
+			$(SRC_DIR)/bonus/parser/parse_internal_bonus.c \
+			$(SRC_DIR)/bonus/parser/parser_cone_input_bonus.c \
+			$(SRC_DIR)/bonus/parser/parser_cone_utils_bonus.c \
+			$(SRC_DIR)/bonus/computations/shade_hit_bonus.c \
+			$(SRC_DIR)/bonus/computations/lighting_support_bonus.c \
+			$(SRC_DIR)/bonus/world/world_intersect_bonus.c
 
-# >>> MODULE TESTING SECTION (REMOVED - no longer used)
+# Object file lists
+OBJS_MANDATORY = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS_MANDATORY))
+OBJS_BONUS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS_BONUS))
 
-# Default target
+# Default target: build mandatory
 .DEFAULT_GOAL := all
 
-# basic rules:
+# ============================================================================ #
+#                              BUILD RULES                                     #
+# ============================================================================ #
+
 all: $(NAME)
 
-# Dependencies for the main project
-$(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_TARGET)
-	$(CC) $(OBJS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
-	@echo "✅ miniRT compiled successfully!"
+# Mandatory build
+$(NAME): $(OBJS_MANDATORY) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(OBJS_MANDATORY) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
+	@echo "✅ miniRT (MANDATORY) compiled successfully!"
+
+# Bonus build
+bonus: $(OBJS_BONUS) $(LIBFT_LIB) $(MLX_TARGET)
+	$(CC) $(OBJS_BONUS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
+	@echo "✅ miniRT (BONUS) compiled successfully!"
 
 # libft compilation rule:
 $(LIBFT_LIB):
@@ -169,11 +197,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# clean rules:
+# ============================================================================ #
+#                              CLEAN RULES                                     #
+# ============================================================================ #
+
 clean:
 	@make -s -C $(LIBFT_DIR) clean
 	@make -s -C $(MLX_DIR) clean
-	rm -f $(OBJS)
 	rm -rf $(OBJ_DIR)
 	@echo "🧹 Cleaning output files..."
 
@@ -184,6 +214,10 @@ fclean: clean
 	rm -f $(MLX_CLEAN_TARGET)
 
 re: fclean all
+
+# ============================================================================ #
+#                              RUN RULES                                       #
+# ============================================================================ #
 
 # --- RUN WITH OPTIONAL VALGRIND ---
 # Usage: make run SCENE=scenes/simple_test.rt [V=1]
@@ -205,13 +239,14 @@ endif
 # Help target
 help:
 	@echo "Available targets:"
-	@echo "  all              - Build the main miniRT project!"
+	@echo "  all              - Build miniRT (MANDATORY: single light, no cones)"
+	@echo "  bonus            - Build miniRT (BONUS: multiple lights + cones)"
 	@echo ""
-	@echo "� RUNNING:"
+	@echo "🚀 RUNNING:"
 	@echo "  run SCENE=<file> - Run miniRT with a scene file"
 	@echo "  run SCENE=<file> V=1 - Run miniRT with Valgrind"
-	@echo "  Example: make run SCENE=scenes/simple_test.rt"
-	@echo "  Example: make run SCENE=scenes/simple_test.rt V=1"
+	@echo "  Example: make run SCENE=scenes/valid_scenes/simple_test.rt"
+	@echo "  Example: make run SCENE=scenes/valid_scenes/simple_test.rt V=1"
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"
@@ -221,13 +256,4 @@ help:
 	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all clean fclean re run help
-#!!!DELETE valgrind.log as well
-# rm -f valgrind.log  # <-- to delete later
-#!!!DELETE mlx.supp with valgrind mlx suppression rules
-
-# Create test_file:						tests/test_matrices.c
-# Compile:								make test_matrices
-# Compile till 'Matrices' + valgrind:	make vbtest
-# Compile all tests from 'Matrices:		make newtests
-
+.PHONY: all bonus clean fclean re run help
