@@ -100,3 +100,5 @@ planes_demo
 shadow_demo
 world_demo
 sphere_demo
+.cache/
+compile_commands.json

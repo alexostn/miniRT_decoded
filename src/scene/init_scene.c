@@ -21,10 +21,8 @@ void	init_scene(t_scene *scene)
 		return ;
 	scene->world = world_make();
 	scene->camera = camera_make(800, 600, M_PI / 3.0);
-	scene->ambient_color = color_d(1.0, 1.0, 1.0);
-	scene->ambient_ratio = 0.1;
-	scene->world.ambient_color = scene->ambient_color;
-	scene->world.ambient_ratio = scene->ambient_ratio;
+	scene->world.ambient_color = color_d(1.0, 1.0, 1.0);
+	scene->world.ambient_ratio = 0.1;
 }
 
 /*

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 /*
 ** check_end_of_line - Verify no extra arguments
 */
@@ -44,8 +43,6 @@ bool	parse_ambient(char *line, t_scene *scene, t_parse_state *state)
 		parser_error("Ambient: Invalid color RGB values", state->line_num);
 	if (!check_end_of_line(ptr))
 		parser_error("Ambient: Unexpected extra parameters", state->line_num);
-	scene->ambient_ratio = ratio;
-	scene->ambient_color = color;
 	scene->world.ambient_ratio = ratio;
 	scene->world.ambient_color = color;
 	return (true);

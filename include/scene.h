@@ -15,21 +15,19 @@
 
 # include "world.h"
 # include "camera.h"
-# include "tuples.h"
 
 /*
 t_scene - Complete scene configuration (stack-based)
-world with objects and lighting (stack-based)
+world with objects and lighting (stack-based, includes ambient light)
 camera configuration
-cambient_color: (RGB 0-1)
-ambient_ratio: Ambient intensity (0-1)
+
+Note: Ambient light properties are stored in world.ambient_color and
+world.ambient_ratio to avoid duplication.
 */
 typedef struct s_scene
 {
 	t_world		world;
 	t_camera	camera;
-	t_tuple		ambient_color;
-	double		ambient_ratio;
 }	t_scene;
 
 void	init_scene(t_scene *scene);

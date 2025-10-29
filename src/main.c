@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "window.h"
-#include "minirt.h"
+#include "scene.h"
 #include "parser.h"
 #include "camera.h"
 #include "image.h"

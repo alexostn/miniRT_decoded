@@ -14,7 +14,6 @@
 # define PARSER_H
 
 # include "defines.h"
-
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
