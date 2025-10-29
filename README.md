@@ -33,9 +33,15 @@ git submodule update --init --recursive
 ./miniRT scenes/valid_scenes/3_spheres.rt
 # Starts a window that can be closed with the X button or ESC key
 
-# or with verbose build output (this is light scene to test fast also use smaller window)
-# with valgrind flag 'V=1'  
-./miniRT scenes/valid_scenes/3_spheres.rt V=1
+
+# or with valgrind memory checking (Linux only):
+make run SCENE=scenes/valid_scenes/3_spheres.rt V=1
+# (V=1 works only with 'make run', not with direct ./miniRT execution)
+#
+# Note:
+# - 'make run SCENE=...' launches the version of miniRT (mandatory or bonus) that was built last.
+# - 'make bonus run SCENE=...' will build and immediately run the bonus version, regardless of previous builds.
+# - 'make run SCENE=...' after 'make' runs the mandatory version; after 'make bonus' runs the bonus version.
 
 
 ## Testing System (NEW UNIFIED SYSTEM) not at eval repo
