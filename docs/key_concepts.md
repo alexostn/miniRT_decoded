@@ -11,6 +11,7 @@
 
 ---
 
+
 ### **Normalization**
 
 **Definition:**
@@ -19,6 +20,9 @@ Normalization is the process of turning any vector into a **unit vector** (lengt
 \[
 \hat{v} = \frac{\vec{v}}{\|\vec{v}\|} = \frac{(x, y, z)}{\sqrt{x^2 + y^2 + z^2}}
 \]
+
+**Illustration:**
+![Vector Normalization](illustrations/normalize_vector_0577350.png)
 
 **Why it’s important:**
 - It keeps all vectors on a common scale, ensuring consistent lighting and reflections.

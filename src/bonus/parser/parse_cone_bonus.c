@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 04:35:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/27 02:25:04 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:10:08 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,3 @@ bool	parse_cone(char *line, t_scene *scene, t_parse_state *state)
 			state->line_num);
 	return (true);
 }
-

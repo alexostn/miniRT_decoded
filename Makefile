@@ -6,7 +6,7 @@
 #    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/25 04:52:11 by oostapen         ###   ########.fr        #
+#    Updated: 2025/10/29 20:06:17 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +114,8 @@ SRCS_COMMON	= $(SRC_DIR)/main.c \
 			$(SRC_DIR)/parser/parse_plane.c \
 			$(SRC_DIR)/parser/parse_validate.c \
 			$(SRC_DIR)/parser/helpers/parser_numbers.c \
-			$(SRC_DIR)/parser/helpers/parser_orientation.c
+			$(SRC_DIR)/parser/helpers/parser_orientation.c \
+			$(SRC_DIR)/utils/save_ppm_utils.c
 
 # ============================================================================ #
 #                            MANDATORY SOURCES                                 #
@@ -207,11 +208,13 @@ clean:
 	rm -rf $(OBJ_DIR)
 	@echo "🧹 Cleaning output files..."
 
-fclean: clean
+fclean: clean fclean_output
 	@make -s -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 	rm -f valgrind.log
 	rm -f $(MLX_CLEAN_TARGET)
+	@echo "✅ Full clean complete"
+
 
 re: fclean all
 
@@ -250,10 +253,37 @@ help:
 	@echo ""
 	@echo "🔧 MAINTENANCE:"
 	@echo "  clean            - Remove object files"
-	@echo "  fclean           - Remove object files and executables"
+	@echo "  clean_output     - Remove PPM files from output/"
+	@echo "  fclean           - Remove all build artifacts + output/"
 	@echo "  re               - Rebuild everything"
 	@echo "  help             - Show this help message"
 	@echo ""
+	@echo "📁 OUTPUT:"
+	@echo "  Rendered images are saved to: output/render_N.ppm"
+	@echo "  Use 'make clean_output' to clean PPM files"
+	@echo "  Use 'make fclean' to remove output/ completely"
+	@echo ""
 	@echo "Current OS: $(UNAME_S)"
 
-.PHONY: all bonus clean fclean re run help
+
+# ============================================================================ #
+#                       OUTPUT DIRECTORY MANAGEMENT                            #
+# ============================================================================ #
+
+OUTPUT_DIR = output
+
+# Clean only PPM files from output directory
+clean_output:
+	@if [ -d "$(OUTPUT_DIR)" ]; then \
+		rm -f $(OUTPUT_DIR)/*.ppm; \
+		echo "🧹 Cleaned $(OUTPUT_DIR)/*.ppm"; \
+	fi
+
+# Remove output directory completely
+fclean_output:
+	@if [ -d "$(OUTPUT_DIR)" ]; then \
+		rm -rf $(OUTPUT_DIR); \
+		echo "🗑️  Removed $(OUTPUT_DIR)/ directory"; \
+	fi
+
+.PHONY: all bonus clean fclean re run help clean_output fclean_output

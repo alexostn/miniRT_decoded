@@ -8,10 +8,10 @@
 # Just add any file or directory paths here.
 # tar will automatically preserve their structure.
 IGNORE_LIST=(
-	"tests"
-	"libft"
+	# "tests
+	# "libft"
 	"mlx-linux"
-	"demos"
+	# "demos"
 	# You can add any other directory to ignore using the same pattern
 	# "path/to/another/file.c"
 )

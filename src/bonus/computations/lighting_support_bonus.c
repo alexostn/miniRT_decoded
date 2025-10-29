@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 20:38:07 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/26 20:38:28 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:08:34 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,3 @@ t_lighting_args	build_light_args(t_world world, t_comps *comps, int index)
 			comps->over_point, world.lights[index]);
 	return (args);
 }
-

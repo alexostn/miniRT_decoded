@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 22:30:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:32:46 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:12:51 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,3 @@ t_xs	intersect_world(t_world *w, t_ray r)
 	intersect_cylinders(w, r, &result);
 	return (result);
 }
-

@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:23:53 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:47:04 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:11:13 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,3 @@ t_tuple	shade_hit(t_world world, t_comps comps)
 	}
 	return (color);
 }
-

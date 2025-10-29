@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 17:30:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 17:54:25 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:10:53 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,3 @@ t_tuple	cone_normal_at(t_cone *cone, t_tuple world_point)
 	world_normal.w = 0.0;
 	return (normalize_vector(world_normal));
 }
-

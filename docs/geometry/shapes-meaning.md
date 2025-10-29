@@ -6,6 +6,56 @@ This document describes the format of each geometric shape in the `.rt` scene fi
 choose color you wish in RGB:
 https://www.schemecolor.com/calmingly-fresh.php
 
+---
+
+# Camera (C)
+
+**Format:**
+```
+C 0,0,-5   0,0,1   70
+▲  ▲       ▲       ▲
+│  │       │       │
+│  │       │       FOV (degrees)
+│  │       │
+│  │       nx,ny,nz Orientation Vector (normalized)
+│  │
+│  x,y,z Position
+│
+Identifier ("C" for camera)
+```
+
+# Ambient (A)
+
+**Format:**
+```
+A 0.2	255,255,255
+▲  ▲    ▲ ▲ ▲
+│  │    │ │ │
+│  │    │ R,G,B Color (0-255)
+│  │
+│  ratio (0.0 - 1.0)
+│
+Identifier ("A" for ambient)
+```
+
+
+---
+
+# Light (L)
+
+**Format:**
+```
+L 0,5,-5	0.7		 255,255,255
+▲  ▲       ▲         ▲ ▲ ▲
+│  │       │         │ │ │
+│  │       │         R,G,B Color (0-255)
+│  │       │
+│  │       brightness (0.0 - 1.0)
+│  │
+│  x,y,z Position
+│
+Identifier ("L" for point light)
+```
 ## Sphere (sp)
 
 **Format:**

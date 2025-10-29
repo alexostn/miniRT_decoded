@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 03:10:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/27 03:10:00 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:09:21 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,3 @@ void	cone_apply_properties(t_cone *cone, t_cone_input input)
 	cone->closed = true;
 	cone->shape.material.color = input.color;
 }
-

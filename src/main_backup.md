@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 22:57:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/29 18:49:42 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/25 04:00:46 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "parser.h"
 #include "camera.h"
 #include "image.h"
-#include "save_ppm_utils.h"
 #include "libft.h"
 #include <fcntl.h>
 
@@ -70,7 +69,6 @@ int	main(int argc, char **argv)
 	if (!image)
 		error_exit("Failed to render scene");
 	mlx_put_image_to_window(vars.mlx, vars.win, image->img_ptr, 0, 0);
-	save_image_numbered(image);
 	mlx_loop(vars.mlx);
 	return (0);
 }

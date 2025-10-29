@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 22:52:35 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:45:46 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:09:49 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,3 @@ bool	parse_light(char *line, t_scene *scene, t_parse_state *state)
 			state->line_num);
 	return (true);
 }
-

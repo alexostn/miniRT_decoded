@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:27:40 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:46:44 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:13:23 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_world		default_world(void);
 t_xs		intersect_world(t_world *w, t_ray r);
 bool		is_shadowed(t_world world, t_tuple point);
 bool		is_shadowed_from_light(t_world world, t_tuple point,
-					t_point_light light);
+				t_point_light light);
 
 t_tuple		color_at(t_world *w, t_ray r);
 

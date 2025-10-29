@@ -25,6 +25,9 @@ tests/files/output/
 run_book_tests
 libmlx.dylib
 
+#ppms root container
+output/
+
 # Library build artifacts
 libft/libft.a
 libft/obj/

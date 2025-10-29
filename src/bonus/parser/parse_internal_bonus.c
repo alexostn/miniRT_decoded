@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 21:18:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/25 04:45:59 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:10:00 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,3 @@ void	validate_scene(t_parse_state *state)
 		parser_error("Scene validation failed: Missing at least one light (L)",
 			0);
 }
-

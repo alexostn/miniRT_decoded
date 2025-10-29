@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 17:30:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/22 18:00:30 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:10:33 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,3 @@ t_xs	cone_intersect(t_cone *cone, t_ray r)
 	local_ray = shape_transform_ray_to_local(&cone->shape, r);
 	return (cone_local_intersect(cone, local_ray));
 }
-

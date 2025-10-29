@@ -6,7 +6,7 @@
 /*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 03:12:00 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/27 03:12:00 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:10:21 by oostapen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,3 @@ t_cone_input	cone_parse_input(char *line, t_parse_state *state)
 	parse_color(&cursor, &input, state);
 	return (input);
 }
-
