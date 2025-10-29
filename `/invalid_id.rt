@@ -1,4 +1,0 @@
-# This is valid
-A 0.2 255,255,255
-# Invalid identifier below
-X 0,0,0 1,1,1 100
