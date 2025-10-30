@@ -28,16 +28,16 @@ static bool	dispatch_ace(const char *line, t_scene *scene,
 	if (ft_strncmp(line, "A ", 2) == 0)
 	{
 		if (state->has_ambient)
-			parser_error("Ambient light (A) can only be defined once",
-				state->line_num);
+			parser_error_cleanup(state,
+				"Ambient light (A) can only be defined once");
 		state->has_ambient = true;
 		return (parse_ambient((char *)line, scene, state));
 	}
 	if (ft_strncmp(line, "C ", 2) == 0)
 	{
 		if (state->has_camera)
-			parser_error("Camera (C) can only be defined once",
-				state->line_num);
+			parser_error_cleanup(state,
+				"Camera (C) can only be defined once");
 		state->has_camera = true;
 		return (parse_camera((char *)line, scene, state));
 	}
@@ -48,14 +48,14 @@ static bool	dispatch_ace(const char *line, t_scene *scene,
 static void	check_case_errors(const char *line, t_parse_state *state)
 {
 	if (ft_strncmp(line, "a ", 2) == 0)
-		parser_error("Invalid identifier 'a' (use 'A' for ambient light)",
-			state->line_num);
+		parser_error_cleanup(state,
+			"Invalid identifier 'a' (use 'A' for ambient light)");
 	if (ft_strncmp(line, "c ", 2) == 0)
-		parser_error("Invalid identifier 'c' (use 'C' for camera)",
-			state->line_num);
+		parser_error_cleanup(state,
+			"Invalid identifier 'c' (use 'C' for camera)");
 	if (ft_strncmp(line, "l ", 2) == 0)
-		parser_error("Invalid identifier 'l' (use 'L' for light)",
-			state->line_num);
+		parser_error_cleanup(state,
+			"Invalid identifier 'l' (use 'L' for light)");
 }
 
 bool	dispatch_element(const char *line, t_scene *scene,
@@ -68,8 +68,8 @@ bool	dispatch_element(const char *line, t_scene *scene,
 	if (ft_strncmp(line, "L ", 2) == 0)
 	{
 		if (state->has_light)
-			parser_error("Only ONE light allowed in mandatory part",
-				state->line_num);
+			parser_error_cleanup(state,
+				"Only ONE light allowed in mandatory part");
 		state->has_light = true;
 		return (parse_light((char *)line, scene, state));
 	}
@@ -80,8 +80,8 @@ bool	dispatch_element(const char *line, t_scene *scene,
 	if (ft_strncmp(line, "cy ", 3) == 0)
 		return (parse_cylinder((char *)line, scene, state));
 	if (ft_strncmp(line, "co ", 3) == 0)
-		parser_error("Cones (co) are only available in BONUS part",
-			state->line_num);
+		parser_error_cleanup(state,
+			"Cones (co) are only available in BONUS part");
 	check_case_errors(line, state);
 	return (false);
 }

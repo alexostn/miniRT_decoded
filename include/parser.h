@@ -27,13 +27,16 @@
 # include "parser_numbers.h"
 # include "parser_utils.h"
 
-/* Parser state tracker */
+/* Parser state tracker with cleanup support */
 typedef struct s_parse_state
 {
 	bool	has_ambient;
 	bool	has_camera;
 	bool	has_light;
 	int		line_num;
+	int		fd;
+	char	*current_line;
+	char	*current_trimmed;
 }	t_parse_state;
 
 /* Main parser */
@@ -55,6 +58,7 @@ bool		parse_color_rgb(char **str, t_tuple *color);
 bool		validate_range(double val, double min, double max);
 bool		validate_normalized(t_tuple vec);
 void		parser_error(const char *msg, int line_num);
+void		parser_error_cleanup(t_parse_state *state, const char *msg);
 
 /* Parse utils*/
 bool		dispatch_element(const char *line, t_scene *scene,

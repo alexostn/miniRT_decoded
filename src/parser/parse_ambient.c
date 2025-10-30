@@ -36,13 +36,13 @@ bool	parse_ambient(char *line, t_scene *scene, t_parse_state *state)
 
 	ptr = line + 1;
 	if (!parse_double(&ptr, &ratio))
-		parser_error("Ambient: Invalid ratio value", state->line_num);
+		parser_error_cleanup(state, "Ambient: Invalid ratio value");
 	if (!validate_range(ratio, 0.0, 1.0))
-		parser_error("Ambient: Ratio in range [0.0,1.0]", state->line_num);
+		parser_error_cleanup(state, "Ambient: Ratio in range [0.0,1.0]");
 	if (!parse_color_rgb(&ptr, &color))
-		parser_error("Ambient: Invalid color RGB values", state->line_num);
+		parser_error_cleanup(state, "Ambient: Invalid color RGB values");
 	if (!check_end_of_line(ptr))
-		parser_error("Ambient: Unexpected extra parameters", state->line_num);
+		parser_error_cleanup(state, "Ambient: Unexpected extra parameters");
 	scene->world.ambient_ratio = ratio;
 	scene->world.ambient_color = color;
 	return (true);

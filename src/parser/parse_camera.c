@@ -52,17 +52,17 @@ static void	parse_cam_params(char *ptr, t_tuple *from,
 	double	fov;
 
 	if (!parse_vector3(&ptr, from))
-		parser_error("Camera: Invalid position coordinates", state->line_num);
+		parser_error_cleanup(state, "Camera: Invalid position coordinates");
 	if (!parse_vector3(&ptr, orient))
-		parser_error("Camera: Invalid orientation vector", state->line_num);
+		parser_error_cleanup(state, "Camera: Invalid orientation vector");
 	validate_camera_orientation(*orient, state);
 	if (!parse_double(&ptr, &fov))
-		parser_error("Camera: Invalid FOV value", state->line_num);
+		parser_error_cleanup(state, "Camera: Invalid FOV value");
 	if (fov <= 0 || fov > 180)
 		parser_error("Camera: FOV must be > 0 and <= 180 degrees",
 			state->line_num);
 	if (!check_end_of_line(ptr))
-		parser_error("Camera: Unexpected extra parameters", state->line_num);
+		parser_error_cleanup(state, "Camera: Unexpected extra parameters");
 	from->w = fov;
 }
 

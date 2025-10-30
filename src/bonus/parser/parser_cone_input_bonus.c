@@ -27,10 +27,10 @@ static void	parse_center_axis(char **cursor, t_cone_input *input,
 	(*cursor) += 2;
 	skip_ws(cursor);
 	if (!parse_vector3(cursor, &input->center))
-		parser_error("Cone: Invalid center coordinates", state->line_num);
+		parser_error_cleanup(state, "Cone: Invalid center coordinates");
 	skip_ws(cursor);
 	if (!parse_vector3(cursor, &input->axis))
-		parser_error("Cone: Invalid axis vector", state->line_num);
+		parser_error_cleanup(state, "Cone: Invalid axis vector");
 	input->axis.w = 0.0;
 	mag = magnitude_of_vector(input->axis);
 	if (mag < 0.999 || mag > 1.001)
@@ -43,14 +43,14 @@ static void	parse_dimensions(char **cursor, t_cone_input *input,
 {
 	skip_ws(cursor);
 	if (!parse_double(cursor, &input->diameter))
-		parser_error("Cone: Invalid diameter value", state->line_num);
+		parser_error_cleanup(state, "Cone: Invalid diameter value");
 	if (input->diameter <= 0.0)
-		parser_error("Cone: Diameter must be positive", state->line_num);
+		parser_error_cleanup(state, "Cone: Diameter must be positive");
 	skip_ws(cursor);
 	if (!parse_double(cursor, &input->height))
-		parser_error("Cone: Invalid height value", state->line_num);
+		parser_error_cleanup(state, "Cone: Invalid height value");
 	if (input->height <= 0.0)
-		parser_error("Cone: Height must be positive", state->line_num);
+		parser_error_cleanup(state, "Cone: Height must be positive");
 }
 
 static void	parse_color(char **cursor, t_cone_input *input,
@@ -58,7 +58,7 @@ static void	parse_color(char **cursor, t_cone_input *input,
 {
 	skip_ws(cursor);
 	if (!parse_color_rgb(cursor, &input->color))
-		parser_error("Cone: Invalid color RGB values", state->line_num);
+		parser_error_cleanup(state, "Cone: Invalid color RGB values");
 }
 
 t_cone_input	cone_parse_input(char *line, t_parse_state *state)
