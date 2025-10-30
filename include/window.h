@@ -22,6 +22,7 @@ typedef struct s_vars
 	void	*mlx;
 	void	*win;
 	t_scene	*scene;
+	t_image	*image;
 }	t_vars;
 
 int	init_window(t_vars *vars);
