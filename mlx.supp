@@ -1,0 +1,44 @@
+{
+	miniLibX_X11_suppression
+	Memcheck:Leak
+	...
+	obj:/usr/lib/x86_64-linux-gnu/libX11.so.6
+}
+
+{
+	miniLibX_mlx_suppression
+	Memcheck:Leak
+	...
+	obj:*mlx*
+}
+
+{
+	libX11_suppression
+	Memcheck:Leak
+	...
+	obj:/usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+}
+
+{
+	libXext_suppression
+	Memcheck:Leak
+	...
+	obj:/usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+}
+
+{
+	mlx_init_still_reachable
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:malloc
+	fun:mlx_init
+}
+
+{
+	mlx_new_image_still_reachable
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:calloc
+	...
+	fun:mlx_new_image
+}

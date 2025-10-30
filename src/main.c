@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 22:57:34 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/29 18:49:42 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:15:43 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,18 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 	t_scene	scene;
-	t_image	*image;
 
 	validate_args(argc, argv);
 	scene = parse_scene_file(argv[1]);
 	vars.scene = &scene;
+	vars.image = NULL;
 	if (init_window(&vars))
 		return (1);
-	image = render(vars.mlx, scene.camera, &scene.world);
-	if (!image)
+	vars.image = render(vars.mlx, scene.camera, &scene.world);
+	if (!vars.image)
 		error_exit("Failed to render scene");
-	mlx_put_image_to_window(vars.mlx, vars.win, image->img_ptr, 0, 0);
-	save_image_numbered(image);
+	mlx_put_image_to_window(vars.mlx, vars.win, vars.image->img_ptr, 0, 0);
+	save_image_numbered(vars.image);
 	mlx_loop(vars.mlx);
 	return (0);
 }

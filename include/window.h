@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:35:28 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/16 19:34:05 by oostapen         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:12:57 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_vars
 	void	*mlx;
 	void	*win;
 	t_scene	*scene;
+	t_image *image;
 }	t_vars;
 
 int	init_window(t_vars *vars);
