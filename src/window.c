@@ -6,7 +6,7 @@
 /*   By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:28:06 by oostapen          #+#    #+#             */
-/*   Updated: 2025/10/30 10:14:11 by sarherna         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:28:24 by sarherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ int	init_window(t_vars *vars)
 */
 int	key_hook(int keycode, t_vars *vars)
 {
-	if(vars->image)
-		image_destroy(vars->image);
 	if (keycode == 65307)
 	{
+		if (vars->image)
+			image_destroy(vars->image);
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
@@ -72,6 +72,8 @@ int	key_hook(int keycode, t_vars *vars)
 */
 int	close_window(t_vars *vars)
 {
+	if (vars->image)
+		image_destroy(vars->image);
 	mlx_destroy_window(vars->mlx, vars->win);
 	exit(0);
 	return (0);
