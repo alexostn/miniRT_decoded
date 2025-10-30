@@ -17,31 +17,23 @@ git submodule update --init --recursive
 
 - **Mandatory:**  
 	Build the standard version (single light, no cones):
-	```bash
+	```
 	make
+	```
 	# or
+	```
 	make all
 	```
 
 - **Bonus:**  
 	Build the bonus version (multiple lights, cones, extra features):
-	```bash
+	```
 	make bonus
 	```
 
 # How to Run miniRT Program
 ./miniRT scenes/valid_scenes/3_spheres.rt
 # Starts a window that can be closed with the X button or ESC key
-
-
-# or with valgrind memory checking (Linux only):
-make run SCENE=scenes/valid_scenes/3_spheres.rt V=1
-# (V=1 works only with 'make run', not with direct ./miniRT execution)
-#
-# Note:
-# - 'make run SCENE=...' launches the version of miniRT (mandatory or bonus) that was built last.
-# - 'make bonus run SCENE=...' will build and immediately run the bonus version, regardless of previous builds.
-# - 'make run SCENE=...' after 'make' runs the mandatory version; after 'make bonus' runs the bonus version.
 
 ## VIEWING RENDERED IMAGES IN A SEPARATE WINDOW
 
@@ -70,7 +62,24 @@ feh --reload 1 output/render_1.ppm
 # The `--reload 1` option refreshes the image every second. Arrange your windows (for example, place the viewer in the top-right corner and your terminal/editor next to it) to visually compare changes between renders.
 
 ---
+# VALGRIND CHECKING TIPS:
+# First of all resize window include/defines.h
+```
+/*...small resolution for fast rendering (2.5x subject)*/
+# define WIN_WIDTH 20
+# define WIN_HEIGHT 10
+```
 
+# Valgrind memory checking 'V=1' flag (Linux only):
+make run SCENE=scenes/valid_scenes/3_spheres.rt V=1
+# (V=1 works only with 'make run', not with direct ./miniRT execution)
+#
+# Note:
+# - 'make run SCENE=...' launches the version of miniRT (mandatory or bonus) that was built last.
+# - 'make bonus run SCENE=...' will build and immediately run the bonus version, regardless of previous builds.
+# - 'make run SCENE=...' after 'make' runs the mandatory version; after 'make bonus' runs the bonus version.
+
+---
 
 ## Testing System (NEW UNIFIED SYSTEM) not at eval repo
 
