@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sarherna <sarherna@student.42.fr>          +#+  +:+       +#+         #
+#    By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/02 17:57:48 by oostapen          #+#    #+#              #
-#    Updated: 2025/10/30 10:28:04 by sarherna         ###   ########.fr        #
+#    Updated: 2025/10/30 14:01:07 by oostapen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -156,7 +156,8 @@ OBJS_BONUS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS_BONUS))
 #                              BUILD RULES                                     #
 # ============================================================================ #
 
-all: $(NAME)
+# Alex
+all: check_build_mandatory $(NAME)
 
 # Mandatory build
 $(NAME): $(OBJS_MANDATORY) $(LIBFT_LIB) $(MLX_TARGET)
@@ -164,9 +165,27 @@ $(NAME): $(OBJS_MANDATORY) $(LIBFT_LIB) $(MLX_TARGET)
 	@echo "✅ miniRT (MANDATORY) compiled successfully!"
 
 # Bonus build
-bonus: $(OBJS_BONUS) $(LIBFT_LIB) $(MLX_TARGET)
+bonus: check_build_bonus bonus_build
+
+bonus_build: $(OBJS_BONUS) $(LIBFT_LIB) $(MLX_TARGET)
 	$(CC) $(OBJS_BONUS) $(CFLAGS) $(LIBFT_FLAGS) $(MLX_LIB) -o $(NAME)
 	@echo "✅ miniRT (BONUS) compiled successfully!"
+
+# Build mode check for mandatory Alex
+check_build_mandatory:
+	@if [ -f $(BUILD_MARKER) ] && [ "$$(cat $(BUILD_MARKER))" = "bonus" ]; then \
+		echo "🔄 Switching from bonus to mandatory - clearing object files..."; \
+		$(MAKE) clean; \
+	fi
+	@echo "mandatory" > $(BUILD_MARKER)
+
+# Check build mode for bonus Alex
+check_build_bonus:
+	@if [ -f $(BUILD_MARKER) ] && [ "$$(cat $(BUILD_MARKER))" = "mandatory" ]; then \
+		echo "🔄 Switching from mandatory to bonus - clearing object files..."; \
+		$(MAKE) clean; \
+	fi
+	@echo "bonus" > $(BUILD_MARKER)
 
 # libft compilation rule:
 $(LIBFT_LIB):
@@ -213,6 +232,7 @@ fclean: clean fclean_output
 	rm -f $(NAME)
 	rm -f valgrind.log
 	rm -f $(MLX_CLEAN_TARGET)
+	rm -f $(BUILD_MARKER)
 	@echo "✅ Full clean complete"
 
 
@@ -272,6 +292,9 @@ help:
 
 OUTPUT_DIR = output
 
+# Marker file for tracking build mode (mandatory/bonus)
+BUILD_MARKER = .build_mode
+
 # Clean only PPM files from output directory
 clean_output:
 	@if [ -d "$(OUTPUT_DIR)" ]; then \
@@ -286,4 +309,4 @@ fclean_output:
 		echo "🗑️  Removed $(OUTPUT_DIR)/ directory"; \
 	fi
 
-.PHONY: all bonus clean fclean re run help clean_output fclean_output
+.PHONY: all bonus clean fclean re run help clean_output fclean_output check_build_mandatory check_build_bonus bonus_build
