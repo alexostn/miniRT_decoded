@@ -1,0 +1,4 @@
+# Invalid format - incomplete color (2 values instead of 3)
+A 0.2 255,255,255
+C -50,0,20 0,0,1 70
+L -40,50,0 0.6 10,255

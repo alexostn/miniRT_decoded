@@ -1,0 +1,114 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   world.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/24 15:29:33 by oostapen          #+#    #+#             */
+/*   Updated: 2025/10/25 04:46:53 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "world.h"
+#include "intersect.h"
+#include "computations.h"
+
+/* -------------------------------------------------------------------------- */
+/*                               World builders                               */
+/* -------------------------------------------------------------------------- */
+
+t_world	world_make(void)
+{
+	t_world	w;
+
+	w.light_present = false;
+	w.light.position = tuple(0, 0, 0, 0);
+	w.light.intensity = tuple(0, 0, 0, 0);
+	w.ambient_ratio = 0.1;
+	w.ambient_color = color_d(1.0, 1.0, 1.0);
+	w.lights_count = 0;
+	w.spheres_count = 0;
+	w.planes_count = 0;
+	w.cylinders_count = 0;
+	w.cones_count = 0;
+	return (w);
+}
+
+t_world	default_world(void)
+{
+	t_world		w;
+	t_material	m1;
+
+	w = world_make();
+	w.light_present = true;
+	w.light.position = point(-10, 10, -10);
+	w.light.intensity = point(1, 1, 1);
+	world_add_light(&w, w.light);
+	w.spheres[0] = sphere_create();
+	m1 = material_create();
+	m1.color = point(0.8, 1.0, 0.6);
+	m1.diffuse = 0.7;
+	m1.specular = 0.2;
+	w.spheres[0].material = m1;
+	w.spheres[0].transform = mat_identity();
+	w.spheres[1] = sphere_create();
+	w.spheres[1].material = material_create();
+	w.spheres[1].transform = scaling(0.5, 0.5, 0.5);
+	w.spheres_count = 2;
+	return (w);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Shadow handling                               */
+/* -------------------------------------------------------------------------- */
+
+bool	is_shadowed_from_light(t_world world, t_tuple point,
+				t_point_light light)
+{
+	t_shadow_check	calc;
+	bool			shadowed;
+
+	calc.vector_to_light = substract_tuples(light.position, point);
+	calc.distance = magnitude_of_vector(calc.vector_to_light);
+	calc.direction = normalize_vector(calc.vector_to_light);
+	calc.shadow_ray = ray(point, calc.direction);
+	calc.intersections = intersect_world(&world, calc.shadow_ray);
+	calc.hit = intersections_hit(calc.intersections);
+	shadowed = (calc.hit.object != NULL && calc.hit.t < calc.distance);
+	intersections_destroy(&calc.intersections);
+	return (shadowed);
+}
+
+bool	is_shadowed(t_world world, t_tuple point)
+{
+	if (world.lights_count > 0)
+		return (is_shadowed_from_light(world, point, world.lights[0]));
+	if (world.light_present)
+		return (is_shadowed_from_light(world, point, world.light));
+	return (false);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Color computation                             */
+/* -------------------------------------------------------------------------- */
+
+t_tuple	color_at(t_world *w, t_ray r)
+{
+	t_xs			xs;
+	t_intersection	hit;
+	t_tuple			result;
+	t_comps			comps;
+
+	xs = intersect_world(w, r);
+	hit = intersections_hit(xs);
+	if (!hit.object)
+	{
+		intersections_destroy(&xs);
+		return (color_d(0.0, 0.0, 0.0));
+	}
+	comps = prepare_computations(w, hit, r);
+	result = shade_hit(*w, comps);
+	intersections_destroy(&xs);
+	return (result);
+}

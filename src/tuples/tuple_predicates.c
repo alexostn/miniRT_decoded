@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tuple_predicates.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oostapen <oostapen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/19 12:38:23 by oostapen          #+#    #+#             */
+/*   Updated: 2025/09/03 21:39:38 by oostapen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+// brings t_tuple and includes defines.h for EPS
+#include "tuples.h"
+#include <math.h> // fabs prototype
+
+// Helper function for comparing doubles considering EPS
+int	floats_equal(double a, double b)
+{
+	if (fabs(a - b) <= EPS)
+		return (1);
+	return (0);
+}
+
+// Checks if the tuple is a poin
+int	is_point(t_tuple t)
+{
+	return (floats_equal(t.w, 1.0));
+}
+
+// Checks if the tuple is a vector
+int	is_vector(t_tuple t)
+{
+	return (floats_equal(t.w, 0.0));
+}
