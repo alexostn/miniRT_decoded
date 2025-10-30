@@ -53,15 +53,15 @@ static void	parse_sp_params(char *ptr, t_tuple *center,
 	double	diameter;
 
 	if (!parse_vector3(&ptr, center))
-		parser_error("Sphere: Invalid center coordinates", state->line_num);
+		parser_error_cleanup(state, "Sphere: Invalid center coordinates");
 	if (!parse_double(&ptr, &diameter))
-		parser_error("Sphere: Invalid diameter value", state->line_num);
+		parser_error_cleanup(state, "Sphere: Invalid diameter value");
 	if (diameter <= 0)
-		parser_error("Sphere: Diameter must be positive", state->line_num);
+		parser_error_cleanup(state, "Sphere: Diameter must be positive");
 	if (!parse_color_rgb(&ptr, color))
-		parser_error("Sphere: Invalid color RGB values", state->line_num);
+		parser_error_cleanup(state, "Sphere: Invalid color RGB values");
 	if (!check_end_of_line(ptr))
-		parser_error("Sphere: Unexpected extra parameters", state->line_num);
+		parser_error_cleanup(state, "Sphere: Unexpected extra parameters");
 	center->w = diameter;
 }
 

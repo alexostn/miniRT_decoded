@@ -12,6 +12,7 @@
 
 #include "parser.h"
 #include "libft.h"
+#include "get_next_line.h"
 
 void	parser_error(const char *msg, int line_num)
 {
@@ -22,6 +23,43 @@ void	parser_error(const char *msg, int line_num)
 	{
 		ft_putstr_fd("Line ", 2);
 		line_str = ft_itoa(line_num);
+		if (line_str)
+		{
+			ft_putstr_fd(line_str, 2);
+			ft_putstr_fd(": ", 2);
+			free(line_str);
+		}
+	}
+	ft_putstr_fd((char *)msg, 2);
+	ft_putstr_fd("\n", 2);
+	exit(1);
+}
+
+/*
+** parser_error_cleanup - Error handler with memory cleanup
+** Frees allocated resources before exiting
+*/
+void	parser_error_cleanup(t_parse_state *state, const char *msg)
+{
+	char	*line_str;
+	char	*gnl_cleanup;
+
+	if (state->current_trimmed)
+		free(state->current_trimmed);
+	if (state->current_line)
+		free(state->current_line);
+	if (state->fd >= 0)
+	{
+		close(state->fd);
+		gnl_cleanup = get_next_line_bonus(state->fd);
+		if (gnl_cleanup)
+			free(gnl_cleanup);
+	}
+	ft_putstr_fd("Error\n", 2);
+	if (state->line_num > 0)
+	{
+		ft_putstr_fd("Line ", 2);
+		line_str = ft_itoa(state->line_num);
 		if (line_str)
 		{
 			ft_putstr_fd(line_str, 2);

@@ -27,7 +27,7 @@ static bool	check_end_of_line(char *ptr)
 static void	validate_light_brightness(double brightness, t_parse_state *state)
 {
 	if (!validate_range(brightness, 0.0, 1.0))
-		parser_error("Light: Brightness in range [0.0,1.0]", state->line_num);
+		parser_error_cleanup(state, "Light: Brightness in range [0.0,1.0]");
 }
 
 static void	parse_light_params(char *ptr, t_tuple *pos,
@@ -36,14 +36,14 @@ static void	parse_light_params(char *ptr, t_tuple *pos,
 	double	brightness;
 
 	if (!parse_vector3(&ptr, pos))
-		parser_error("Light: Invalid position coordinates", state->line_num);
+		parser_error_cleanup(state, "Light: Invalid position coordinates");
 	if (!parse_double(&ptr, &brightness))
-		parser_error("Light: Invalid brightness value", state->line_num);
+		parser_error_cleanup(state, "Light: Invalid brightness value");
 	validate_light_brightness(brightness, state);
 	if (!parse_color_rgb(&ptr, color))
-		parser_error("Light: Invalid color RGB values", state->line_num);
+		parser_error_cleanup(state, "Light: Invalid color RGB values");
 	if (!check_end_of_line(ptr))
-		parser_error("Light: Unexpected extra parameters", state->line_num);
+		parser_error_cleanup(state, "Light: Unexpected extra parameters");
 	*color = multiply_tuple_scalar(*color, brightness);
 }
 
@@ -60,6 +60,6 @@ bool	parse_light(char *line, t_scene *scene, t_parse_state *state)
 	scene->world.light = light;
 	scene->world.light_present = true;
 	if (!world_add_light(&scene->world, light))
-		parser_error("Light: Failed to add light", state->line_num);
+		parser_error_cleanup(state, "Light: Failed to add light");
 	return (true);
 }

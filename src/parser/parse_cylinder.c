@@ -35,7 +35,7 @@ bool	parse_cylinder(char *line, t_scene *scene, t_parse_state *state)
 	while (*line == ' ' || *line == '\t')
 		line++;
 	if (!parse_color_rgb(&line, &color))
-		parser_error("Cylinder: Invalid color RGB values", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Invalid color RGB values");
 	cy = cylinder_create();
 	if (!create_cy_transform(center, axis, dims[0], &cy.shape.transform))
 		parser_error("Cylinder: Failed to apply axis rotation",
@@ -56,11 +56,11 @@ static void	parse_cy_vectors(char **ptr, t_tuple *center,
 	while (**ptr == ' ' || **ptr == '\t')
 		(*ptr)++;
 	if (!parse_vector3(ptr, center))
-		parser_error("Cylinder: Invalid center coordinates", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Invalid center coordinates");
 	while (**ptr == ' ' || **ptr == '\t')
 		(*ptr)++;
 	if (!parse_vector3(ptr, axis))
-		parser_error("Cylinder: Invalid axis vector", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Invalid axis vector");
 	axis->w = 0.0;
 	mag = magnitude_of_vector(*axis);
 	if (mag < 0.999 || mag > 1.001)
@@ -74,15 +74,15 @@ static void	parse_cy_dimensions(char **ptr, double *diam,
 	while (**ptr == ' ' || **ptr == '\t')
 		(*ptr)++;
 	if (!parse_double(ptr, diam))
-		parser_error("Cylinder: Invalid diameter value", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Invalid diameter value");
 	if (*diam <= 0)
-		parser_error("Cylinder: Diameter must be positive", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Diameter must be positive");
 	while (**ptr == ' ' || **ptr == '\t')
 		(*ptr)++;
 	if (!parse_double(ptr, height))
-		parser_error("Cylinder: Invalid height value", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Invalid height value");
 	if (*height <= 0)
-		parser_error("Cylinder: Height must be positive", state->line_num);
+		parser_error_cleanup(state, "Cylinder: Height must be positive");
 }
 
 static bool	create_cy_transform(t_tuple center, t_tuple axis,

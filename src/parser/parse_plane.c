@@ -28,10 +28,10 @@ static void	parse_pl_vectors(char **ptr, t_tuple *point,
 	*ptr += 2;
 	skip_ws(ptr);
 	if (!parse_vector3(ptr, point))
-		parser_error("Plane: Invalid point coordinates", state->line_num);
+		parser_error_cleanup(state, "Plane: Invalid point coordinates");
 	skip_ws(ptr);
 	if (!parse_vector3(ptr, normal))
-		parser_error("Plane: Invalid normal vector", state->line_num);
+		parser_error_cleanup(state, "Plane: Invalid normal vector");
 	normal->w = 0.0;
 	mag = magnitude_of_vector(*normal);
 	if (mag < 0.999 || mag > 1.001)
@@ -49,7 +49,7 @@ static t_plane	create_plane_with_transform(t_tuple point, t_tuple normal,
 
 	plane = plane_create();
 	if (!build_orientation_matrix(normalize_vector(normal), &orientation))
-		parser_error("Plane: Failed to apply normal rotation", state->line_num);
+		parser_error_cleanup(state, "Plane: Failed to apply normal rotation");
 	translate = translation(point.x, point.y, point.z);
 	transform = mat_mul(translate, orientation);
 	plane = plane_set_transform(plane, transform);
@@ -66,7 +66,7 @@ bool	parse_plane(char *line, t_scene *scene, t_parse_state *state)
 	parse_pl_vectors(&line, &point, &normal, state);
 	skip_ws(&line);
 	if (!parse_color_rgb(&line, &color))
-		parser_error("Plane: Invalid color RGB values", state->line_num);
+		parser_error_cleanup(state, "Plane: Invalid color RGB values");
 	plane = create_plane_with_transform(point, normal, state);
 	plane.shape.material.color = color;
 	if (!world_add_plane(&scene->world, plane))
