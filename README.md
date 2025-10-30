@@ -43,6 +43,34 @@ make run SCENE=scenes/valid_scenes/3_spheres.rt V=1
 # - 'make bonus run SCENE=...' will build and immediately run the bonus version, regardless of previous builds.
 # - 'make run SCENE=...' after 'make' runs the mandatory version; after 'make bonus' runs the bonus version.
 
+## VIEWING RENDERED IMAGES IN A SEPARATE WINDOW
+
+# To open
+# rendered image in a separate viewer window
+# (useful for comparing results while rendering from a terminal), run in another terminal:
+
+```
+eog output/render_1.ppm
+```
+
+# This will open `output/render_1.ppm` with EOG (Eye of GNOME). Note that EOG does not always automatically refresh when the file is overwritten by the renderer — you may need to manually reload the image (View → Reload) or close and re-open the file to see the updated image.
+
+# Before re-rendering you may want to clean the `output` folder so only fresh images are present:
+
+```
+make fclean
+```
+
+# If you prefer an auto-reloading viewer, consider using `feh` which can periodically reload the file:
+
+```
+feh --reload 1 output/render_1.ppm
+```
+
+# The `--reload 1` option refreshes the image every second. Arrange your windows (for example, place the viewer in the top-right corner and your terminal/editor next to it) to visually compare changes between renders.
+
+---
+
 
 ## Testing System (NEW UNIFIED SYSTEM) not at eval repo
 
