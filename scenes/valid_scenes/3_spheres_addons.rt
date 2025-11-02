@@ -18,49 +18,45 @@ sp 1.5,-0.5,0 		1 	0,0,255
 
 # Ambient (A)
 
-**Format:**
-```
-A <ratio> <R,G,B>
-▲  ▲    ▲ ▲ ▲
-│  │    │ │ │
-│  │    │ R,G,B Color (0-255)
-│  │
-│  ratio (0.0 - 1.0)
-│
-Identifier ("A" for ambient)
-```
+#**Format:**
 
----
+#A <ratio> <R,G,B>
+#▲  ▲    ▲ ▲ ▲
+#│  │    │ │ │
+#│  │    │ R,G,B Color (0-255)
+#│  │
+#│  ratio (0.0 - 1.0)
+#│
+#Identifier ("A" for ambient)
+
 
 # Camera (C)
 
-**Format:**
-```
-C <x,y,z> <nx,ny,nz> <FOV>
-▲  ▲       ▲       ▲
-│  │       │       │
-│  │       │       FOV (degrees)
-│  │       │
-│  │       nx,ny,nz Orientation Vector (normalized)
-│  │
-│  x,y,z Position
-│
-Identifier ("C" for camera)
-```
+#**Format:**
 
----
+#C <x,y,z> <nx,ny,nz> <FOV>
+#▲  ▲       ▲       ▲
+#│  │       │       │
+#│  │       │       FOV (degrees)
+#│  │       │
+#│  │       nx,ny,nz Orientation Vector (normalized)
+#│  │
+#│  x,y,z Position
+#│
+#Identifier ("C" for camera)
+
 
 # Light (L)
 
-**Format:**
-```
-L <x,y,z> <brightness> <R,G,B>
-▲  ▲       ▲         ▲ ▲ ▲
-│  │       │         │ │ │
-│  │       │         R,G,B Color (0-255)
-│  │       │
-│  │       brightness (0.0 - 1.0)
-│  │
-│  x,y,z Position
-│
-Identifier ("L" for point light)
+#**Format:**
+
+#L <x,y,z> <brightness> <R,G,B>
+#▲  ▲       ▲         ▲ ▲ ▲
+#│  │       │         │ │ │
+#│  │       │         R,G,B Color (0-255)
+#│  │       │
+#│  │       brightness (0.0 - 1.0)
+#│  │
+#│  x,y,z Position
+#│
+#Identifier ("L" for point light)
