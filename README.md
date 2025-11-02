@@ -17,15 +17,17 @@ git submodule update --init --recursive
 
 - **Mandatory:**  
 	Build the standard version (single light, no cones):
-	```bash
+	```
 	make
+	```
 	# or
+	```
 	make all
 	```
 
 - **Bonus:**  
 	Build the bonus version (multiple lights, cones, extra features):
-	```bash
+	```
 	make bonus
 	```
 
@@ -33,8 +35,42 @@ git submodule update --init --recursive
 ./miniRT scenes/valid_scenes/3_spheres.rt
 # Starts a window that can be closed with the X button or ESC key
 
+## VIEWING RENDERED IMAGES IN A SEPARATE WINDOW
 
-# or with valgrind memory checking (Linux only):
+# To open
+# rendered image in a separate viewer window
+# (useful for comparing results while rendering from a terminal), run in another terminal:
+
+```
+eog output/render_1.ppm
+```
+
+# This will open `output/render_1.ppm` with EOG (Eye of GNOME). Note that EOG does not always automatically refresh when the file is overwritten by the renderer — you may need to manually reload the image (View → Reload) or close and re-open the file to see the updated image.
+
+# Before re-rendering you may want to clean the `output` folder so only fresh images are present:
+
+```
+make fclean
+```
+
+# If you prefer an auto-reloading viewer, consider using `feh` which can periodically reload the file:
+
+```
+feh --reload 1 output/render_1.ppm
+```
+
+# The `--reload 1` option refreshes the image every second. Arrange your windows (for example, place the viewer in the top-right corner and your terminal/editor next to it) to visually compare changes between renders.
+
+---
+# VALGRIND CHECKING TIPS:
+# First of all resize window include/defines.h
+```
+/*...small resolution for fast rendering (2.5x subject)*/
+# define WIN_WIDTH 20
+# define WIN_HEIGHT 10
+```
+
+# Valgrind memory checking 'V=1' flag (Linux only):
 make run SCENE=scenes/valid_scenes/3_spheres.rt V=1
 # (V=1 works only with 'make run', not with direct ./miniRT execution)
 #
@@ -43,6 +79,7 @@ make run SCENE=scenes/valid_scenes/3_spheres.rt V=1
 # - 'make bonus run SCENE=...' will build and immediately run the bonus version, regardless of previous builds.
 # - 'make run SCENE=...' after 'make' runs the mandatory version; after 'make bonus' runs the bonus version.
 
+---
 
 ## Testing System (NEW UNIFIED SYSTEM) not at eval repo
 
