@@ -1,9 +1,0 @@
-# Cylinder with 90° rotation along Z-axis
-# Original: vertical cylinder (along Y-axis)
-# After 90° rotation around Z: horizontal cylinder (along X-axis)
-A 0.3 255,255,255
-C 0,0,-10 0,0,1 70
-L -5,5,-10 0.8 255,255,255
-cy 0,0,0 1,0,0 2.0 8.0 0,255,255
-pl 0,-3,0 0,1,0 200,200,200
-
