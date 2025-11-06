@@ -24,11 +24,15 @@
 ## Architecture Visualization
 
 https://tinyurl.com/hybrid-vs-pure-stack-and-hep
-GitHub renders Mermaid; if it doesn’t display, use the interactive link above.
+
+GitHub renders Mermaid;
+if it doesn’t display, use the interactive link above.
+
 graph TD
     subgraph Pure["PURE APPROACHES"]
         PS["Pure Stack<br/>Max: 100 objs"]
         PH["Pure Heap<br/>Dynamic"]
+    
     end
     
     PS -->|Small| PS1["0-5 obj: Fast<br/>Medium 50 obj: OK<br/>❌ >100 obj: FAIL"]
