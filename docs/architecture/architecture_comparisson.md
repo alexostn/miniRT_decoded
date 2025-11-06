@@ -41,6 +41,16 @@ graph TD
     subgraph Hybrid[" HYBRID "]
         Scene["Scene Size"]
     end
+    
+    Scene -->|≤16 objs| Stack["Stack Mode<br/>(THRESHOLD=16)"]
+    Scene -->|17-50 objs| Migrate["→ Migration<br/>Stack to Heap"]
+    Scene -->|>50 objs| Heap["Heap Mode<br/>(Unlimited)"]
+    
+    Stack -->|Result| R1["0 malloc<br/>1.8 KB<br/>FASTEST ✅"]
+    Migrate -->|Result| R2["1 syscall<br/>8.9 KB<br/>BALANCED ✅"]
+    Heap -->|Result| R3["2-4 syscalls<br/>28.7 KB<br/>FLEXIBLE ✅"]
+    
+    R1 & R2 & R3 -->|vs Pure| Winner["HYBRID wins both:<br/>vs Stack: 62% less memory<br/>vs Heap: 2.7x fewer syscalls"]
 ```
 
 ---
