@@ -38,11 +38,9 @@ graph TD
     PS -->|Small| PS1["0-5 obj: Fast<br/>Medium 50 obj: OK<br/>❌ >100 obj: FAIL"]
     PH -->|Any size| PH1["0 obj: 1 syscall<br/>50 obj: 5-7 syscalls<br/>200 obj: 6-8 syscalls"]
     
-    subgraph Hybrid["HYBRID"]
+    subgraph Hybrid[" HYBRID "]
         Scene["Scene Size"]
-        HybridApproach["Hybrid Approach<br/>Best balance"]
     end
-    Scene --> HybridApproach
 ```
 
 ---
