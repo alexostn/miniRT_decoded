@@ -50,6 +50,7 @@ Heap -->|Result| R3["2-4 syscalls<br/>28.7 KB<br/>FLEXIBLE ✅"]
 
 R1 & R2 & R3 -->|vs Pure| Winner["HYBRID wins both:<br/>vs Stack: 62% less memory<br/>vs Heap: 2.7x fewer syscalls"]
 
+
 ---
 
 
