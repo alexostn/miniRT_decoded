@@ -23,6 +23,10 @@
 
 ## Architecture Visualization
 
+GitHub renders Mermaid; if it doesn’t display, use the interactive link above.
+https://tinyurl.com/hybrid-vs-pure-stack-and-hep
+
+---
 
 ## Detailed Performance Analysis
 
