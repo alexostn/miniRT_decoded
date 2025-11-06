@@ -20,29 +20,34 @@
 | **Best for** | Fixed limit OK | Large scenes | **Most cases** 🏆 |
 
 ---
-graph TD
-    subgraph Pure["PURE APPROACHES"]
-        PS["Pure Stack<br/>Max: 100 objs"]
-        PH["Pure Heap<br/>Dynamic"]
-    end
-    
-    PS -->|Small| PS1["0-5 obj: Fast<br/>Medium 50 obj: OK<br/>❌ >100 obj: FAIL"]
-    PH -->|Any size| PH1["0 obj: 1 syscall<br/>50 obj: 5-7 syscalls<br/>200 obj: 6-8 syscalls"]
-    
-    subgraph Hybrid[" HYBRID "]
-        Scene["Scene Size"]
-    end
-    
-    Scene -->|≤16 objs| Stack["Stack Mode<br/>(THRESHOLD=16)"]
-    Scene -->|17-50 objs| Migrate["→ Migration<br/>Stack to Heap"]
-    Scene -->|>50 objs| Heap["Heap Mode<br/>(Unlimited)"]
-    
-    Stack -->|Result| R1["0 malloc<br/>1.8 KB<br/>FASTEST ✅"]
-    Migrate -->|Result| R2["1 syscall<br/>8.9 KB<br/>BALANCED ✅"]
-    Heap -->|Result| R3["2-4 syscalls<br/>28.7 KB<br/>FLEXIBLE ✅"]
-    
-    R1 & R2 & R3 -->|vs Pure| Winner["HYBRID wins both:<br/>vs Stack: 62% less memory<br/>vs Heap: 2.7x fewer syscalls"]
+## Architecture Visualization
 
+graph TD
+subgraph Pure["PURE APPROACHES"]
+PS["Pure Stack
+Max: 100 objs"]
+PH["Pure Heap
+Dynamic"]
+end
+
+text
+PS -->|Small| PS1["0-5 obj: Fast<br/>Medium 50 obj: OK<br/>❌ >100 obj: FAIL"]
+PH -->|Any size| PH1["0 obj: 1 syscall<br/>50 obj: 5-7 syscalls<br/>200 obj: 6-8 syscalls"]
+
+subgraph Hybrid["🏆 HYBRID"]
+    Scene["Scene Size"]
+end
+
+Scene -->|≤16 objs| Stack["Stack Mode<br/>(THRESHOLD=16)"]
+Scene -->|17-50 objs| Migrate["→ Migration<br/>Stack to Heap"]
+Scene -->|>50 objs| Heap["Heap Mode<br/>(Unlimited)"]
+
+Stack -->|Result| R1["0 malloc<br/>1.8 KB<br/>FASTEST ✅"]
+Migrate -->|Result| R2["1 syscall<br/>8.9 KB<br/>BALANCED ✅"]
+Heap -->|Result| R3["2-4 syscalls<br/>28.7 KB<br/>FLEXIBLE ✅"]
+
+R1 & R2 & R3 -->|vs Pure| Winner["HYBRID wins both:<br/>vs Stack: 62% less memory<br/>vs Heap: 2.7x fewer syscalls"]
+text
 ---
 
 ## Detailed Performance Analysis
